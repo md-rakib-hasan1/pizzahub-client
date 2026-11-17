@@ -45,7 +45,7 @@ const LoginPage = () => {
 
       toast.success("Welcome back to PizzaHub!");
 
-      router.push("/");
+      router.push("/account");
       router.refresh();
     } catch {
       toast.error("Something went wrong. Please try again.");
