@@ -1,7 +1,7 @@
 
 "use client";
 
-import { useState } from "react";
+import {useEffect, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { authClient } from "@/lib/auth-client";
@@ -354,10 +354,12 @@ const AccountPage = () => {
   const { data: session, isPending } = authClient.useSession();
   const router = useRouter();
 
+ useEffect(()=>{
   if (!isPending && !session) {
     router.replace("/login");
   }
-
+ },[isPending, session, router]);
+ 
   if (isPending || !session) {
     return (
       <main className="flex min-h-screen items-center justify-center bg-[#F8F1E7]">
