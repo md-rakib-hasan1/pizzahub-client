@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "motion/react";
-import { ArrowRight, MapPin, Pizza, Star } from "lucide-react";
+import { ArrowRight, MapPin, Pizza } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 
@@ -29,9 +29,14 @@ const FeaturedPizzasSection = () => {
     const [error, setError] = useState("");
 
     useEffect(() => {
+        const controller = new AbortController();
+
         const fetchFeaturedPizzas = async () => {
             try {
-                const response = await fetch(`${API_URL}/api/menu-items?limit=6&sort=newest`);
+                const response = await fetch(
+                    `${API_URL}/api/menu-items/featured`,
+                    { signal: controller.signal }
+                );
 
                 const result = await response.json();
 
@@ -41,29 +46,36 @@ const FeaturedPizzasSection = () => {
                     );
                 }
 
-                const featuredItems = (result.data as MenuItem[]).filter(
-                    (item) => item.isFeatured
-                );
+                if (!Array.isArray(result.data)) {
+                    throw new Error("Invalid featured pizzas response.");
+                }
 
-                setPizzas(featuredItems.slice(0, 6));
+                setPizzas(result.data.slice(0, 6));
             } catch (error) {
+                if (error instanceof Error && error.name === "AbortError") {
+                    return;
+                }
+
                 setError(
                     error instanceof Error
                         ? error.message
                         : "Something went wrong."
                 );
             } finally {
-                setLoading(false);
+                if (!controller.signal.aborted) {
+                    setLoading(false);
+                }
             }
         };
 
         fetchFeaturedPizzas();
+
+        return () => controller.abort();
     }, []);
 
     return (
         <section className="bg-[#F8F1E7] px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
             <div className="mx-auto max-w-7xl">
-
                 {/* Heading */}
                 <div className="mb-10 flex flex-col justify-between gap-5 sm:flex-row sm:items-end">
                     <div>
@@ -72,7 +84,8 @@ const FeaturedPizzasSection = () => {
                         </span>
 
                         <h2 className="mt-3 font-[family-name:var(--font-fraunces)] text-3xl font-bold text-[#29231F] sm:text-4xl lg:text-5xl">
-                            Our Featured <span className="text-[#D94B35]">Pizzas</span>
+                            Our Featured{" "}
+                            <span className="text-[#D94B35]">Pizzas</span>
                         </h2>
 
                         <p className="mt-3 max-w-xl text-sm leading-7 text-[#29231F]/65 sm:text-base">
@@ -108,6 +121,7 @@ const FeaturedPizzasSection = () => {
                         <p className="font-semibold text-[#29231F]">
                             Unable to load featured pizzas.
                         </p>
+
                         <p className="mt-2 text-sm text-[#29231F]/60">
                             {error}
                         </p>

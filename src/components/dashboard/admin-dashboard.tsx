@@ -27,7 +27,11 @@ import { Button } from "@/components/ui/button";
 const API_URL =
     process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 
-type Tab = "overview" | "users" | "menu" | "transactions";
+type Tab =
+    | "overview"
+    | "users"
+    | "menu"
+    | "transactions";
 
 interface AdminStats {
     totalUsers: number;
@@ -61,6 +65,7 @@ interface PendingMenuItem {
     location: string;
     vendorId: string;
     approvalStatus: string;
+    isFeatured?: boolean;
     createdAt: string;
 }
 
@@ -131,6 +136,7 @@ const AdminDashboard = () => {
     const [stats, setStats] = useState<AdminStats>(emptyStats);
     const [users, setUsers] = useState<AdminUser[]>([]);
     const [menuItems, setMenuItems] = useState<PendingMenuItem[]>([]);
+    const [approvedMenuItems, setApprovedMenuItems] = useState<PendingMenuItem[]>([]);
     const [transactions, setTransactions] = useState<Transaction[]>([]);
     const [loading, setLoading] = useState(true);
     const [actionId, setActionId] = useState("");
@@ -157,6 +163,7 @@ const AdminDashboard = () => {
                 `${API_URL}/api/users`,
                 `${API_URL}/api/menu-items/pending`,
                 `${API_URL}/api/transactions`,
+                `${API_URL}/api/menu-items?limit=50&sort=newest`,
             ];
 
             const responses = await Promise.all(
@@ -187,6 +194,7 @@ const AdminDashboard = () => {
             setUsers(getArray<AdminUser>(results[1]));
             setMenuItems(getArray<PendingMenuItem>(results[2]));
             setTransactions(getArray<Transaction>(results[3]));
+            setApprovedMenuItems(getArray<PendingMenuItem>(results[4]));
         } catch (err) {
             const message =
                 err instanceof Error
@@ -324,6 +332,64 @@ const AdminDashboard = () => {
         }
     };
 
+    const toggleFeatured = async (
+        itemId: string,
+        isFeatured: boolean,
+    ) => {
+        try {
+            setActionId(itemId);
+
+            const tokenResponse = await fetch("/api/auth/token");
+            const tokenData = await tokenResponse.json();
+
+            if (!tokenData.token) {
+                throw new Error("Authentication token not found.");
+            }
+
+            const response = await fetch(
+                `${API_URL}/api/menu-items/${itemId}/featured`,
+                {
+                    method: "PATCH",
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${tokenData.token}`,
+                    },
+                    body: JSON.stringify({ isFeatured }),
+                },
+            );
+
+            const result = await response.json();
+
+            if (!response.ok || !result.success) {
+                throw new Error(
+                    result.message || "Failed to update featured status.",
+                );
+            }
+
+            setApprovedMenuItems((previous) =>
+                previous.map((item) =>
+                    item._id === itemId
+                        ? { ...item, isFeatured }
+                        : item,
+                ),
+            );
+
+            toast.success(
+                isFeatured
+                    ? "Pizza added to featured section."
+                    : "Pizza removed from featured section.",
+            );
+        } catch (err) {
+            toast.error(
+                err instanceof Error
+                    ? err.message
+                    : "Featured status update failed.",
+            );
+        } finally {
+            setActionId("");
+        }
+    };
+
     const tabs: {
         id: Tab;
         label: string;
@@ -445,8 +511,8 @@ const AdminDashboard = () => {
                                 key={tab.id}
                                 onClick={() => setActiveTab(tab.id)}
                                 className={`flex shrink-0 items-center gap-2 rounded-xl px-4 py-3 text-sm font-semibold transition ${activeTab === tab.id
-                                        ? "bg-[#D94B35] text-white"
-                                        : "text-[#29231F]/65 hover:bg-[#F8F1E7]"
+                                    ? "bg-[#D94B35] text-white"
+                                    : "text-[#29231F]/65 hover:bg-[#F8F1E7]"
                                     }`}
                             >
                                 <Icon className="h-4 w-4" />
@@ -635,8 +701,8 @@ const AdminDashboard = () => {
                                                 <td className="px-5 py-4">
                                                     <span
                                                         className={`rounded-full px-3 py-1 text-xs font-semibold ${user.isBlocked
-                                                                ? "bg-red-50 text-red-600"
-                                                                : "bg-green-50 text-green-700"
+                                                            ? "bg-red-50 text-red-600"
+                                                            : "bg-green-50 text-green-700"
                                                             }`}
                                                     >
                                                         {user.isBlocked ? "Blocked" : "Active"}
@@ -771,6 +837,96 @@ const AdminDashboard = () => {
                                 ))}
                             </div>
                         )}
+
+                        {/* Featured Menu Management */}
+                        <div className="mt-12">
+                            <div className="mb-5">
+                                <h2 className="text-xl font-bold text-[#29231F]">
+                                    Featured Menu Management
+                                </h2>
+                                <p className="mt-1 text-sm text-[#29231F]/55">
+                                    Choose approved pizzas to highlight on the homepage.
+                                </p>
+                            </div>
+
+                            {approvedMenuItems.length === 0 ? (
+                                <div className="rounded-2xl border border-[#29231F]/10 bg-white p-10 text-center">
+                                    <Utensils className="mx-auto mb-3 h-10 w-10 text-[#D94B35]" />
+                                    <p className="font-semibold text-[#29231F]">
+                                        No approved menu items available.
+                                    </p>
+                                </div>
+                            ) : (
+                                <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+                                    {approvedMenuItems.map((item) => (
+                                        <article
+                                            key={item._id}
+                                            className="overflow-hidden rounded-2xl border border-[#29231F]/10 bg-white shadow-sm"
+                                        >
+                                            <div className="relative h-44 bg-[#F8F1E7]">
+                                                {item.image && (
+                                                    <Image
+                                                        src={item.image}
+                                                        alt={item.title}
+                                                        fill
+                                                        className="object-cover"
+                                                        sizes="(max-width: 768px) 100vw, 33vw"
+                                                    />
+                                                )}
+                                            </div>
+
+                                            <div className="p-5">
+                                                <div className="flex items-start justify-between gap-3">
+                                                    <h3 className="font-bold text-[#29231F]">
+                                                        {item.title}
+                                                    </h3>
+
+                                                    <span
+                                                        className={`shrink-0 rounded-full px-2 py-1 text-xs font-semibold ${item.isFeatured
+                                                                ? "bg-green-50 text-green-700"
+                                                                : "bg-[#F8F1E7] text-[#29231F]/60"
+                                                            }`}
+                                                    >
+                                                        {item.isFeatured ? "Featured" : "Regular"}
+                                                    </span>
+                                                </div>
+
+                                                <p className="mt-2 text-sm text-[#29231F]/55">
+                                                    {item.category} · {item.location}
+                                                </p>
+
+                                                <p className="mt-3 text-lg font-bold text-[#D94B35]">
+                                                    ${Number(item.price).toFixed(2)}
+                                                </p>
+
+                                                <Button
+                                                    className={`mt-5 w-full ${item.isFeatured
+                                                            ? "border border-[#D94B35] bg-white text-[#D94B35] hover:bg-red-50"
+                                                            : "bg-[#D94B35] text-white hover:bg-[#B83B29]"
+                                                        }`}
+                                                    variant={item.isFeatured ? "outline" : "default"}
+                                                    disabled={actionId === item._id}
+                                                    onClick={() =>
+                                                        void toggleFeatured(
+                                                            item._id,
+                                                            !item.isFeatured,
+                                                        )
+                                                    }
+                                                >
+                                                    {actionId === item._id ? (
+                                                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                                    ) : null}
+
+                                                    {item.isFeatured
+                                                        ? "Remove from Featured"
+                                                        : "Add to Featured"}
+                                                </Button>
+                                            </div>
+                                        </article>
+                                    ))}
+                                </div>
+                            )}
+                        </div>
                     </section>
                 )}
 
