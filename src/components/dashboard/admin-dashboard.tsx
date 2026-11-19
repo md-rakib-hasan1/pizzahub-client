@@ -186,9 +186,17 @@ const AdminDashboard = () => {
                 }),
             );
 
+            const dashboardData = results[0].data;
+
             setStats({
-                ...emptyStats,
-                ...(results[0].data || {}),
+                totalUsers: dashboardData.users?.total ?? 0,
+                totalCustomers: dashboardData.users?.customers ?? 0,
+                totalVendors: dashboardData.users?.vendors ?? 0,
+                blockedUsers: dashboardData.users?.blocked ?? 0,
+                totalMenuItems: dashboardData.menu?.total ?? 0,
+                pendingMenuItems: dashboardData.menu?.pending ?? 0,
+                totalOrders: dashboardData.totalOrders ?? 0,
+                totalTransactions: dashboardData.totalTransactions ?? 0,
             });
 
             setUsers(getArray<AdminUser>(results[1]));
@@ -883,8 +891,8 @@ const AdminDashboard = () => {
 
                                                     <span
                                                         className={`shrink-0 rounded-full px-2 py-1 text-xs font-semibold ${item.isFeatured
-                                                                ? "bg-green-50 text-green-700"
-                                                                : "bg-[#F8F1E7] text-[#29231F]/60"
+                                                            ? "bg-green-50 text-green-700"
+                                                            : "bg-[#F8F1E7] text-[#29231F]/60"
                                                             }`}
                                                     >
                                                         {item.isFeatured ? "Featured" : "Regular"}
@@ -901,8 +909,8 @@ const AdminDashboard = () => {
 
                                                 <Button
                                                     className={`mt-5 w-full ${item.isFeatured
-                                                            ? "border border-[#D94B35] bg-white text-[#D94B35] hover:bg-red-50"
-                                                            : "bg-[#D94B35] text-white hover:bg-[#B83B29]"
+                                                        ? "border border-[#D94B35] bg-white text-[#D94B35] hover:bg-red-50"
+                                                        : "bg-[#D94B35] text-white hover:bg-[#B83B29]"
                                                         }`}
                                                     variant={item.isFeatured ? "outline" : "default"}
                                                     disabled={actionId === item._id}
