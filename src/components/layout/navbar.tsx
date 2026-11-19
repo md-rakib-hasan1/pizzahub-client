@@ -3,29 +3,173 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
     Menu,
     Pizza,
     X,
     LayoutDashboard,
-    UserRound,
     LogOut,
+    ShoppingBag,
+    Store,
+    Settings,
 } from "lucide-react";
 
 import { authClient } from "@/lib/auth-client";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
+import {
+    Avatar,
+    AvatarFallback,
+    AvatarImage,
+} from "@/components/ui/avatar";
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+
+interface ProfileMenuProps {
+    user: {
+        name: string;
+        email: string;
+        image?: string | null;
+        role?: string;
+    };
+    dashboardHref: string;
+    onLogout: () => void;
+}
+
+const ProfileMenu = ({
+    user,
+    dashboardHref,
+    onLogout,
+}: ProfileMenuProps) => {
+    const router = useRouter();
+
+    const initials =
+        user.name
+            ?.trim()
+            .split(/\s+/)
+            .slice(0, 2)
+            .map((part) => part[0])
+            .join("")
+            .toUpperCase() || "U";
+
+    return (
+        <DropdownMenu>
+            <DropdownMenuTrigger
+                render={
+                    <button
+                        type="button"
+                        className="flex items-center gap-2 rounded-full px-2 py-1.5 outline-none transition-colors hover:bg-[#D94B35]/10 focus-visible:ring-2 focus-visible:ring-[#D94B35]"
+                    />
+                }
+            >
+                <Avatar className="size-9 border border-[#D94B35]/20">
+                    <AvatarImage
+                        src={user.image || undefined}
+                        alt={user.name}
+                    />
+                    <AvatarFallback className="bg-[#D94B35]/10 font-semibold text-[#D94B35]">
+                        {initials}
+                    </AvatarFallback>
+                </Avatar>
+
+                <span className="max-w-28 truncate text-sm font-semibold text-[#29231F]">
+                    {user.name}
+                </span>
+            </DropdownMenuTrigger>
+
+            <DropdownMenuContent
+                align="end"
+                sideOffset={10}
+                className="w-64 rounded-xl p-2"
+            >
+                <div className="px-3 py-3">
+                    <p className="font-semibold text-[#29231F]">
+                        {user.name}
+                    </p>
+
+                    <p className="mt-1 truncate text-xs text-muted-foreground">
+                        {user.email}
+                    </p>
+
+                    <p className="mt-2 text-xs font-semibold capitalize text-[#D94B35]">
+                        {user.role || "customer"} Account
+                    </p>
+                </div>
+
+                <DropdownMenuSeparator />
+
+                <DropdownMenuItem
+                    onClick={() => router.push("/account")}
+                    className="cursor-pointer gap-2"
+                >
+                    <Settings className="size-4" />
+                    Profile Settings
+                </DropdownMenuItem>
+
+                <DropdownMenuItem
+                    onClick={() => router.push(dashboardHref)}
+                    className="cursor-pointer gap-2"
+                >
+                    <LayoutDashboard className="size-4" />
+                    Dashboard
+                </DropdownMenuItem>
+
+                {user.role === "customer" && (
+                    <DropdownMenuItem
+                        onClick={() =>
+                            router.push("/dashboard/customer/orders")
+                        }
+                        className="cursor-pointer gap-2"
+                    >
+                        <ShoppingBag className="size-4" />
+                        My Orders
+                    </DropdownMenuItem>
+                )}
+
+                {user.role === "vendor" && (
+                    <DropdownMenuItem
+                        onClick={() =>
+                            router.push("/dashboard/vendor/menu")
+                        }
+                        className="cursor-pointer gap-2"
+                    >
+                        <Store className="size-4" />
+                        My Restaurant
+                    </DropdownMenuItem>
+                )}
+
+                <DropdownMenuSeparator />
+
+                <DropdownMenuItem
+                    onClick={onLogout}
+                    className="cursor-pointer gap-2 text-red-600 focus:text-red-600"
+                >
+                    <LogOut className="size-4" />
+                    Logout
+                </DropdownMenuItem>
+            </DropdownMenuContent>
+        </DropdownMenu>
+    );
+};
 
 const Navbar = () => {
     const pathname = usePathname();
     const router = useRouter();
 
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+    const [loggingOut, setLoggingOut] = useState(false);
+    const [activeLink, setActiveLink] = useState("/");
 
     const { data: session, isPending } = authClient.useSession();
 
     const user = session?.user;
-    const role = user?.role;
+    const role = (user as typeof user & { role?: string })?.role;
 
     const dashboardHref =
         role === "admin"
@@ -37,28 +181,77 @@ const Navbar = () => {
     const navLinks = [
         { name: "Home", href: "/" },
         { name: "Browse Menu", href: "/menu" },
+        { name: "Categories", href: "/#categories" },
+        { name: "About", href: "/#why-choose" },
+        { name: "Contact", href: "/#contact" },
     ];
 
-    const handleLogout = async () => {
-        await authClient.signOut();
+    useEffect(() => {
+        const updateActiveLink = () => {
+            if (pathname === "/") {
+                const hash = window.location.hash;
+                setActiveLink(hash ? `/${hash}` : "/");
+            } else if (
+                pathname === "/menu" ||
+                pathname.startsWith("/menu/")
+            ) {
+                setActiveLink("/menu");
+            } else {
+                setActiveLink("");
+            }
+        };
 
-        setMobileMenuOpen(false);
-        router.push("/login");
-        router.refresh();
+        updateActiveLink();
+
+        window.addEventListener("hashchange", updateActiveLink);
+
+        return () => {
+            window.removeEventListener("hashchange", updateActiveLink);
+        };
+    }, [pathname]);
+
+    const handleLogout = async () => {
+        if (loggingOut) return;
+
+        setLoggingOut(true);
+
+        try {
+            const { error } = await authClient.signOut();
+
+            if (error) {
+                toast.error(error.message || "Logout failed.");
+                return;
+            }
+
+            toast.success("Logged out successfully.");
+            setMobileMenuOpen(false);
+            router.replace("/login");
+            router.refresh();
+        } catch {
+            toast.error("Something went wrong during logout.");
+        } finally {
+            setLoggingOut(false);
+        }
     };
 
     const closeMobileMenu = () => {
         setMobileMenuOpen(false);
     };
 
+    const handleNavigation = (href: string) => {
+        setActiveLink(href);
+        closeMobileMenu();
+    };
+
+    const isActive = (href: string) => activeLink === href;
+
     return (
         <header className="sticky top-0 z-50 border-b border-[#29231F]/10 bg-[#F8F1E7]/95 backdrop-blur-md">
             <nav className="mx-auto flex h-20 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-                {/* Logo */}
                 <Link
                     href="/"
-                    className="flex items-center gap-2"
-                    onClick={closeMobileMenu}
+                    onClick={() => handleNavigation("/")}
+                    className="flex shrink-0 items-center gap-2"
                 >
                     <div className="flex size-10 items-center justify-center rounded-xl bg-[#D94B35] text-white">
                         <Pizza size={23} />
@@ -70,55 +263,38 @@ const Navbar = () => {
                 </Link>
 
                 {/* Desktop Navigation */}
-                <div className="hidden items-center gap-8 md:flex">
+                <div className="hidden items-center gap-6 lg:flex">
                     {navLinks.map((link) => (
                         <Link
-                            key={link.href}
+                            key={link.name}
                             href={link.href}
-                            className={`text-sm font-semibold transition-colors ${pathname === link.href
+                            onClick={() => handleNavigation(link.href)}
+                            className={`text-sm font-semibold transition-colors ${
+                                isActive(link.href)
                                     ? "text-[#D94B35]"
                                     : "text-[#29231F]/75 hover:text-[#D94B35]"
-                                }`}
+                            }`}
                         >
                             {link.name}
                         </Link>
                     ))}
                 </div>
 
-                {/* Desktop Auth Actions */}
+                {/* Desktop Authentication */}
                 <div className="hidden items-center gap-3 md:flex">
                     {isPending ? (
-                        <div className="h-9 w-28 animate-pulse rounded-lg bg-[#29231F]/10" />
+                        <div className="h-10 w-32 animate-pulse rounded-full bg-[#29231F]/10" />
                     ) : user ? (
-                        <>
-                            <Link href={dashboardHref}>
-                                <Button
-                                    variant="outline"
-                                    className="gap-2 border-[#D94B35]/30 text-[#29231F] hover:bg-[#D94B35]/10"
-                                >
-                                    <LayoutDashboard size={16} />
-                                    Dashboard
-                                </Button>
-                            </Link>
-
-                            <Link href="/account">
-                                <Button
-                                    variant="ghost"
-                                    className="gap-2 text-[#29231F]"
-                                >
-                                    <UserRound size={16} />
-                                    Account
-                                </Button>
-                            </Link>
-
-                            <Button
-                                onClick={handleLogout}
-                                className="gap-2 bg-[#D94B35] text-white hover:bg-[#B83B29]"
-                            >
-                                <LogOut size={16} />
-                                Logout
-                            </Button>
-                        </>
+                        <ProfileMenu
+                            user={{
+                                name: user.name,
+                                email: user.email,
+                                image: user.image,
+                                role,
+                            }}
+                            dashboardHref={dashboardHref}
+                            onLogout={handleLogout}
+                        />
                     ) : (
                         <>
                             <Link href="/login">
@@ -139,17 +315,42 @@ const Navbar = () => {
                     )}
                 </div>
 
-                {/* Mobile Menu Toggle */}
-                <Button
-                    variant="ghost"
-                    size="icon"
-                    className="text-[#29231F] md:hidden"
-                    onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                    aria-label="Toggle navigation menu"
-                    aria-expanded={mobileMenuOpen}
-                >
-                    {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-                </Button>
+                {/* Mobile Controls */}
+                <div className="flex items-center gap-2 md:hidden">
+                    {!isPending && user && (
+                        <ProfileMenu
+                            user={{
+                                name: user.name,
+                                email: user.email,
+                                image: user.image,
+                                role,
+                            }}
+                            dashboardHref={dashboardHref}
+                            onLogout={handleLogout}
+                        />
+                    )}
+
+                    {isPending && (
+                        <div className="size-9 animate-pulse rounded-full bg-[#29231F]/10" />
+                    )}
+
+                    <Button
+                        variant="ghost"
+                        size="icon"
+                        className="text-[#29231F]"
+                        onClick={() =>
+                            setMobileMenuOpen(!mobileMenuOpen)
+                        }
+                        aria-label="Toggle navigation menu"
+                        aria-expanded={mobileMenuOpen}
+                    >
+                        {mobileMenuOpen ? (
+                            <X size={24} />
+                        ) : (
+                            <Menu size={24} />
+                        )}
+                    </Button>
+                </div>
             </nav>
 
             {/* Mobile Navigation */}
@@ -158,64 +359,44 @@ const Navbar = () => {
                     <div className="flex flex-col gap-4">
                         {navLinks.map((link) => (
                             <Link
-                                key={link.href}
+                                key={link.name}
                                 href={link.href}
-                                onClick={closeMobileMenu}
-                                className={`text-sm font-semibold ${pathname === link.href
+                                onClick={() => handleNavigation(link.href)}
+                                className={`text-sm font-semibold transition-colors ${
+                                    isActive(link.href)
                                         ? "text-[#D94B35]"
-                                        : "text-[#29231F]"
-                                    }`}
+                                        : "text-[#29231F] hover:text-[#D94B35]"
+                                }`}
                             >
                                 {link.name}
                             </Link>
                         ))}
 
-                        <div className="my-1 border-t border-[#29231F]/10" />
-
-                        {isPending ? (
-                            <div className="h-9 animate-pulse rounded-lg bg-[#29231F]/10" />
-                        ) : user ? (
+                        {!isPending && !user && (
                             <>
-                                <Link
-                                    href={dashboardHref}
-                                    onClick={closeMobileMenu}
-                                    className="flex items-center gap-2 text-sm font-semibold text-[#29231F]"
-                                >
-                                    <LayoutDashboard size={17} />
-                                    Dashboard
-                                </Link>
+                                <div className="my-1 border-t border-[#29231F]/10" />
 
                                 <Link
-                                    href="/account"
+                                    href="/login"
                                     onClick={closeMobileMenu}
-                                    className="flex items-center gap-2 text-sm font-semibold text-[#29231F]"
                                 >
-                                    <UserRound size={17} />
-                                    Account
-                                </Link>
-
-                                <Button
-                                    onClick={handleLogout}
-                                    className="w-full bg-[#D94B35] text-white hover:bg-[#B83B29]"
-                                >
-                                    <LogOut size={16} />
-                                    Logout
-                                </Button>
-                            </>
-                        ) : (
-                            <div className="flex flex-col gap-3">
-                                <Link href="/login" onClick={closeMobileMenu}>
-                                    <Button variant="outline" className="w-full">
+                                    <Button
+                                        variant="outline"
+                                        className="w-full"
+                                    >
                                         Sign In
                                     </Button>
                                 </Link>
 
-                                <Link href="/register" onClick={closeMobileMenu}>
+                                <Link
+                                    href="/register"
+                                    onClick={closeMobileMenu}
+                                >
                                     <Button className="w-full bg-[#D94B35] text-white hover:bg-[#B83B29]">
                                         Get Started
                                     </Button>
                                 </Link>
-                            </div>
+                            </>
                         )}
                     </div>
                 </div>
