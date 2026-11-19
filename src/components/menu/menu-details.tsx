@@ -234,8 +234,9 @@ const MenuDetails = ({ id }: MenuDetailsProps) => {
                         </div>
 
                         {/* Order CTA - Authentication integration will follow */}
+
                         <Link
-                            href="/login"
+                            href={`/order/${item._id}`}
                             className={`mt-8 flex items-center justify-center gap-3 rounded-xl px-6 py-4 font-bold text-white transition ${item.isAvailable
                                     ? "bg-[#D94B35] hover:bg-[#BD3D2B]"
                                     : "pointer-events-none bg-gray-400"
@@ -244,8 +245,9 @@ const MenuDetails = ({ id }: MenuDetailsProps) => {
                             tabIndex={item.isAvailable ? 0 : -1}
                         >
                             <ShoppingBag size={20} />
-                            Sign In to Order
+                            {item.isAvailable ? "Order This Pizza" : "Currently Unavailable"}
                         </Link>
+
                     </div>
                 </div>
             </div>
