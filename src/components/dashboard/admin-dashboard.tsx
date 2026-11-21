@@ -3,7 +3,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import {
     Activity,
     Ban,
@@ -27,11 +27,7 @@ import { Button } from "@/components/ui/button";
 const API_URL =
     process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 
-type Tab =
-    | "overview"
-    | "users"
-    | "menu"
-    | "transactions";
+type Tab = "overview" | "users" | "menu" | "transactions";
 
 interface AdminStats {
     totalUsers: number;
@@ -129,10 +125,29 @@ const formatDate = (date?: string) => {
 };
 
 const AdminDashboard = () => {
-    const router = useRouter();
-
+   
     const { data: session, isPending } = authClient.useSession();
-    const [activeTab, setActiveTab] = useState<Tab>("overview");
+    
+    const router = useRouter();
+    const searchParams = useSearchParams();
+
+    const tabParam = searchParams.get("tab");
+
+    const activeTab: Tab =
+        tabParam === "users" ||
+            tabParam === "menu" ||
+            tabParam === "transactions"
+            ? tabParam
+            : "overview";
+
+    const setActiveTab = (tab: Tab) => {
+        router.push(
+            tab === "overview"
+                ? "/dashboard/admin"
+                : `/dashboard/admin?tab=${tab}`,
+            { scroll: false }
+        );
+    };
     const [stats, setStats] = useState<AdminStats>(emptyStats);
     const [users, setUsers] = useState<AdminUser[]>([]);
     const [menuItems, setMenuItems] = useState<PendingMenuItem[]>([]);

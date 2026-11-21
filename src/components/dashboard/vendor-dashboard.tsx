@@ -117,7 +117,18 @@ const VendorDashboard = () => {
                 })
             );
 
-            setStats({ ...initialStats, ...(results[0].data || {}) });
+            const dashboardData = results[0].data;
+
+            setStats({
+                totalMenuItems: dashboardData.menu?.total ?? 0,
+                approvedMenuItems: dashboardData.menu?.approved ?? 0,
+                pendingMenuItems: dashboardData.menu?.pending ?? 0,
+                totalOrders: dashboardData.orders?.total ?? 0,
+                pendingOrders: dashboardData.orders?.pending ?? 0,
+                acceptedOrders: dashboardData.orders?.accepted ?? 0,
+                rejectedOrders: dashboardData.orders?.rejected ?? 0,
+            });
+            
             setRecentOrders(results[1].data || []);
             setMonthlyOrders(results[2].data || []);
             setMonthlyRevenue(results[3].data || []);
