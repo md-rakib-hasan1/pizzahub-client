@@ -72,10 +72,12 @@ const VendorDashboard = () => {
     const [monthlyOrders, setMonthlyOrders] = useState<ChartItem[]>([]);
     const [monthlyRevenue, setMonthlyRevenue] = useState<ChartItem[]>([]);
     const [loading, setLoading] = useState(true);
+    const [detailsLoading, setDetailsLoading] = useState(true);
     const [error, setError] = useState("");
 
     const fetchDashboard = useCallback(async () => {
         setLoading(true);
+        setDetailsLoading(true);
         setError("");
 
         try {
@@ -90,34 +92,21 @@ const VendorDashboard = () => {
                 Authorization: `Bearer ${tokenData.token}`,
             };
 
-            const endpoints = [
-                "/api/dashboard/vendor/stats",
-                "/api/dashboard/vendor/recent-orders",
-                "/api/dashboard/vendor/monthly-orders",
-                "/api/dashboard/vendor/monthly-revenue",
-            ];
-
-            const responses = await Promise.all(
-                endpoints.map((endpoint) =>
-                    fetch(`${API_URL}${endpoint}`, { headers })
-                )
+            // Load dashboard stats first
+            const statsResponse = await fetch(
+                `${API_URL}/api/dashboard/vendor/stats`,
+                { headers }
             );
 
-            const results = await Promise.all(
-                responses.map(async (response) => {
-                    const result = await response.json();
+            const statsResult = await statsResponse.json();
 
-                    if (!response.ok || !result.success) {
-                        throw new Error(
-                            result.message || "Failed to load dashboard data."
-                        );
-                    }
+            if (!statsResponse.ok || !statsResult.success) {
+                throw new Error(
+                    statsResult.message || "Failed to load dashboard stats."
+                );
+            }
 
-                    return result;
-                })
-            );
-
-            const dashboardData = results[0].data;
+            const dashboardData = statsResult.data;
 
             setStats({
                 totalMenuItems: dashboardData.menu?.total ?? 0,
@@ -128,10 +117,50 @@ const VendorDashboard = () => {
                 acceptedOrders: dashboardData.orders?.accepted ?? 0,
                 rejectedOrders: dashboardData.orders?.rejected ?? 0,
             });
-            
-            setRecentOrders(results[1].data || []);
-            setMonthlyOrders(results[2].data || []);
-            setMonthlyRevenue(results[3].data || []);
+
+            // Show dashboard without waiting for the remaining APIs
+            setLoading(false);
+
+            // Load charts and recent orders in the background
+            try {
+                const endpoints = [
+                    "/api/dashboard/vendor/recent-orders",
+                    "/api/dashboard/vendor/monthly-orders",
+                    "/api/dashboard/vendor/monthly-revenue",
+                ];
+
+                const responses = await Promise.all(
+                    endpoints.map((endpoint) =>
+                        fetch(`${API_URL}${endpoint}`, { headers })
+                    )
+                );
+
+                const results = await Promise.all(
+                    responses.map(async (response) => {
+                        const result = await response.json();
+
+                        if (!response.ok || !result.success) {
+                            throw new Error(
+                                result.message || "Failed to load dashboard details."
+                            );
+                        }
+
+                        return result;
+                    })
+                );
+
+                setRecentOrders(results[0].data || []);
+                setMonthlyOrders(results[1].data || []);
+                setMonthlyRevenue(results[2].data || []);
+            } catch (err) {
+                toast.error(
+                    err instanceof Error
+                        ? err.message
+                        : "Failed to load dashboard details."
+                );
+            } finally {
+                setDetailsLoading(false);
+            }
         } catch (err) {
             const message =
                 err instanceof Error
@@ -140,6 +169,7 @@ const VendorDashboard = () => {
 
             setError(message);
             toast.error(message);
+            setDetailsLoading(false);
         } finally {
             setLoading(false);
         }

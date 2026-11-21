@@ -125,9 +125,9 @@ const formatDate = (date?: string) => {
 };
 
 const AdminDashboard = () => {
-   
+
     const { data: session, isPending } = authClient.useSession();
-    
+
     const router = useRouter();
     const searchParams = useSearchParams();
 
@@ -154,6 +154,10 @@ const AdminDashboard = () => {
     const [approvedMenuItems, setApprovedMenuItems] = useState<PendingMenuItem[]>([]);
     const [transactions, setTransactions] = useState<Transaction[]>([]);
     const [loading, setLoading] = useState(true);
+    const [usersLoading, setUsersLoading] = useState(false);
+    const [menuLoading, setMenuLoading] = useState(false);
+    const [transactionsLoading, setTransactionsLoading] = useState(false);
+    const [loadedTabs, setLoadedTabs] = useState<Tab[]>([]);
     const [actionId, setActionId] = useState("");
     const [error, setError] = useState("");
 
@@ -169,39 +173,23 @@ const AdminDashboard = () => {
                 throw new Error("Unable to authenticate your admin session.");
             }
 
-            const headers = {
-                Authorization: `Bearer ${tokenData.token}`,
-            };
-
-            const endpoints = [
+            const response = await fetch(
                 `${API_URL}/api/dashboard/admin/stats`,
-                `${API_URL}/api/users`,
-                `${API_URL}/api/menu-items/pending`,
-                `${API_URL}/api/transactions`,
-                `${API_URL}/api/menu-items?limit=50&sort=newest`,
-            ];
-
-            const responses = await Promise.all(
-                endpoints.map((url) =>
-                    fetch(url, { headers, cache: "no-store" }),
-                ),
+                {
+                    headers: {
+                        Authorization: `Bearer ${tokenData.token}`,
+                    },
+                    cache: "no-store",
+                },
             );
 
-            const results = await Promise.all(
-                responses.map(async (response) => {
-                    const data = await response.json();
+            const result = await response.json();
 
-                    if (!response.ok || data.success === false) {
-                        throw new Error(
-                            data.message || "Failed to load admin dashboard data.",
-                        );
-                    }
+            if (!response.ok || !result.success) {
+                throw new Error(result.message || "Failed to load dashboard data.");
+            }
 
-                    return data;
-                }),
-            );
-
-            const dashboardData = results[0].data;
+            const dashboardData = result.data;
 
             setStats({
                 totalUsers: dashboardData.users?.total ?? 0,
@@ -213,11 +201,6 @@ const AdminDashboard = () => {
                 totalOrders: dashboardData.totalOrders ?? 0,
                 totalTransactions: dashboardData.totalTransactions ?? 0,
             });
-
-            setUsers(getArray<AdminUser>(results[1]));
-            setMenuItems(getArray<PendingMenuItem>(results[2]));
-            setTransactions(getArray<Transaction>(results[3]));
-            setApprovedMenuItems(getArray<PendingMenuItem>(results[4]));
         } catch (err) {
             const message =
                 err instanceof Error
@@ -230,6 +213,85 @@ const AdminDashboard = () => {
         }
     }, []);
 
+    const fetchTabData = useCallback(async (tab: Tab) => {
+        if (tab === "overview" || loadedTabs.includes(tab)) return;
+
+        const setTabLoading = {
+            users: setUsersLoading,
+            menu: setMenuLoading,
+            transactions: setTransactionsLoading,
+        };
+
+        setTabLoading[tab](true);
+
+        try {
+            const tokenResponse = await fetch("/api/auth/token");
+            const tokenData = await tokenResponse.json();
+
+            if (!tokenResponse.ok || !tokenData.token) {
+                throw new Error("Authentication token not found.");
+            }
+
+            const headers = {
+                Authorization: `Bearer ${tokenData.token}`,
+            };
+
+            if (tab === "users") {
+                const response = await fetch(`${API_URL}/api/users`, { headers });
+                const result = await response.json();
+
+                if (!response.ok || result.success === false) {
+                    throw new Error(result.message || "Failed to load users.");
+                }
+
+                setUsers(getArray<AdminUser>(result));
+            }
+
+            if (tab === "menu") {
+                const [pendingResponse, approvedResponse] = await Promise.all([
+                    fetch(`${API_URL}/api/menu-items/pending`, { headers }),
+                    fetch(`${API_URL}/api/menu-items?limit=50&sort=newest`, { headers }),
+                ]);
+
+                const [pendingResult, approvedResult] = await Promise.all([
+                    pendingResponse.json(),
+                    approvedResponse.json(),
+                ]);
+
+                if (
+                    !pendingResponse.ok ||
+                    !approvedResponse.ok ||
+                    pendingResult.success === false ||
+                    approvedResult.success === false
+                ) {
+                    throw new Error("Failed to load menu items.");
+                }
+
+                setMenuItems(getArray<PendingMenuItem>(pendingResult));
+                setApprovedMenuItems(getArray<PendingMenuItem>(approvedResult));
+            }
+
+            if (tab === "transactions") {
+                const response = await fetch(`${API_URL}/api/transactions`, { headers });
+                const result = await response.json();
+
+                if (!response.ok || result.success === false) {
+                    throw new Error(result.message || "Failed to load transactions.");
+                }
+
+                setTransactions(getArray<Transaction>(result));
+            }
+
+            setLoadedTabs((previous) => [...previous, tab]);
+        } catch (err) {
+            toast.error(
+                err instanceof Error ? err.message : "Failed to load tab data.",
+            );
+        } finally {
+            setTabLoading[tab](false);
+        }
+    }, [loadedTabs]);
+
     useEffect(() => {
         if (!session?.user) return;
 
@@ -239,6 +301,16 @@ const AdminDashboard = () => {
 
         return () => window.clearTimeout(timer);
     }, [session?.user, fetchDashboard]);
+
+    useEffect(() => {
+    if (!session?.user || isPending || loading) return;
+
+    const timer = window.setTimeout(() => {
+        void fetchTabData(activeTab);
+    }, 0);
+
+    return () => window.clearTimeout(timer);
+}, [session?.user, isPending, loading, activeTab, fetchTabData]);
 
     const updateUserStatus = async (
         userId: string,
