@@ -12,6 +12,7 @@ import {
     CalendarDays,
     Mail,
     MessageSquare,
+    Loader2,
 } from "lucide-react";
 import { toast } from "sonner";
 import { authClient } from "@/lib/auth-client";
@@ -41,7 +42,7 @@ const statusStyles: Record<string, string> = {
 };
 
 const VendorOrders = () => {
-    const { data: session } = authClient.useSession();
+    const { data: session, isPending } = authClient.useSession();
 
     const [orders, setOrders] = useState<VendorOrder[]>([]);
     const [loading, setLoading] = useState(true);
@@ -87,15 +88,17 @@ const VendorOrders = () => {
         }
     }, []);
 
+
     useEffect(() => {
-        if (!session?.user) return;
+        if (isPending || !session?.user) return;
 
         const timer = window.setTimeout(() => {
             void fetchOrders();
         }, 0);
 
         return () => window.clearTimeout(timer);
-    }, [session?.user, fetchOrders]);
+    }, [isPending, session?.user, fetchOrders]);
+
 
     const updateOrderStatus = async (
         orderId: string,
@@ -179,6 +182,22 @@ const VendorOrders = () => {
         cancelled: orders.filter((order) => order.status === "cancelled").length,
     };
 
+    if (isPending) {
+        return (
+            <div className="flex min-h-[300px] items-center justify-center">
+                <Loader2 className="h-8 w-8 animate-spin" />
+            </div>
+        );
+    }
+
+    if (!session?.user) {
+        return (
+            <div className="rounded-xl border p-8 text-center">
+                <p>Please sign in to view your orders.</p>
+            </div>
+        );
+    }
+
     if (loading) {
         return (
             <div className="flex min-h-[400px] items-center justify-center">
@@ -230,11 +249,10 @@ const VendorOrders = () => {
                     <button
                         key={option.value}
                         onClick={() => setFilter(option.value)}
-                        className={`rounded-2xl border p-4 text-left transition ${
-                            filter === option.value
-                                ? "border-[#D94B35] bg-[#D94B35] text-white shadow-md"
-                                : "border-[#29231F]/10 bg-white text-[#29231F] hover:border-[#D94B35]/50"
-                        }`}
+                        className={`rounded-2xl border p-4 text-left transition ${filter === option.value
+                            ? "border-[#D94B35] bg-[#D94B35] text-white shadow-md"
+                            : "border-[#29231F]/10 bg-white text-[#29231F] hover:border-[#D94B35]/50"
+                            }`}
                     >
                         <p className="text-sm opacity-80">{option.label}</p>
                         <p className="mt-2 text-2xl font-bold">
@@ -289,10 +307,9 @@ const VendorOrders = () => {
                                     </div>
 
                                     <span
-                                        className={`rounded-full px-3 py-1.5 text-xs font-bold capitalize ${
-                                            statusStyles[order.status] ||
+                                        className={`rounded-full px-3 py-1.5 text-xs font-bold capitalize ${statusStyles[order.status] ||
                                             "bg-gray-100 text-gray-600"
-                                        }`}
+                                            }`}
                                     >
                                         {order.status}
                                     </span>
