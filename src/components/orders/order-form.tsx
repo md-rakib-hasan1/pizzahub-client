@@ -64,6 +64,7 @@ const OrderForm = ({ menuItemId }: OrderFormProps) => {
     const [deliveryDate, setDeliveryDate] = useState("");
     const [deliveryAddress, setDeliveryAddress] = useState("");
     const [message, setMessage] = useState("");
+    const [quantity, setQuantity] = useState(1);
 
     const [loading, setLoading] = useState(true);
     const [submitting, setSubmitting] = useState(false);
@@ -134,6 +135,11 @@ const OrderForm = ({ menuItemId }: OrderFormProps) => {
             return;
         }
 
+        if (deliveryAddress.trim().length < 10) {
+            toast.error("Delivery address must be at least 10 characters.");
+            return;
+        }
+
         try {
             setSubmitting(true);
 
@@ -153,6 +159,7 @@ const OrderForm = ({ menuItemId }: OrderFormProps) => {
                 },
                 body: JSON.stringify({
                     menuItemId,
+                    quantity,
                     deliveryDate: new Date(
                         `${deliveryDate}T12:00:00`
                     ).toISOString(),
@@ -343,6 +350,45 @@ const OrderForm = ({ menuItemId }: OrderFormProps) => {
 
                         <div className="mt-8 space-y-6">
                             <div>
+                                <label className="mb-3 block text-sm font-semibold text-[#29231F]">
+                                    Pizza Quantity
+                                </label>
+
+                                <div className="flex items-center gap-4">
+                                    <Button
+                                        type="button"
+                                        variant="outline"
+                                        disabled={quantity <= 1}
+                                        onClick={() =>
+                                            setQuantity((prev) => Math.max(1, prev - 1))
+                                        }
+                                        className="h-10 w-10 rounded-lg text-lg"
+                                    >
+                                        -
+                                    </Button>
+
+                                    <span className="min-w-8 text-center text-lg font-bold text-[#29231F]">
+                                        {quantity}
+                                    </span>
+
+                                    <Button
+                                        type="button"
+                                        variant="outline"
+                                        disabled={quantity >= 20}
+                                        onClick={() =>
+                                            setQuantity((prev) => Math.min(20, prev + 1))
+                                        }
+                                        className="h-10 w-10 rounded-lg text-lg"
+                                    >
+                                        +
+                                    </Button>
+
+                                    <span className="text-xs text-[#29231F]/50">
+                                        Maximum 20 pizzas
+                                    </span>
+                                </div>
+                            </div>
+                            <div>
                                 <label
                                     htmlFor="deliveryDate"
                                     className="mb-2 flex items-center gap-2 text-sm font-semibold text-[#29231F]"
@@ -387,9 +433,15 @@ const OrderForm = ({ menuItemId }: OrderFormProps) => {
                                         setDeliveryAddress(event.target.value)
                                     }
                                     required
+                                    minLength={10}
+                                    maxLength={500}
                                     rows={4}
                                     className="resize-none"
                                 />
+                                <p className="mt-2 text-xs text-[#29231F]/50">
+                                    Please enter a complete delivery address (at least 10 characters).
+                                </p>
+
                             </div>
 
                             <div>
@@ -490,7 +542,7 @@ const OrderForm = ({ menuItemId }: OrderFormProps) => {
                                 </span>
 
                                 <span className="font-semibold text-[#29231F]">
-                                    ${item.price.toFixed(2)}
+                                    ${item.price.toFixed(2)} × {quantity}
                                 </span>
                             </div>
 
@@ -510,7 +562,7 @@ const OrderForm = ({ menuItemId }: OrderFormProps) => {
                                 </span>
 
                                 <span className="text-2xl font-bold text-[#D94B35]">
-                                    ${item.price.toFixed(2)}
+                                    ${(item.price * quantity).toFixed(2)}
                                 </span>
                             </div>
                         </div>

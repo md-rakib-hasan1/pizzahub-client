@@ -22,6 +22,8 @@ interface Order {
     _id: string;
     menuItemTitle: string;
     price: number;
+    quantity?: number;
+    unitPrice?: number;
     status: "pending" | "accepted" | "rejected" | "cancelled";
     deliveryDate: string;
     deliveryAddress: string;
@@ -313,12 +315,18 @@ const CustomerOrders = () => {
                                                 <div className="flex items-start gap-3">
                                                     <Pizza size={19} className="mt-0.5 text-[#D94B35]" />
                                                     <div>
-                                                        <p className="text-xs text-[#29231F]/45">Order Price</p>
+                                                        <p className="text-xs text-[#29231F]/45">Quantity</p>
+                                                        <p className="mt-1 text-sm font-semibold text-[#29231F]">
+                                                            {order.quantity ?? 1} {((order.quantity ?? 1) === 1) ? "pizza" : "pizzas"}
+                                                        </p>
+
+                                                        <p className="mt-3 text-xs text-[#29231F]/45">Total Price</p>
                                                         <p className="mt-1 text-lg font-bold text-[#D94B35]">
                                                             ${Number(order.price).toFixed(2)}
                                                         </p>
                                                     </div>
                                                 </div>
+
                                             </div>
 
                                             <div className="mt-7 rounded-2xl bg-[#F8F1E7] p-5">
@@ -339,15 +347,14 @@ const CustomerOrders = () => {
                                                 <div className="ml-4 h-5 w-0.5 bg-[#29231F]/15" />
 
                                                 <div className="flex items-center gap-3">
-                                                    <div className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full ${
-                                                        order.status === "accepted"
-                                                            ? "bg-green-600 text-white"
-                                                            : order.status === "rejected"
-                                                              ? "bg-red-500 text-white"
-                                                              : order.status === "cancelled"
+                                                    <div className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full ${order.status === "accepted"
+                                                        ? "bg-green-600 text-white"
+                                                        : order.status === "rejected"
+                                                            ? "bg-red-500 text-white"
+                                                            : order.status === "cancelled"
                                                                 ? "bg-gray-500 text-white"
                                                                 : "bg-amber-100 text-amber-600"
-                                                    }`}>
+                                                        }`}>
                                                         {order.status === "accepted" ? (
                                                             <CheckCircle2 size={18} />
                                                         ) : order.status === "pending" ? (

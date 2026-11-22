@@ -70,7 +70,7 @@ const statusStyles: Record<string, string> = {
 
 const VendorMenuManagement = () => {
     const [items, setItems] = useState<MenuItem[]>([]);
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
     const [showForm, setShowForm] = useState(false);
     const [editingId, setEditingId] = useState<string | null>(null);
@@ -79,7 +79,8 @@ const VendorMenuManagement = () => {
     const [uploading, setUploading] = useState(false);
     const [deletingId, setDeletingId] = useState<string | null>(null);
 
-    const getToken = async () => {
+
+    const getToken = useCallback(async () => {
         const response = await fetch("/api/auth/token");
         const result = await response.json();
 
@@ -88,20 +89,39 @@ const VendorMenuManagement = () => {
         }
 
         return result.token as string;
-    };
+    }, []);
+
+
 
     const fetchItems = useCallback(async () => {
+        console.count("fetchItems started");
+        const startTime = performance.now();
+
         setLoading(true);
         setError("");
 
         try {
+            const tokenStart = performance.now();
             const token = await getToken();
 
+            console.log(
+                "Token loading time:",
+                (performance.now() - tokenStart).toFixed(2),
+                "ms"
+            );
+
+            const apiStart = performance.now();
+
             const response = await fetch(`${API_URL}/api/menu-items/my`, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
+                headers: { Authorization: `Bearer ${token}` },
+                cache: "no-store",
             });
+
+            console.log(
+                "API response time:",
+                (performance.now() - apiStart).toFixed(2),
+                "ms"
+            );
 
             const result = await response.json();
 
@@ -124,8 +144,16 @@ const VendorMenuManagement = () => {
             toast.error(message);
         } finally {
             setLoading(false);
+            console.log("fetchItems finished - loading set to false");
+
+            console.log(
+                "Total fetchItems time:",
+                (performance.now() - startTime).toFixed(2),
+                "ms"
+            );
         }
-    }, []);
+    }, [getToken]);
+
 
     useEffect(() => {
         const timer = window.setTimeout(() => {
@@ -460,10 +488,9 @@ const VendorMenuManagement = () => {
                                 )}
 
                                 <span
-                                    className={`absolute right-3 top-3 rounded-full px-3 py-1.5 text-xs font-bold capitalize ${
-                                        statusStyles[item.approvalStatus] ||
+                                    className={`absolute right-3 top-3 rounded-full px-3 py-1.5 text-xs font-bold capitalize ${statusStyles[item.approvalStatus] ||
                                         "bg-gray-100 text-gray-600"
-                                    }`}
+                                        }`}
                                 >
                                     {item.approvalStatus}
                                 </span>
@@ -769,8 +796,8 @@ const VendorMenuManagement = () => {
                                     {saving
                                         ? "Saving..."
                                         : editingId
-                                          ? "Update Pizza"
-                                          : "Create Pizza"}
+                                            ? "Update Pizza"
+                                            : "Create Pizza"}
                                 </button>
                             </div>
                         </form>
