@@ -20,6 +20,8 @@ const VendorSubscription = () => {
         useState(false);
     const [cancelAtPeriodEnd, setCancelAtPeriodEnd] = useState(false);
     const [isStatusLoading, setIsStatusLoading] = useState(true);
+    const [subscriptionPlan, setSubscriptionPlan] = useState("free");
+    const [subscriptionExpiresAt, setSubscriptionExpiresAt] = useState<string | null>(null);
 
     const user = session?.user as
         | {
@@ -30,8 +32,7 @@ const VendorSubscription = () => {
         }
         | undefined;
 
-    const isPremium = user?.subscriptionPlan === "premium";
-    
+    const isPremium = subscriptionPlan === "premium";
 
     const getToken = useCallback(async () => {
         const response = await fetch("/api/auth/token");
@@ -77,8 +78,14 @@ const VendorSubscription = () => {
                 }
 
                 if (isMounted) {
+                    setSubscriptionPlan(result.data?.subscriptionPlan || "free");
+
                     setCancelAtPeriodEnd(
                         result.data?.cancelAtPeriodEnd === true,
+                    );
+
+                    setSubscriptionExpiresAt(
+                        result.data?.subscriptionExpiresAt || null,
                     );
                 }
             } catch (error) {
@@ -353,6 +360,17 @@ const VendorSubscription = () => {
                                                 ? "Your Premium benefits remain active until the current billing period ends. Your subscription will not renew."
                                                 : "Your Premium benefits are enabled for this vendor account."}
                                         </p>
+
+                                        {subscriptionExpiresAt && (
+                                            <p className="mt-3 text-xs font-medium text-white/70">
+                                                {cancelAtPeriodEnd ? "Premium access until: " : "Next billing date: "}
+                                                {new Date(subscriptionExpiresAt).toLocaleDateString("en-US", {
+                                                    day: "numeric",
+                                                    month: "long",
+                                                    year: "numeric",
+                                                })}
+                                            </p>
+                                        )}
                                     </div>
 
                                     {!cancelAtPeriodEnd &&

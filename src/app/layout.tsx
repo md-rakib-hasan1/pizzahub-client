@@ -4,6 +4,7 @@ import { DM_Sans, Fraunces } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/layout/navbar";
 import ConditionalFooter from "@/components/layout/conditional-footer";
+import { Toaster } from "sonner";
 
 const dmSans = DM_Sans({
   variable: "--font-dm-sans",
@@ -34,6 +35,7 @@ export default function RootLayout({
       <body
         className={`${dmSans.variable} ${fraunces.variable} antialiased`}
       >
+        <Toaster position="top-right" richColors />
         <Navbar />
         {children}
         <ConditionalFooter />

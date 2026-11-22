@@ -303,14 +303,14 @@ const AdminDashboard = () => {
     }, [session?.user, fetchDashboard]);
 
     useEffect(() => {
-    if (!session?.user || isPending || loading) return;
+        if (!session?.user || isPending || loading) return;
 
-    const timer = window.setTimeout(() => {
-        void fetchTabData(activeTab);
-    }, 0);
+        const timer = window.setTimeout(() => {
+            void fetchTabData(activeTab);
+        }, 0);
 
-    return () => window.clearTimeout(timer);
-}, [session?.user, isPending, loading, activeTab, fetchTabData]);
+        return () => window.clearTimeout(timer);
+    }, [session?.user, isPending, loading, activeTab, fetchTabData]);
 
     const updateUserStatus = async (
         userId: string,
@@ -756,7 +756,12 @@ const AdminDashboard = () => {
                             </p>
                         </div>
 
-                        {users.length === 0 ? (
+                        {usersLoading ? (
+                            <div className="flex items-center justify-center gap-2 p-12 text-sm text-[#29231F]/55">
+                                <Loader2 className="h-5 w-5 animate-spin" />
+                                Loading users...
+                            </div>
+                        ) : users.length === 0 ? (
                             <div className="p-12 text-center text-sm text-[#29231F]/55">
                                 No users found.
                             </div>
@@ -847,7 +852,12 @@ const AdminDashboard = () => {
                             </p>
                         </div>
 
-                        {menuItems.length === 0 ? (
+                        {menuLoading ? (
+                            <div className="flex items-center justify-center gap-2 rounded-2xl border border-[#29231F]/10 bg-white p-12 text-sm text-[#29231F]/55">
+                                <Loader2 className="h-5 w-5 animate-spin" />
+                                Loading menu items...
+                            </div>
+                        ) : menuItems.length === 0 ? (
                             <div className="rounded-2xl border border-[#29231F]/10 bg-white p-12 text-center">
                                 <CheckCircle2 className="mx-auto mb-3 h-10 w-10 text-green-600" />
                                 <h3 className="font-semibold text-[#29231F]">
@@ -944,7 +954,12 @@ const AdminDashboard = () => {
                                 </p>
                             </div>
 
-                            {approvedMenuItems.length === 0 ? (
+                            {menuLoading ? (
+                                <div className="flex items-center justify-center gap-2 rounded-2xl border border-[#29231F]/10 bg-white p-10 text-sm text-[#29231F]/55">
+                                    <Loader2 className="h-5 w-5 animate-spin" />
+                                    Loading approved menu items...
+                                </div>
+                            ) : approvedMenuItems.length === 0 ? (
                                 <div className="rounded-2xl border border-[#29231F]/10 bg-white p-10 text-center">
                                     <Utensils className="mx-auto mb-3 h-10 w-10 text-[#D94B35]" />
                                     <p className="font-semibold text-[#29231F]">
@@ -1036,7 +1051,12 @@ const AdminDashboard = () => {
                             </p>
                         </div>
 
-                        {transactions.length === 0 ? (
+                        {transactionsLoading ? (
+                            <div className="flex items-center justify-center gap-2 p-12 text-sm text-[#29231F]/55">
+                                <Loader2 className="h-5 w-5 animate-spin" />
+                                Loading transactions...
+                            </div>
+                        ) : transactions.length === 0 ? (
                             <div className="p-12 text-center text-sm text-[#29231F]/55">
                                 No transactions found.
                             </div>

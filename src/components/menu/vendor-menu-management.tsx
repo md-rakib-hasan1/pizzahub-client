@@ -12,6 +12,7 @@ import {
     X,
     UtensilsCrossed,
     ImagePlus,
+    Star,
 } from "lucide-react";
 import { toast } from "sonner";
 
@@ -28,6 +29,7 @@ interface MenuItem {
     location: string;
     ingredients: string[];
     isAvailable: boolean;
+    isFeatured: boolean;
     approvalStatus: "pending" | "approved" | "rejected";
 }
 
@@ -78,6 +80,7 @@ const VendorMenuManagement = () => {
     const [saving, setSaving] = useState(false);
     const [uploading, setUploading] = useState(false);
     const [deletingId, setDeletingId] = useState<string | null>(null);
+    const [featuredActionId, setFeaturedActionId] = useState<string | null>(null);
 
 
     const getToken = useCallback(async () => {
@@ -366,6 +369,59 @@ const VendorMenuManagement = () => {
         }
     };
 
+    const handleToggleFeatured = async (
+        itemId: string,
+        isFeatured: boolean
+    ) => {
+        setFeaturedActionId(itemId);
+
+        try {
+            const token = await getToken();
+
+            const response = await fetch(
+                `${API_URL}/api/menu-items/${itemId}/featured`,
+                {
+                    method: "PATCH",
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({ isFeatured }),
+                }
+            );
+
+            const result = await response.json();
+
+            if (!response.ok || !result.success) {
+                throw new Error(
+                    result.message || "Failed to update featured status."
+                );
+            }
+
+            setItems((prev) =>
+                prev.map((item) =>
+                    item._id === itemId
+                        ? { ...item, isFeatured }
+                        : item
+                )
+            );
+
+            toast.success(
+                isFeatured
+                    ? "Pizza added to featured section."
+                    : "Pizza removed from featured section."
+            );
+        } catch (error) {
+            toast.error(
+                error instanceof Error
+                    ? error.message
+                    : "Featured status update failed."
+            );
+        } finally {
+            setFeaturedActionId(null);
+        }
+    };
+
     const activeItems = items.filter((item) => item.isAvailable).length;
     const approvedItems = items.filter(
         (item) => item.approvalStatus === "approved"
@@ -529,6 +585,33 @@ const VendorMenuManagement = () => {
                                             : "Unavailable"}
                                     </span>
                                 </div>
+                                {item.approvalStatus === "approved" && (
+                                    <button
+                                        disabled={featuredActionId === item._id}
+                                        onClick={() =>
+                                            void handleToggleFeatured(
+                                                item._id,
+                                                item.isFeatured !== true
+                                            )
+                                        }
+                                        className={`mb-3 inline-flex w-full items-center justify-center gap-2 rounded-xl px-3 py-2.5 text-sm font-semibold transition disabled:opacity-50 ${item.isFeatured
+                                                ? "border border-[#D94B35] bg-white text-[#D94B35] hover:bg-red-50"
+                                                : "bg-[#D94B35] text-white hover:bg-[#bd3d2a]"
+                                            }`}
+                                    >
+                                        {featuredActionId === item._id ? (
+                                            <RefreshCw size={15} className="animate-spin" />
+                                        ) : (
+                                            <Star size={15} />
+                                        )}
+
+                                        {featuredActionId === item._id
+                                            ? "Updating..."
+                                            : item.isFeatured
+                                                ? "Remove from Featured"
+                                                : "Add to Featured"}
+                                    </button>
+                                )}
 
                                 <div className="mt-5 grid grid-cols-2 gap-3 border-t border-[#29231F]/10 pt-4">
                                     <button
