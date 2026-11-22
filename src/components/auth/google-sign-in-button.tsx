@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import { authClient } from "@/lib/auth-client";
 import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
@@ -16,7 +15,7 @@ const GoogleSignInButton = () => {
     try {
       await authClient.signIn.social({
         provider: "google",
-        callbackURL: "/account",
+        callbackURL: "/",
         errorCallbackURL: "/login",
       });
     } catch {
