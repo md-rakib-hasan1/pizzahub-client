@@ -2,6 +2,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Loader2 } from "lucide-react";
 
 import MenuFilter from "./menu-filter";
@@ -28,24 +29,26 @@ interface MenuApiResponse {
 }
 
 const MenuContent = () => {
-    const [items, setItems] = useState<MenuItem[]>([]);
+    const router = useRouter();
+    const searchParams = useSearchParams();
 
+    const category = searchParams.get("category") || "all";
+
+    const [items, setItems] = useState<MenuItem[]>([]);
     const [search, setSearch] = useState("");
-    const [category, setCategory] = useState("all");
     const [location, setLocation] = useState("");
     const [sort, setSort] = useState("newest");
-
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
-
     const [currentPage, setCurrentPage] = useState(1);
-
     const [pagination, setPagination] = useState({
         currentPage: 1,
         totalPages: 1,
         totalItems: 0,
         itemsPerPage: 8,
     });
+
+
 
     useEffect(() => {
         const controller = new AbortController();
@@ -122,10 +125,13 @@ const MenuContent = () => {
 
     const clearFilters = () => {
         setSearch("");
-        setCategory("all");
         setLocation("");
         setSort("newest");
         setCurrentPage(1);
+
+        router.replace("/menu", {
+            scroll: false,
+        });
     };
 
     return (
@@ -141,7 +147,18 @@ const MenuContent = () => {
                     setCurrentPage(1);
                 }}
                 onCategoryChange={(value) => {
-                    setCategory(value);
+                    const params = new URLSearchParams(searchParams.toString());
+
+                    if (value === "all") {
+                        params.delete("category");
+                    } else {
+                        params.set("category", value);
+                    }
+
+                    router.replace(`/menu?${params.toString()}`, {
+                        scroll: false,
+                    });
+
                     setCurrentPage(1);
                 }}
                 onLocationChange={(value) => {
@@ -199,14 +216,14 @@ const MenuContent = () => {
                             location ||
                             category !== "all" ||
                             sort !== "newest") && (
-                            <button
-                                type="button"
-                                onClick={clearFilters}
-                                className="text-sm font-semibold text-[#D94B35] transition hover:text-[#BD3D2B]"
-                            >
-                                Clear all filters
-                            </button>
-                        )}
+                                <button
+                                    type="button"
+                                    onClick={clearFilters}
+                                    className="text-sm font-semibold text-[#D94B35] transition hover:text-[#BD3D2B]"
+                                >
+                                    Clear all filters
+                                </button>
+                            )}
                     </div>
 
                     {/* Pizza Grid */}
