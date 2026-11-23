@@ -20,7 +20,7 @@ import {
     RadioGroup,
     RadioGroupItem,
 } from "@/components/ui/radio-group";
-import { Loader2, Pizza } from "lucide-react";
+import { Eye, EyeOff, Loader2, Pizza } from "lucide-react";
 
 const RegisterPage = () => {
     const searchParams = useSearchParams();
@@ -32,6 +32,7 @@ const RegisterPage = () => {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [showPassword, setShowPassword] = useState(false);
     const [accountType, setAccountType] = useState<
         "customer" | "vendor"
     >(initialAccountType);
@@ -151,15 +152,29 @@ const RegisterPage = () => {
 
                             <div className="space-y-2">
                                 <Label htmlFor="password">Password</Label>
-                                <Input
-                                    id="password"
-                                    type="password"
-                                    placeholder="At least 8 characters"
-                                    value={password}
-                                    onChange={(e) => setPassword(e.target.value)}
-                                    required
-                                    minLength={8}
-                                />
+                                <div className="relative">
+                                    <Input
+                                        id="password"
+                                        type={showPassword ? "text" : "password"}
+                                        placeholder="At least 8 characters"
+                                        value={password}
+                                        onChange={(e) => setPassword(e.target.value)}
+                                        className="pr-10"
+                                        required
+                                        minLength={8}
+                                    />
+                                    <Button
+                                        type="button"
+                                        variant="ghost"
+                                        size="icon-sm"
+                                        className="absolute right-1 top-1/2 -translate-y-1/2 text-muted-foreground"
+                                        aria-label={showPassword ? "Hide password" : "Show password"}
+                                        aria-pressed={showPassword}
+                                        onClick={() => setShowPassword(!showPassword)}
+                                    >
+                                        {showPassword ? <EyeOff /> : <Eye />}
+                                    </Button>
+                                </div>
                             </div>
 
                             <div className="space-y-3">
