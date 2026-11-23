@@ -563,7 +563,7 @@ const VendorMenuManagement = () => {
                                         </h3>
                                     </div>
                                     <p className="shrink-0 text-lg font-bold text-[#D94B35]">
-                                        ${item.price}
+                                        ${item.price.toFixed(2)}
                                     </p>
                                 </div>
 
