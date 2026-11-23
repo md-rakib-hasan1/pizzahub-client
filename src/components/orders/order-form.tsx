@@ -280,7 +280,7 @@ const OrderForm = ({ menuItemId }: OrderFormProps) => {
                 </p>
 
                 <Link
-                    href="/login"
+                    href={`/login?redirect=${encodeURIComponent(`/order/${menuItemId}`)}`}
                     className="mt-6 rounded-xl bg-[#D94B35] px-7 py-3 font-semibold text-white transition hover:bg-[#BD3D2B]"
                 >
                     Sign In

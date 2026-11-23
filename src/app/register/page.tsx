@@ -3,7 +3,7 @@
 import GoogleSignInButton from "@/components/auth/google-sign-in-button";
 import { useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 import { authClient } from "@/lib/auth-client";
 import { toast } from "sonner";
 import {
@@ -23,20 +23,26 @@ import {
 import { Loader2, Pizza } from "lucide-react";
 
 const RegisterPage = () => {
+    const searchParams = useSearchParams();
     const router = useRouter();
+
+    const initialAccountType =
+        searchParams.get("type") === "vendor" ? "vendor" : "customer";
 
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [accountType, setAccountType] = useState<
         "customer" | "vendor"
-    >("customer");
+    >(initialAccountType);
     const [loading, setLoading] = useState(false);
 
     const handleRegister = async (
         event: React.FormEvent<HTMLFormElement>
     ) => {
         event.preventDefault();
+
+
 
         if (password.length < 8) {
             toast.error("Password must be at least 8 characters.");
@@ -169,8 +175,8 @@ const RegisterPage = () => {
                                     <Label
                                         htmlFor="customer"
                                         className={`flex cursor-pointer items-center gap-3 rounded-xl border p-4 ${accountType === "customer"
-                                                ? "border-[#D94B35] bg-[#D94B35]/5"
-                                                : "border-input"
+                                            ? "border-[#D94B35] bg-[#D94B35]/5"
+                                            : "border-input"
                                             }`}
                                     >
                                         <RadioGroupItem
@@ -190,8 +196,8 @@ const RegisterPage = () => {
                                     <Label
                                         htmlFor="vendor"
                                         className={`flex cursor-pointer items-center gap-3 rounded-xl border p-4 ${accountType === "vendor"
-                                                ? "border-[#D94B35] bg-[#D94B35]/5"
-                                                : "border-input"
+                                            ? "border-[#D94B35] bg-[#D94B35]/5"
+                                            : "border-input"
                                             }`}
                                     >
                                         <RadioGroupItem value="vendor" id="vendor" />

@@ -45,7 +45,15 @@ const LoginPage = () => {
 
             toast.success("Welcome back to PizzaHub!");
 
-            router.push("/");
+            const params = new URLSearchParams(window.location.search);
+            const redirectTo = params.get("redirect");
+
+            const safeRedirect =
+                redirectTo && redirectTo.startsWith("/") && !redirectTo.startsWith("//")
+                    ? redirectTo
+                    : "/";
+
+            router.push(safeRedirect);
             router.refresh();
         } catch {
             toast.error("Something went wrong. Please try again.");
