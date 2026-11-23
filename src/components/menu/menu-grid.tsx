@@ -19,16 +19,16 @@ interface MenuGridProps {
 const MenuGrid = ({ items }: MenuGridProps) => {
     if (items.length === 0) {
         return (
-            <div className="col-span-full flex flex-col items-center justify-center rounded-3xl border border-dashed border-[#29231F]/15 bg-white px-6 py-16 text-center">
+            <div className="col-span-full flex flex-col items-center justify-center rounded-3xl border border-dashed border-border bg-card px-6 py-16 text-center">
                 <div className="mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-[#D94B35]/10">
                     <Pizza size={36} className="text-[#D94B35]" />
                 </div>
 
-                <h3 className="font-[family-name:var(--font-fraunces)] text-2xl font-bold text-[#29231F]">
+                <h3 className="font-[family-name:var(--font-fraunces)] text-2xl font-bold text-foreground">
                     No Pizzas Found
                 </h3>
 
-                <p className="mt-3 max-w-md text-sm leading-7 text-[#29231F]/60">
+                <p className="mt-3 max-w-md text-sm leading-7 text-foreground/60">
                     We couldn&apos;t find any pizzas matching your search.
                     Try adjusting your filters or explore something different.
                 </p>

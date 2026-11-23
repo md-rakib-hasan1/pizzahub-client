@@ -191,10 +191,10 @@ const VendorSubscription = () => {
         return (
             <div className="mx-auto max-w-2xl px-4 py-24 text-center">
                 <ShieldCheck className="mx-auto mb-4 h-12 w-12 text-[#D94B35]" />
-                <h2 className="text-2xl font-bold text-[#29231F]">
+                <h2 className="text-2xl font-bold text-foreground">
                     Sign In Required
                 </h2>
-                <p className="mt-2 text-sm text-[#29231F]/60">
+                <p className="mt-2 text-sm text-foreground/60">
                     Sign in with your vendor account to manage your subscription.
                 </p>
                 <Button
@@ -225,10 +225,10 @@ const VendorSubscription = () => {
         return (
             <div className="mx-auto max-w-2xl px-4 py-24 text-center">
                 <ShieldCheck className="mx-auto mb-4 h-12 w-12 text-[#D94B35]" />
-                <h2 className="text-2xl font-bold text-[#29231F]">
+                <h2 className="text-2xl font-bold text-foreground">
                     Vendor Access Only
                 </h2>
-                <p className="mt-2 text-sm text-[#29231F]/60">
+                <p className="mt-2 text-sm text-foreground/60">
                     Subscription plans are available for vendor accounts only.
                 </p>
             </div>
@@ -236,36 +236,36 @@ const VendorSubscription = () => {
     }
 
     return (
-        <main className="min-h-screen bg-[#F8F1E7]/50 px-4 py-12 sm:px-6">
+        <main className="min-h-screen bg-background/50 px-4 py-12 sm:px-6">
             <div className="mx-auto max-w-5xl">
                 <div className="mb-10 text-center">
                     <p className="mb-3 text-sm font-semibold uppercase tracking-[0.2em] text-[#D94B35]">
                         Grow Your Restaurant
                     </p>
-                    <h1 className="text-3xl font-bold text-[#29231F] sm:text-5xl">
+                    <h1 className="text-3xl font-bold text-foreground sm:text-5xl">
                         Choose Your Plan
                     </h1>
-                    <p className="mx-auto mt-4 max-w-2xl text-sm leading-7 text-[#29231F]/60 sm:text-base">
+                    <p className="mx-auto mt-4 max-w-2xl text-sm leading-7 text-foreground/60 sm:text-base">
                         Start free and upgrade to Premium when your restaurant is ready
                         for more visibility and unlimited menu listings.
                     </p>
                 </div>
 
                 <div className="grid items-stretch gap-6 md:grid-cols-2">
-                    <section className="flex flex-col rounded-3xl border border-[#29231F]/10 bg-white p-7 shadow-sm sm:p-9">
+                    <section className="flex flex-col rounded-3xl border border-border bg-card p-7 shadow-sm sm:p-9">
                         <div>
-                            <span className="rounded-full bg-[#F8F1E7] px-3 py-1 text-xs font-bold uppercase tracking-wider text-[#29231F]/65">
+                            <span className="rounded-full bg-background px-3 py-1 text-xs font-bold uppercase tracking-wider text-foreground/65">
                                 Starter
                             </span>
-                            <h2 className="mt-5 text-2xl font-bold text-[#29231F]">
+                            <h2 className="mt-5 text-2xl font-bold text-foreground">
                                 Free Plan
                             </h2>
-                            <p className="mt-2 text-sm text-[#29231F]/55">
+                            <p className="mt-2 text-sm text-foreground/55">
                                 Everything you need to get started.
                             </p>
-                            <p className="mt-6 text-4xl font-bold text-[#29231F]">
+                            <p className="mt-6 text-4xl font-bold text-foreground">
                                 $0
-                                <span className="text-base font-medium text-[#29231F]/45">
+                                <span className="text-base font-medium text-foreground/45">
                                     {" "} / forever
                                 </span>
                             </p>
@@ -279,25 +279,25 @@ const VendorSubscription = () => {
                                 "Standard menu visibility",
                             ].map((feature) => (
                                 <div key={feature} className="flex items-start gap-3">
-                                    <Check className="mt-0.5 h-5 w-5 shrink-0 text-[#71836A]" />
-                                    <span className="text-sm text-[#29231F]/75">
+                                    <Check className="mt-0.5 h-5 w-5 shrink-0 text-[#71836A] dark:text-green-400" />
+                                    <span className="text-sm text-foreground/75">
                                         {feature}
                                     </span>
                                 </div>
                             ))}
                         </div>
 
-                        <div className="mt-auto rounded-xl bg-[#F8F1E7] p-4">
-                            <p className="text-sm font-semibold text-[#29231F]">
+                        <div className="mt-auto rounded-xl bg-background p-4">
+                            <p className="text-sm font-semibold text-foreground">
                                 {isPremium ? "Available anytime" : "Your current plan"}
                             </p>
-                            <p className="mt-1 text-xs leading-5 text-[#29231F]/55">
+                            <p className="mt-1 text-xs leading-5 text-foreground/55">
                                 You can continue using the Free plan without any subscription.
                             </p>
                         </div>
                     </section>
 
-                    <section className="relative flex flex-col overflow-hidden rounded-3xl border-2 border-[#D94B35] bg-[#29231F] p-7 text-white shadow-xl sm:p-9">
+                    <section className="relative flex flex-col overflow-hidden rounded-3xl border-2 border-[#D94B35] bg-brand-surface p-7 text-white shadow-xl sm:p-9">
                         <div className="absolute -right-12 -top-12 h-40 w-40 rounded-full bg-[#D94B35]/20 blur-3xl" />
 
                         <div className="relative">
@@ -441,7 +441,7 @@ const VendorSubscription = () => {
                     </section>
                 </div>
 
-                <p className="mx-auto mt-8 max-w-2xl text-center text-xs leading-6 text-[#29231F]/50">
+                <p className="mx-auto mt-8 max-w-2xl text-center text-xs leading-6 text-foreground/50">
                     Premium activation is confirmed by our secure payment webhook.
                     Your plan changes only after Stripe verifies the subscription payment.
                 </p>

@@ -75,9 +75,9 @@ const RegisterPage = () => {
     };
 
     return (
-        <main className="flex min-h-screen items-center justify-center bg-[#F8F1E7] px-4 py-12">
-            <div className="grid w-full max-w-5xl overflow-hidden rounded-3xl bg-white shadow-xl md:grid-cols-2">
-                <div className="relative hidden flex-col justify-between overflow-hidden bg-[#29231F] p-10 text-white md:flex">
+        <main className="flex min-h-screen items-center justify-center bg-background px-4 py-12">
+            <div className="grid w-full max-w-5xl overflow-hidden rounded-3xl bg-card shadow-xl md:grid-cols-2">
+                <div className="relative hidden flex-col justify-between overflow-hidden bg-brand-surface p-10 text-white md:flex">
                     <div className="relative z-10 flex items-center gap-2">
                         <Pizza className="size-8 text-[#E88A45]" />
                         <span className="text-2xl font-bold">PizzaHub</span>
@@ -114,7 +114,7 @@ const RegisterPage = () => {
                             PizzaHub
                         </Link>
 
-                        <CardTitle className="font-heading text-3xl text-[#29231F]">
+                        <CardTitle className="font-heading text-3xl text-foreground">
                             Create your account
                         </CardTitle>
 
@@ -235,7 +235,7 @@ const RegisterPage = () => {
                             </div>
 
                             <div className="relative flex justify-center text-xs uppercase">
-                                <span className="bg-white px-3 text-muted-foreground">
+                                <span className="bg-card px-3 text-muted-foreground">
                                     Or continue with
                                 </span>
                             </div>

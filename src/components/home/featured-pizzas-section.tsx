@@ -74,7 +74,7 @@ const FeaturedPizzasSection = () => {
     }, []);
 
     return (
-        <section className="bg-[#F8F1E7] px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
+        <section className="bg-background px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
             <div className="mx-auto max-w-7xl">
                 {/* Heading */}
                 <div className="mb-10 flex flex-col justify-between gap-5 sm:flex-row sm:items-end">
@@ -83,12 +83,12 @@ const FeaturedPizzasSection = () => {
                             Handpicked For You
                         </span>
 
-                        <h2 className="mt-3 font-[family-name:var(--font-fraunces)] text-3xl font-bold text-[#29231F] sm:text-4xl lg:text-5xl">
+                        <h2 className="mt-3 font-[family-name:var(--font-fraunces)] text-3xl font-bold text-foreground sm:text-4xl lg:text-5xl">
                             Our Featured{" "}
                             <span className="text-[#D94B35]">Pizzas</span>
                         </h2>
 
-                        <p className="mt-3 max-w-xl text-sm leading-7 text-[#29231F]/65 sm:text-base">
+                        <p className="mt-3 max-w-xl text-sm leading-7 text-foreground/65 sm:text-base">
                             Discover special picks from local pizza shops,
                             made to satisfy every craving.
                         </p>
@@ -109,7 +109,7 @@ const FeaturedPizzasSection = () => {
                         {Array.from({ length: 6 }).map((_, index) => (
                             <div
                                 key={index}
-                                className="h-[360px] animate-pulse rounded-2xl bg-white"
+                                className="h-[360px] animate-pulse rounded-2xl bg-card"
                             />
                         ))}
                     </div>
@@ -117,12 +117,12 @@ const FeaturedPizzasSection = () => {
 
                 {/* Error */}
                 {!loading && error && (
-                    <div className="rounded-2xl border border-red-200 bg-white p-8 text-center">
-                        <p className="font-semibold text-[#29231F]">
+                    <div className="rounded-2xl border border-destructive/30 bg-card p-8 text-center">
+                        <p className="font-semibold text-foreground">
                             Unable to load featured pizzas.
                         </p>
 
-                        <p className="mt-2 text-sm text-[#29231F]/60">
+                        <p className="mt-2 text-sm text-foreground/60">
                             {error}
                         </p>
                     </div>
@@ -130,14 +130,14 @@ const FeaturedPizzasSection = () => {
 
                 {/* Empty State */}
                 {!loading && !error && pizzas.length === 0 && (
-                    <div className="rounded-2xl border border-[#29231F]/10 bg-white px-6 py-14 text-center">
+                    <div className="rounded-2xl border border-border bg-card px-6 py-14 text-center">
                         <Pizza className="mx-auto size-12 text-[#D94B35]" />
 
-                        <h3 className="mt-4 font-[family-name:var(--font-fraunces)] text-2xl font-bold text-[#29231F]">
+                        <h3 className="mt-4 font-[family-name:var(--font-fraunces)] text-2xl font-bold text-foreground">
                             Something Delicious Is Coming!
                         </h3>
 
-                        <p className="mt-2 text-sm text-[#29231F]/60">
+                        <p className="mt-2 text-sm text-foreground/60">
                             Our featured pizza collection will be available soon.
                         </p>
 
@@ -162,7 +162,7 @@ const FeaturedPizzasSection = () => {
                                     duration: 0.5,
                                     delay: index * 0.08,
                                 }}
-                                className="group overflow-hidden rounded-2xl border border-[#29231F]/5 bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
+                                className="group overflow-hidden rounded-2xl border border-border bg-card shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
                             >
                                 <Link
                                     href={`/menu/${pizza._id}`}
@@ -188,7 +188,7 @@ const FeaturedPizzasSection = () => {
                                                 {pizza.category}
                                             </span>
 
-                                            <h3 className="mt-2 font-[family-name:var(--font-fraunces)] text-xl font-bold text-[#29231F]">
+                                            <h3 className="mt-2 font-[family-name:var(--font-fraunces)] text-xl font-bold text-foreground">
                                                 {pizza.title}
                                             </h3>
                                         </div>
@@ -200,12 +200,12 @@ const FeaturedPizzasSection = () => {
                                         </div>
                                     </div>
 
-                                    <p className="mt-3 line-clamp-2 text-sm leading-6 text-[#29231F]/60">
+                                    <p className="mt-3 line-clamp-2 text-sm leading-6 text-foreground/60">
                                         {pizza.description}
                                     </p>
 
-                                    <div className="mt-5 flex items-center justify-between border-t border-[#29231F]/10 pt-4">
-                                        <span className="flex items-center gap-1 text-xs text-[#29231F]/60">
+                                    <div className="mt-5 flex items-center justify-between border-t border-border pt-4">
+                                        <span className="flex items-center gap-1 text-xs text-foreground/60">
                                             <MapPin size={14} />
                                             {pizza.location}
                                         </span>

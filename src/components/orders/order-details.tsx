@@ -41,29 +41,29 @@ const statusDetails = {
         label: "Pending",
         description: "Waiting for vendor confirmation.",
         icon: Clock3,
-        color: "text-amber-600",
-        background: "bg-amber-100",
+        color: "text-amber-600 dark:text-amber-300",
+        background: "bg-amber-100 dark:bg-amber-900/30",
     },
     accepted: {
         label: "Accepted",
         description: "The vendor has accepted your order.",
         icon: CheckCircle2,
-        color: "text-green-600",
-        background: "bg-green-100",
+        color: "text-green-600 dark:text-green-400",
+        background: "bg-green-100 dark:bg-green-900/30",
     },
     rejected: {
         label: "Rejected",
         description: "The vendor could not accept your order.",
         icon: XCircle,
-        color: "text-red-600",
-        background: "bg-red-100",
+        color: "text-destructive",
+        background: "bg-destructive/10",
     },
     cancelled: {
         label: "Cancelled",
         description: "You cancelled this order.",
         icon: XCircle,
-        color: "text-gray-600",
-        background: "bg-gray-100",
+        color: "text-muted-foreground",
+        background: "bg-muted",
     },
 };
 
@@ -112,7 +112,7 @@ const OrderDetails = ({ orderId }: OrderDetailsProps) => {
 
     if (loading) {
         return (
-            <div className="flex min-h-[60vh] items-center justify-center bg-[#F8F1E7]">
+            <div className="flex min-h-[60vh] items-center justify-center bg-background">
                 <Loader2 size={40} className="animate-spin text-[#D94B35]" />
             </div>
         );
@@ -120,12 +120,12 @@ const OrderDetails = ({ orderId }: OrderDetailsProps) => {
 
     if (error || !order) {
         return (
-            <main className="flex min-h-[70vh] flex-col items-center justify-center bg-[#F8F1E7] px-5 text-center">
+            <main className="flex min-h-[70vh] flex-col items-center justify-center bg-background px-5 text-center">
                 <XCircle size={48} className="text-[#D94B35]" />
-                <h1 className="mt-5 font-[family-name:var(--font-fraunces)] text-3xl font-bold text-[#29231F]">
+                <h1 className="mt-5 font-[family-name:var(--font-fraunces)] text-3xl font-bold text-foreground">
                     Order Not Found
                 </h1>
-                <p className="mt-3 text-sm text-[#29231F]/60">
+                <p className="mt-3 text-sm text-foreground/60">
                     {error || "We couldn't find this order."}
                 </p>
                 <Link
@@ -142,18 +142,18 @@ const OrderDetails = ({ orderId }: OrderDetailsProps) => {
     const StatusIcon = status.icon;
 
     return (
-        <main className="min-h-screen bg-[#F8F1E7] px-5 py-16">
+        <main className="min-h-screen bg-background px-5 py-16">
             <div className="mx-auto max-w-4xl">
                 <Link
                     href="/dashboard/customer/orders"
-                    className="inline-flex items-center gap-2 text-sm font-semibold text-[#29231F]/60 transition hover:text-[#D94B35]"
+                    className="inline-flex items-center gap-2 text-sm font-semibold text-foreground/60 transition hover:text-[#D94B35]"
                 >
                     <ArrowLeft size={17} />
                     Back to My Orders
                 </Link>
 
-                <div className="mt-8 overflow-hidden rounded-3xl border border-[#29231F]/10 bg-white shadow-sm">
-                    <div className="bg-[#29231F] px-6 py-9 text-white sm:px-9">
+                <div className="mt-8 overflow-hidden rounded-3xl border border-border bg-card shadow-sm">
+                    <div className="bg-brand-surface px-6 py-9 text-white sm:px-9">
                         <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#E88A45]">
                             PizzaHub Order
                         </p>
@@ -168,12 +168,12 @@ const OrderDetails = ({ orderId }: OrderDetailsProps) => {
                     </div>
 
                     <div className="p-6 sm:p-9">
-                        <div className="flex flex-wrap items-center justify-between gap-4 border-b border-[#29231F]/10 pb-7">
+                        <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-7">
                             <div>
-                                <p className="text-sm text-[#29231F]/50">
+                                <p className="text-sm text-foreground/50">
                                     Ordered Pizza
                                 </p>
-                                <h2 className="mt-2 font-[family-name:var(--font-fraunces)] text-2xl font-bold text-[#29231F]">
+                                <h2 className="mt-2 font-[family-name:var(--font-fraunces)] text-2xl font-bold text-foreground">
                                     {order.menuItemTitle}
                                 </h2>
                             </div>
@@ -190,7 +190,7 @@ const OrderDetails = ({ orderId }: OrderDetailsProps) => {
                             <div className="flex items-start gap-3">
                                 <Pizza className="mt-1 text-[#D94B35]" size={20} />
                                 <div>
-                                    <p className="text-xs text-[#29231F]/45">Order Price</p>
+                                    <p className="text-xs text-foreground/45">Order Price</p>
                                     <p className="mt-1 text-xl font-bold text-[#D94B35]">
                                         ${Number(order.price).toFixed(2)}
                                     </p>
@@ -200,8 +200,8 @@ const OrderDetails = ({ orderId }: OrderDetailsProps) => {
                             <div className="flex items-start gap-3">
                                 <CalendarDays className="mt-1 text-[#D94B35]" size={20} />
                                 <div>
-                                    <p className="text-xs text-[#29231F]/45">Delivery Date</p>
-                                    <p className="mt-1 text-sm font-semibold text-[#29231F]">
+                                    <p className="text-xs text-foreground/45">Delivery Date</p>
+                                    <p className="mt-1 text-sm font-semibold text-foreground">
                                         {new Date(order.deliveryDate).toLocaleDateString("en-BD", {
                                             day: "numeric",
                                             month: "long",
@@ -214,8 +214,8 @@ const OrderDetails = ({ orderId }: OrderDetailsProps) => {
                             <div className="flex items-start gap-3">
                                 <MapPin className="mt-1 text-[#D94B35]" size={20} />
                                 <div>
-                                    <p className="text-xs text-[#29231F]/45">Delivery Address</p>
-                                    <p className="mt-1 text-sm font-semibold text-[#29231F]">
+                                    <p className="text-xs text-foreground/45">Delivery Address</p>
+                                    <p className="mt-1 text-sm font-semibold text-foreground">
                                         {order.deliveryAddress}
                                     </p>
                                 </div>
@@ -224,16 +224,16 @@ const OrderDetails = ({ orderId }: OrderDetailsProps) => {
                             <div className="flex items-start gap-3">
                                 <MessageSquare className="mt-1 text-[#D94B35]" size={20} />
                                 <div>
-                                    <p className="text-xs text-[#29231F]/45">Special Message</p>
-                                    <p className="mt-1 text-sm font-semibold text-[#29231F]">
+                                    <p className="text-xs text-foreground/45">Special Message</p>
+                                    <p className="mt-1 text-sm font-semibold text-foreground">
                                         {order.message || "No special instructions."}
                                     </p>
                                 </div>
                             </div>
                         </div>
 
-                        <div className="mt-8 rounded-2xl bg-[#F8F1E7] p-6">
-                            <h3 className="font-bold text-[#29231F]">
+                        <div className="mt-8 rounded-2xl bg-background p-6">
+                            <h3 className="font-bold text-foreground">
                                 Current Order Status
                             </h3>
                             <div className="mt-4 flex items-center gap-3">
@@ -244,14 +244,14 @@ const OrderDetails = ({ orderId }: OrderDetailsProps) => {
                                     <p className={`font-bold ${status.color}`}>
                                         {status.label}
                                     </p>
-                                    <p className="mt-1 text-sm text-[#29231F]/55">
+                                    <p className="mt-1 text-sm text-foreground/55">
                                         {status.description}
                                     </p>
                                 </div>
                             </div>
                         </div>
 
-                        <div className="mt-7 grid gap-4 border-t border-[#29231F]/10 pt-6 text-xs text-[#29231F]/50 sm:grid-cols-2">
+                        <div className="mt-7 grid gap-4 border-t border-border pt-6 text-xs text-foreground/50 sm:grid-cols-2">
                             <p>Placed: {new Date(order.createdAt).toLocaleString()}</p>
                             <p>Last Updated: {new Date(order.updatedAt).toLocaleString()}</p>
                         </div>

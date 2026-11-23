@@ -11,9 +11,9 @@ export const metadata: Metadata = {
 
 const MenuPage = () => {
     return (
-        <main className="min-h-screen bg-[#F8F1E7]">
+        <main className="min-h-screen bg-background">
             {/* Page Header */}
-            <section className="relative overflow-hidden bg-[#29231F] px-5 py-20 sm:px-8 lg:py-28">
+            <section className="relative overflow-hidden bg-brand-surface px-5 py-20 sm:px-8 lg:py-28">
                 <div className="pointer-events-none absolute -right-24 -top-24 h-80 w-80 rounded-full bg-[#D94B35]/20 blur-3xl" />
 
                 <div className="relative mx-auto max-w-7xl">
@@ -46,11 +46,11 @@ const MenuPage = () => {
                             The Menu
                         </span>
 
-                        <h2 className="mt-2 font-[family-name:var(--font-fraunces)] text-3xl font-bold text-[#29231F] sm:text-4xl">
+                        <h2 className="mt-2 font-[family-name:var(--font-fraunces)] text-3xl font-bold text-foreground sm:text-4xl">
                             Explore All Pizzas
                         </h2>
 
-                        <p className="mt-3 text-sm text-[#29231F]/60">
+                        <p className="mt-3 text-sm text-foreground/60">
                             Find something delicious for every craving.
                         </p>
                     </div>

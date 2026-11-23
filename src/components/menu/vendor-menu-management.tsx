@@ -65,9 +65,9 @@ const categories = [
 ];
 
 const statusStyles: Record<string, string> = {
-    pending: "bg-amber-100 text-amber-700",
-    approved: "bg-green-100 text-green-700",
-    rejected: "bg-red-100 text-red-700",
+    pending: "bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300",
+    approved: "bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300",
+    rejected: "bg-destructive/10 text-destructive",
 };
 
 const VendorMenuManagement = () => {
@@ -437,10 +437,10 @@ const VendorMenuManagement = () => {
                     <p className="text-sm font-medium text-[#D94B35]">
                         Vendor Workspace
                     </p>
-                    <h1 className="mt-1 font-[family-name:var(--font-fraunces)] text-3xl font-bold text-[#29231F] sm:text-4xl">
+                    <h1 className="mt-1 font-[family-name:var(--font-fraunces)] text-3xl font-bold text-foreground sm:text-4xl">
                         Manage Your Menu
                     </h1>
-                    <p className="mt-2 text-sm text-[#29231F]/60">
+                    <p className="mt-2 text-sm text-foreground/60">
                         Create, update and manage your restaurant&apos;s pizza menu.
                     </p>
                 </div>
@@ -462,12 +462,12 @@ const VendorMenuManagement = () => {
                 ].map((stat) => (
                     <div
                         key={stat.label}
-                        className="rounded-2xl border border-[#29231F]/10 bg-white p-5"
+                        className="rounded-2xl border border-border bg-card p-5"
                     >
-                        <p className="text-sm text-[#29231F]/60">
+                        <p className="text-sm text-foreground/60">
                             {stat.label}
                         </p>
-                        <p className="mt-2 text-3xl font-bold text-[#29231F]">
+                        <p className="mt-2 text-3xl font-bold text-foreground">
                             {stat.value}
                         </p>
                     </div>
@@ -475,12 +475,12 @@ const VendorMenuManagement = () => {
             </div>
 
             <div className="rounded-2xl border border-[#D94B35]/20 bg-[#D94B35]/5 p-5">
-                <p className="text-sm leading-6 text-[#29231F]/75">
+                <p className="text-sm leading-6 text-foreground/75">
                     <strong>Free Plan:</strong> Up to 3 active menu items.
                     <strong> Premium Plan:</strong> Unlimited active menu items.
                     Your subscription plan and item limit are enforced by the server.
                 </p>
-                <p className="mt-2 text-xs text-[#29231F]/50">
+                <p className="mt-2 text-xs text-foreground/50">
                     Currently active items: {activeItems}
                 </p>
             </div>
@@ -490,8 +490,8 @@ const VendorMenuManagement = () => {
                     <RefreshCw className="h-8 w-8 animate-spin text-[#D94B35]" />
                 </div>
             ) : error ? (
-                <div className="rounded-2xl border border-red-200 bg-red-50 p-8 text-center">
-                    <p className="font-medium text-red-700">{error}</p>
+                <div className="rounded-2xl border border-destructive/30 bg-destructive/10 p-8 text-center">
+                    <p className="font-medium text-destructive">{error}</p>
                     <button
                         onClick={() => void fetchItems()}
                         className="mt-4 rounded-xl bg-[#D94B35] px-5 py-2.5 text-sm font-semibold text-white"
@@ -500,15 +500,15 @@ const VendorMenuManagement = () => {
                     </button>
                 </div>
             ) : items.length === 0 ? (
-                <div className="rounded-2xl border border-[#29231F]/10 bg-white px-5 py-16 text-center">
+                <div className="rounded-2xl border border-border bg-card px-5 py-16 text-center">
                     <UtensilsCrossed
                         size={42}
-                        className="mx-auto text-[#29231F]/30"
+                        className="mx-auto text-foreground/30"
                     />
-                    <h2 className="mt-4 text-xl font-bold text-[#29231F]">
+                    <h2 className="mt-4 text-xl font-bold text-foreground">
                         Your menu is empty
                     </h2>
-                    <p className="mt-2 text-sm text-[#29231F]/50">
+                    <p className="mt-2 text-sm text-foreground/50">
                         Add your first pizza to start receiving customer orders.
                     </p>
                     <button
@@ -523,9 +523,9 @@ const VendorMenuManagement = () => {
                     {items.map((item) => (
                         <div
                             key={item._id}
-                            className="overflow-hidden rounded-2xl border border-[#29231F]/10 bg-white shadow-sm"
+                            className="overflow-hidden rounded-2xl border border-border bg-card shadow-sm"
                         >
-                            <div className="relative h-52 bg-[#F8F1E7]">
+                            <div className="relative h-52 bg-background">
                                 {item.image ? (
                                     <Image
                                         src={item.image}
@@ -538,14 +538,14 @@ const VendorMenuManagement = () => {
                                     <div className="flex h-full items-center justify-center">
                                         <ImagePlus
                                             size={40}
-                                            className="text-[#29231F]/30"
+                                            className="text-foreground/30"
                                         />
                                     </div>
                                 )}
 
                                 <span
                                     className={`absolute right-3 top-3 rounded-full px-3 py-1.5 text-xs font-bold capitalize ${statusStyles[item.approvalStatus] ||
-                                        "bg-gray-100 text-gray-600"
+                                        "bg-muted text-muted-foreground"
                                         }`}
                                 >
                                     {item.approvalStatus}
@@ -558,7 +558,7 @@ const VendorMenuManagement = () => {
                                         <p className="text-xs font-semibold text-[#D94B35]">
                                             {item.category}
                                         </p>
-                                        <h3 className="mt-1 text-lg font-bold text-[#29231F]">
+                                        <h3 className="mt-1 text-lg font-bold text-foreground">
                                             {item.title}
                                         </h3>
                                     </div>
@@ -567,17 +567,17 @@ const VendorMenuManagement = () => {
                                     </p>
                                 </div>
 
-                                <p className="mt-3 line-clamp-2 text-sm leading-6 text-[#29231F]/60">
+                                <p className="mt-3 line-clamp-2 text-sm leading-6 text-foreground/60">
                                     {item.description}
                                 </p>
 
-                                <div className="mt-4 flex items-center justify-between text-xs text-[#29231F]/60">
+                                <div className="mt-4 flex items-center justify-between text-xs text-foreground/60">
                                     <span>{item.location}</span>
                                     <span
                                         className={
                                             item.isAvailable
-                                                ? "font-semibold text-green-600"
-                                                : "font-semibold text-red-600"
+                                                ? "font-semibold text-green-600 dark:text-green-400"
+                                                : "font-semibold text-destructive"
                                         }
                                     >
                                         {item.isAvailable
@@ -595,7 +595,7 @@ const VendorMenuManagement = () => {
                                             )
                                         }
                                         className={`mb-3 inline-flex w-full items-center justify-center gap-2 rounded-xl px-3 py-2.5 text-sm font-semibold transition disabled:opacity-50 ${item.isFeatured
-                                                ? "border border-[#D94B35] bg-white text-[#D94B35] hover:bg-red-50"
+                                                ? "border border-[#D94B35] bg-card text-[#D94B35] hover:bg-destructive/10"
                                                 : "bg-[#D94B35] text-white hover:bg-[#bd3d2a]"
                                             }`}
                                     >
@@ -613,10 +613,10 @@ const VendorMenuManagement = () => {
                                     </button>
                                 )}
 
-                                <div className="mt-5 grid grid-cols-2 gap-3 border-t border-[#29231F]/10 pt-4">
+                                <div className="mt-5 grid grid-cols-2 gap-3 border-t border-border pt-4">
                                     <button
                                         onClick={() => openEditForm(item)}
-                                        className="inline-flex items-center justify-center gap-2 rounded-xl border border-[#29231F]/10 px-3 py-2.5 text-sm font-semibold text-[#29231F] transition hover:border-[#D94B35] hover:text-[#D94B35]"
+                                        className="inline-flex items-center justify-center gap-2 rounded-xl border border-border px-3 py-2.5 text-sm font-semibold text-foreground transition hover:border-[#D94B35] hover:text-[#D94B35]"
                                     >
                                         <Pencil size={15} />
                                         Edit
@@ -625,7 +625,7 @@ const VendorMenuManagement = () => {
                                     <button
                                         disabled={deletingId === item._id}
                                         onClick={() => void handleDelete(item._id)}
-                                        className="inline-flex items-center justify-center gap-2 rounded-xl border border-red-200 bg-red-50 px-3 py-2.5 text-sm font-semibold text-red-600 transition hover:bg-red-100 disabled:opacity-50"
+                                        className="inline-flex items-center justify-center gap-2 rounded-xl border border-destructive/30 bg-destructive/10 px-3 py-2.5 text-sm font-semibold text-destructive transition hover:bg-destructive/20 disabled:opacity-50"
                                     >
                                         <Trash2 size={15} />
                                         {deletingId === item._id
@@ -641,13 +641,13 @@ const VendorMenuManagement = () => {
 
             {showForm && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-black/50 p-4">
-                    <div className="my-auto max-h-[95vh] w-full max-w-2xl overflow-y-auto rounded-2xl bg-white shadow-2xl">
-                        <div className="sticky top-0 z-10 flex items-center justify-between border-b border-[#29231F]/10 bg-white p-5 sm:p-6">
+                    <div className="my-auto max-h-[95vh] w-full max-w-2xl overflow-y-auto rounded-2xl bg-card shadow-2xl">
+                        <div className="sticky top-0 z-10 flex items-center justify-between border-b border-border bg-card p-5 sm:p-6">
                             <div>
-                                <h2 className="text-xl font-bold text-[#29231F]">
+                                <h2 className="text-xl font-bold text-foreground">
                                     {editingId ? "Edit Pizza" : "Add New Pizza"}
                                 </h2>
-                                <p className="mt-1 text-sm text-[#29231F]/50">
+                                <p className="mt-1 text-sm text-foreground/50">
                                     Enter your pizza details below.
                                 </p>
                             </div>
@@ -655,7 +655,7 @@ const VendorMenuManagement = () => {
                             <button
                                 onClick={closeForm}
                                 disabled={saving || uploading}
-                                className="rounded-full p-2 text-[#29231F]/60 transition hover:bg-[#F8F1E7]"
+                                className="rounded-full p-2 text-foreground/60 transition hover:bg-background"
                             >
                                 <X size={20} />
                             </button>
@@ -663,7 +663,7 @@ const VendorMenuManagement = () => {
 
                         <form onSubmit={handleSubmit} className="space-y-5 p-5 sm:p-6">
                             <div>
-                                <label className="mb-2 block text-sm font-semibold text-[#29231F]">
+                                <label className="mb-2 block text-sm font-semibold text-foreground">
                                     Pizza Name
                                 </label>
                                 <input
@@ -678,12 +678,12 @@ const VendorMenuManagement = () => {
                                         })
                                     }
                                     placeholder="e.g. Classic Margherita"
-                                    className="w-full rounded-xl border border-[#29231F]/15 px-4 py-3 text-sm outline-none focus:border-[#D94B35]"
+                                    className="w-full rounded-xl border border-border px-4 py-3 text-sm outline-none focus:border-[#D94B35]"
                                 />
                             </div>
 
                             <div>
-                                <label className="mb-2 block text-sm font-semibold text-[#29231F]">
+                                <label className="mb-2 block text-sm font-semibold text-foreground">
                                     Description
                                 </label>
                                 <textarea
@@ -699,13 +699,13 @@ const VendorMenuManagement = () => {
                                         })
                                     }
                                     placeholder="Describe your pizza..."
-                                    className="w-full resize-y rounded-xl border border-[#29231F]/15 px-4 py-3 text-sm outline-none focus:border-[#D94B35]"
+                                    className="w-full resize-y rounded-xl border border-border px-4 py-3 text-sm outline-none focus:border-[#D94B35]"
                                 />
                             </div>
 
                             <div className="grid gap-5 sm:grid-cols-2">
                                 <div>
-                                    <label className="mb-2 block text-sm font-semibold text-[#29231F]">
+                                    <label className="mb-2 block text-sm font-semibold text-foreground">
                                         Category
                                     </label>
                                     <select
@@ -717,7 +717,7 @@ const VendorMenuManagement = () => {
                                                 category: event.target.value,
                                             })
                                         }
-                                        className="w-full rounded-xl border border-[#29231F]/15 bg-white px-4 py-3 text-sm outline-none focus:border-[#D94B35]"
+                                        className="w-full rounded-xl border border-border bg-card px-4 py-3 text-sm outline-none focus:border-[#D94B35]"
                                     >
                                         <option value="">Select category</option>
                                         {categories.map((category) => (
@@ -729,7 +729,7 @@ const VendorMenuManagement = () => {
                                 </div>
 
                                 <div>
-                                    <label className="mb-2 block text-sm font-semibold text-[#29231F]">
+                                    <label className="mb-2 block text-sm font-semibold text-foreground">
                                         Price (USD)
                                     </label>
                                     <input
@@ -745,13 +745,13 @@ const VendorMenuManagement = () => {
                                             })
                                         }
                                         placeholder="12.99"
-                                        className="w-full rounded-xl border border-[#29231F]/15 px-4 py-3 text-sm outline-none focus:border-[#D94B35]"
+                                        className="w-full rounded-xl border border-border px-4 py-3 text-sm outline-none focus:border-[#D94B35]"
                                     />
                                 </div>
                             </div>
 
                             <div>
-                                <label className="mb-2 block text-sm font-semibold text-[#29231F]">
+                                <label className="mb-2 block text-sm font-semibold text-foreground">
                                     Restaurant Location
                                 </label>
                                 <input
@@ -765,12 +765,12 @@ const VendorMenuManagement = () => {
                                         })
                                     }
                                     placeholder="e.g. Dhanmondi, Dhaka"
-                                    className="w-full rounded-xl border border-[#29231F]/15 px-4 py-3 text-sm outline-none focus:border-[#D94B35]"
+                                    className="w-full rounded-xl border border-border px-4 py-3 text-sm outline-none focus:border-[#D94B35]"
                                 />
                             </div>
 
                             <div>
-                                <label className="mb-2 block text-sm font-semibold text-[#29231F]">
+                                <label className="mb-2 block text-sm font-semibold text-foreground">
                                     Ingredients
                                 </label>
                                 <input
@@ -783,15 +783,15 @@ const VendorMenuManagement = () => {
                                         })
                                     }
                                     placeholder="Cheese, Tomato, Basil, Olive"
-                                    className="w-full rounded-xl border border-[#29231F]/15 px-4 py-3 text-sm outline-none focus:border-[#D94B35]"
+                                    className="w-full rounded-xl border border-border px-4 py-3 text-sm outline-none focus:border-[#D94B35]"
                                 />
-                                <p className="mt-1 text-xs text-[#29231F]/40">
+                                <p className="mt-1 text-xs text-foreground/40">
                                     Separate ingredients with commas.
                                 </p>
                             </div>
 
                             <div>
-                                <label className="mb-2 block text-sm font-semibold text-[#29231F]">
+                                <label className="mb-2 block text-sm font-semibold text-foreground">
                                     Pizza Image
                                 </label>
 
@@ -812,14 +812,14 @@ const VendorMenuManagement = () => {
                                                     image: "",
                                                 })
                                             }
-                                            className="absolute right-3 top-3 rounded-full bg-white p-2 text-red-600 shadow"
+                                            className="absolute right-3 top-3 rounded-full bg-card p-2 text-destructive shadow"
                                         >
                                             <X size={17} />
                                         </button>
                                     </div>
                                 )}
 
-                                <label className="flex cursor-pointer items-center justify-center gap-2 rounded-xl border-2 border-dashed border-[#29231F]/20 bg-[#F8F1E7]/50 px-4 py-5 text-sm font-semibold text-[#29231F]/70 transition hover:border-[#D94B35] hover:text-[#D94B35]">
+                                <label className="flex cursor-pointer items-center justify-center gap-2 rounded-xl border-2 border-dashed border-border bg-background/50 px-4 py-5 text-sm font-semibold text-foreground/70 transition hover:border-[#D94B35] hover:text-[#D94B35]">
                                     {uploading ? (
                                         <RefreshCw
                                             size={18}
@@ -839,12 +839,12 @@ const VendorMenuManagement = () => {
                                         className="hidden"
                                     />
                                 </label>
-                                <p className="mt-1 text-xs text-[#29231F]/40">
+                                <p className="mt-1 text-xs text-foreground/40">
                                     Maximum image size: 5MB.
                                 </p>
                             </div>
 
-                            <label className="flex items-center gap-3 rounded-xl bg-[#F8F1E7] p-4">
+                            <label className="flex items-center gap-3 rounded-xl bg-background p-4">
                                 <input
                                     type="checkbox"
                                     checked={form.isAvailable}
@@ -856,17 +856,17 @@ const VendorMenuManagement = () => {
                                     }
                                     className="h-4 w-4 accent-[#D94B35]"
                                 />
-                                <span className="text-sm font-medium text-[#29231F]">
+                                <span className="text-sm font-medium text-foreground">
                                     This pizza is currently available for orders.
                                 </span>
                             </label>
 
-                            <div className="flex flex-col-reverse gap-3 border-t border-[#29231F]/10 pt-5 sm:flex-row sm:justify-end">
+                            <div className="flex flex-col-reverse gap-3 border-t border-border pt-5 sm:flex-row sm:justify-end">
                                 <button
                                     type="button"
                                     onClick={closeForm}
                                     disabled={saving || uploading}
-                                    className="rounded-xl border border-[#29231F]/15 px-5 py-3 text-sm font-semibold text-[#29231F] hover:bg-[#F8F1E7] disabled:opacity-50"
+                                    className="rounded-xl border border-border px-5 py-3 text-sm font-semibold text-foreground hover:bg-background disabled:opacity-50"
                                 >
                                     Cancel
                                 </button>

@@ -4,6 +4,7 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { useTheme } from "next-themes";
 import {
     Menu,
     Pizza,
@@ -13,6 +14,8 @@ import {
     ShoppingBag,
     Store,
     Settings,
+    Moon,
+    Sun,
 } from "lucide-react";
 
 import { authClient } from "@/lib/auth-client";
@@ -41,6 +44,27 @@ interface ProfileMenuProps {
     dashboardHref: string;
     onLogout: () => void;
 }
+
+const ThemeToggle = () => {
+    const { resolvedTheme, setTheme } = useTheme();
+
+    return (
+        <Button
+            type="button"
+            variant="ghost"
+            size="icon"
+            onClick={() =>
+                setTheme(resolvedTheme === "dark" ? "light" : "dark")
+            }
+            aria-label="Toggle dark and light mode"
+            title="Toggle theme"
+            className="text-foreground"
+        >
+            <Sun className="hidden size-5 dark:block" />
+            <Moon className="size-5 dark:hidden" />
+        </Button>
+    );
+};
 
 const ProfileMenu = ({
     user,
@@ -78,7 +102,7 @@ const ProfileMenu = ({
                     </AvatarFallback>
                 </Avatar>
 
-                <span className="max-w-28 truncate text-sm font-semibold text-[#29231F]">
+                <span className="max-w-28 truncate text-sm font-semibold text-foreground">
                     {user.name}
                 </span>
             </DropdownMenuTrigger>
@@ -89,7 +113,7 @@ const ProfileMenu = ({
                 className="w-64 rounded-xl p-2"
             >
                 <div className="px-3 py-3">
-                    <p className="font-semibold text-[#29231F]">
+                    <p className="font-semibold text-foreground">
                         {user.name}
                     </p>
 
@@ -148,7 +172,7 @@ const ProfileMenu = ({
 
                 <DropdownMenuItem
                     onClick={onLogout}
-                    className="cursor-pointer gap-2 text-red-600 focus:text-red-600"
+                    className="cursor-pointer gap-2 text-destructive focus:text-destructive"
                 >
                     <LogOut className="size-4" />
                     Logout
@@ -246,7 +270,7 @@ const Navbar = () => {
     const isActive = (href: string) => activeLink === href;
 
     return (
-        <header className="sticky top-0 z-50 border-b border-[#29231F]/10 bg-[#F8F1E7]/95 backdrop-blur-md">
+        <header className="sticky top-0 z-50 border-b border-border bg-background/95 text-foreground backdrop-blur-md">
             <nav className="mx-auto flex h-20 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
                 <Link
                     href="/"
@@ -257,7 +281,7 @@ const Navbar = () => {
                         <Pizza size={23} />
                     </div>
 
-                    <span className="font-[family-name:var(--font-fraunces)] text-2xl font-bold tracking-tight text-[#29231F]">
+                    <span className="font-[family-name:var(--font-fraunces)] text-2xl font-bold tracking-tight text-foreground">
                         Pizza<span className="text-[#D94B35]">Hub</span>
                     </span>
                 </Link>
@@ -269,11 +293,10 @@ const Navbar = () => {
                             key={link.name}
                             href={link.href}
                             onClick={() => handleNavigation(link.href)}
-                            className={`text-sm font-semibold transition-colors ${
-                                isActive(link.href)
-                                    ? "text-[#D94B35]"
-                                    : "text-[#29231F]/75 hover:text-[#D94B35]"
-                            }`}
+                            className={`text-sm font-semibold transition-colors ${isActive(link.href)
+                                ? "text-primary"
+                                :"text-foreground/75 hover:text-primary"
+                                }`}
                         >
                             {link.name}
                         </Link>
@@ -282,8 +305,9 @@ const Navbar = () => {
 
                 {/* Desktop Authentication */}
                 <div className="hidden items-center gap-3 md:flex">
+                     <ThemeToggle />
                     {isPending ? (
-                        <div className="h-10 w-32 animate-pulse rounded-full bg-[#29231F]/10" />
+                        <div className="h-10 w-32 animate-pulse rounded-full bg-muted/10" />
                     ) : user ? (
                         <ProfileMenu
                             user={{
@@ -300,7 +324,7 @@ const Navbar = () => {
                             <Link href="/login">
                                 <Button
                                     variant="ghost"
-                                    className="text-[#29231F]"
+                                    className="text-foreground"
                                 >
                                     Sign In
                                 </Button>
@@ -317,6 +341,7 @@ const Navbar = () => {
 
                 {/* Mobile Controls */}
                 <div className="flex items-center gap-2 md:hidden">
+                    <ThemeToggle />
                     {!isPending && user && (
                         <ProfileMenu
                             user={{
@@ -331,13 +356,13 @@ const Navbar = () => {
                     )}
 
                     {isPending && (
-                        <div className="size-9 animate-pulse rounded-full bg-[#29231F]/10" />
+                        <div className="size-9 animate-pulse rounded-full bg-muted/10" />
                     )}
 
                     <Button
                         variant="ghost"
                         size="icon"
-                        className="text-[#29231F]"
+                        className="text-foreground"
                         onClick={() =>
                             setMobileMenuOpen(!mobileMenuOpen)
                         }
@@ -355,18 +380,17 @@ const Navbar = () => {
 
             {/* Mobile Navigation */}
             {mobileMenuOpen && (
-                <div className="border-t border-[#29231F]/10 bg-[#F8F1E7] px-5 py-5 md:hidden">
+                <div className="border-t border-border bg-background px-5 py-5 text-foreground md:hidden">
                     <div className="flex flex-col gap-4">
                         {navLinks.map((link) => (
                             <Link
                                 key={link.name}
                                 href={link.href}
                                 onClick={() => handleNavigation(link.href)}
-                                className={`text-sm font-semibold transition-colors ${
-                                    isActive(link.href)
-                                        ? "text-[#D94B35]"
-                                        : "text-[#29231F] hover:text-[#D94B35]"
-                                }`}
+                                className={`text-sm font-semibold transition-colors ${isActive(link.href)
+                                    ? "text-primary"
+                                    : "text-foreground hover:text-primary"
+                                    }`}
                             >
                                 {link.name}
                             </Link>
@@ -374,7 +398,7 @@ const Navbar = () => {
 
                         {!isPending && !user && (
                             <>
-                                <div className="my-1 border-t border-[#29231F]/10" />
+                                <div className="my-1 border-t border-border" />
 
                                 <Link
                                     href="/login"
@@ -382,7 +406,7 @@ const Navbar = () => {
                                 >
                                     <Button
                                         variant="outline"
-                                        className="w-full"
+                                        className="w-full text-foreground"
                                     >
                                         Sign In
                                     </Button>

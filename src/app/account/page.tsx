@@ -180,14 +180,14 @@ const AccountSettings = ({ user }: { user: AccountUser }) => {
   };
 
   return (
-    <main className="min-h-screen bg-[#F8F1E7] px-4 py-16">
+    <main className="min-h-screen bg-background px-4 py-16">
       <div className="mx-auto max-w-2xl space-y-8">
         <div className="text-center">
           <p className="text-sm font-semibold uppercase tracking-[0.2em] text-[#D94B35]">
             My Account
           </p>
 
-          <h1 className="mt-3 font-heading text-3xl font-bold text-[#29231F] sm:text-4xl">
+          <h1 className="mt-3 font-heading text-3xl font-bold text-foreground sm:text-4xl">
             Profile Settings
           </h1>
 
@@ -196,7 +196,7 @@ const AccountSettings = ({ user }: { user: AccountUser }) => {
           </p>
         </div>
 
-        <Card className="rounded-3xl border-[#29231F]/10 shadow-sm">
+        <Card className="rounded-3xl border-border shadow-sm">
           <CardHeader className="items-center text-center">
             <div className="relative size-24 overflow-hidden rounded-full border-4 border-[#D94B35]/15 bg-[#D94B35]/10">
               {profileImage ? (
@@ -297,7 +297,7 @@ const AccountSettings = ({ user }: { user: AccountUser }) => {
               <div className="space-y-2">
                 <Label>Account Role</Label>
                 <div className="flex items-center gap-3 rounded-lg border bg-muted/50 px-3 py-2.5">
-                  <ShieldCheck className="size-4 text-[#71836A]" />
+                  <ShieldCheck className="size-4 text-[#71836A] dark:text-green-400" />
                   <span className="text-sm font-medium capitalize">
                     {user.role || "customer"}
                   </span>
@@ -362,7 +362,7 @@ const AccountPage = () => {
  
   if (isPending || !session) {
     return (
-      <main className="flex min-h-screen items-center justify-center bg-[#F8F1E7]">
+      <main className="flex min-h-screen items-center justify-center bg-background">
         <Loader2 className="size-8 animate-spin text-[#D94B35]" />
       </main>
     );

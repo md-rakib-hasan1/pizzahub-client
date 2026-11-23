@@ -38,33 +38,33 @@ const statusConfig = {
         label: "Order Pending",
         description: "Your order is waiting for vendor confirmation.",
         icon: Clock3,
-        color: "text-amber-600",
-        background: "bg-amber-100",
-        border: "border-amber-200",
+        color: "text-amber-600 dark:text-amber-300",
+        background: "bg-amber-100 dark:bg-amber-900/30",
+        border: "border-amber-200 dark:border-amber-800",
     },
     accepted: {
         label: "Order Accepted",
         description: "The vendor has accepted your order.",
         icon: CheckCircle2,
-        color: "text-green-600",
-        background: "bg-green-100",
-        border: "border-green-200",
+        color: "text-green-600 dark:text-green-400",
+        background: "bg-green-100 dark:bg-green-900/30",
+        border: "border-green-200 dark:border-green-800",
     },
     rejected: {
         label: "Order Rejected",
         description: "The vendor could not accept your order.",
         icon: XCircle,
-        color: "text-red-600",
-        background: "bg-red-100",
-        border: "border-red-200",
+        color: "text-destructive",
+        background: "bg-destructive/10",
+        border: "border-destructive/30",
     },
     cancelled: {
         label: "Order Cancelled",
         description: "This order has been cancelled.",
         icon: XCircle,
-        color: "text-gray-600",
-        background: "bg-gray-100",
-        border: "border-gray-200",
+        color: "text-muted-foreground",
+        background: "bg-muted",
+        border: "border-border",
     },
 };
 
@@ -174,9 +174,9 @@ const CustomerOrders = () => {
 
     if (loading) {
         return (
-            <div className="flex min-h-[60vh] flex-col items-center justify-center gap-4 bg-[#F8F1E7]">
+            <div className="flex min-h-[60vh] flex-col items-center justify-center gap-4 bg-background">
                 <Loader2 className="animate-spin text-[#D94B35]" size={40} />
-                <p className="text-sm font-medium text-[#29231F]/60">
+                <p className="text-sm font-medium text-foreground/60">
                     Loading your orders...
                 </p>
             </div>
@@ -185,13 +185,13 @@ const CustomerOrders = () => {
 
     if (error) {
         return (
-            <main className="flex min-h-[70vh] items-center justify-center bg-[#F8F1E7] px-5">
-                <div className="max-w-md rounded-3xl border border-[#29231F]/10 bg-white p-8 text-center shadow-sm">
+            <main className="flex min-h-[70vh] items-center justify-center bg-background px-5">
+                <div className="max-w-md rounded-3xl border border-border bg-card p-8 text-center shadow-sm">
                     <XCircle className="mx-auto text-[#D94B35]" size={44} />
-                    <h2 className="mt-5 font-[family-name:var(--font-fraunces)] text-2xl font-bold text-[#29231F]">
+                    <h2 className="mt-5 font-[family-name:var(--font-fraunces)] text-2xl font-bold text-foreground">
                         Unable to Load Orders
                     </h2>
-                    <p className="mt-3 text-sm leading-7 text-[#29231F]/60">
+                    <p className="mt-3 text-sm leading-7 text-foreground/60">
                         {error}
                     </p>
                     <button
@@ -208,17 +208,17 @@ const CustomerOrders = () => {
     }
 
     return (
-        <main className="min-h-screen bg-[#F8F1E7] px-5 py-16">
+        <main className="min-h-screen bg-background px-5 py-16">
             <div className="mx-auto max-w-7xl">
                 <div className="mb-10 flex flex-wrap items-end justify-between gap-5">
                     <div>
                         <p className="text-sm font-bold uppercase tracking-[0.2em] text-[#D94B35]">
                             Your Activity
                         </p>
-                        <h1 className="mt-3 font-[family-name:var(--font-fraunces)] text-4xl font-bold text-[#29231F] sm:text-5xl">
+                        <h1 className="mt-3 font-[family-name:var(--font-fraunces)] text-4xl font-bold text-foreground sm:text-5xl">
                             My Orders
                         </h1>
-                        <p className="mt-4 max-w-xl text-sm leading-7 text-[#29231F]/60">
+                        <p className="mt-4 max-w-xl text-sm leading-7 text-foreground/60">
                             Keep track of your pizza orders and their delivery status.
                         </p>
                     </div>
@@ -226,7 +226,7 @@ const CustomerOrders = () => {
                     <button
                         type="button"
                         onClick={() => setRefreshKey((previous) => previous + 1)}
-                        className="inline-flex items-center gap-2 rounded-xl border border-[#29231F]/15 bg-white px-5 py-3 text-sm font-semibold text-[#29231F] hover:border-[#D94B35] hover:text-[#D94B35]"
+                        className="inline-flex items-center gap-2 rounded-xl border border-border bg-card px-5 py-3 text-sm font-semibold text-foreground hover:border-[#D94B35] hover:text-[#D94B35]"
                     >
                         <RefreshCw size={16} />
                         Refresh Orders
@@ -234,21 +234,21 @@ const CustomerOrders = () => {
                 </div>
 
                 {orders.length === 0 ? (
-                    <div className="rounded-3xl border border-dashed border-[#29231F]/20 bg-white px-6 py-20 text-center">
+                    <div className="rounded-3xl border border-dashed border-border bg-card px-6 py-20 text-center">
                         <Pizza size={40} className="mx-auto text-[#D94B35]" />
-                        <h2 className="mt-6 font-[family-name:var(--font-fraunces)] text-2xl font-bold text-[#29231F]">
+                        <h2 className="mt-6 font-[family-name:var(--font-fraunces)] text-2xl font-bold text-foreground">
                             No Orders Yet
                         </h2>
-                        <p className="mt-3 text-sm text-[#29231F]/60">
+                        <p className="mt-3 text-sm text-foreground/60">
                             Your pizza orders will appear here once you place your first order.
                         </p>
                     </div>
                 ) : (
                     <>
-                        <div className="mb-6 flex items-center justify-between rounded-2xl border border-[#29231F]/10 bg-white px-6 py-5">
+                        <div className="mb-6 flex items-center justify-between rounded-2xl border border-border bg-card px-6 py-5">
                             <div>
-                                <p className="text-sm text-[#29231F]/55">Total Orders</p>
-                                <p className="mt-1 text-3xl font-bold text-[#29231F]">
+                                <p className="text-sm text-foreground/55">Total Orders</p>
+                                <p className="mt-1 text-3xl font-bold text-foreground">
                                     {orders.length}
                                 </p>
                             </div>
@@ -263,7 +263,7 @@ const CustomerOrders = () => {
                                 return (
                                     <div
                                         key={order._id}
-                                        className="overflow-hidden rounded-3xl border border-[#29231F]/10 bg-white shadow-sm transition hover:shadow-md"
+                                        className="overflow-hidden rounded-3xl border border-border bg-card shadow-sm transition hover:shadow-md"
                                     >
                                         <div className="p-6 sm:p-8">
                                             <div className="flex flex-wrap items-start justify-between gap-5">
@@ -271,10 +271,10 @@ const CustomerOrders = () => {
                                                     <p className="text-xs font-bold uppercase tracking-wider text-[#D94B35]">
                                                         Order Details
                                                     </p>
-                                                    <h2 className="mt-2 font-[family-name:var(--font-fraunces)] text-2xl font-bold text-[#29231F]">
+                                                    <h2 className="mt-2 font-[family-name:var(--font-fraunces)] text-2xl font-bold text-foreground">
                                                         {order.menuItemTitle}
                                                     </h2>
-                                                    <p className="mt-2 break-all text-xs text-[#29231F]/45">
+                                                    <p className="mt-2 break-all text-xs text-foreground/45">
                                                         Order ID: {order._id}
                                                     </p>
                                                 </div>
@@ -287,16 +287,16 @@ const CustomerOrders = () => {
                                                 </div>
                                             </div>
 
-                                            <p className="mt-4 text-sm leading-6 text-[#29231F]/60">
+                                            <p className="mt-4 text-sm leading-6 text-foreground/60">
                                                 {status.description}
                                             </p>
 
-                                            <div className="mt-7 grid gap-5 border-t border-[#29231F]/10 pt-6 sm:grid-cols-3">
+                                            <div className="mt-7 grid gap-5 border-t border-border pt-6 sm:grid-cols-3">
                                                 <div className="flex items-start gap-3">
                                                     <CalendarDays size={19} className="mt-0.5 text-[#D94B35]" />
                                                     <div>
-                                                        <p className="text-xs text-[#29231F]/45">Delivery Date</p>
-                                                        <p className="mt-1 text-sm font-semibold text-[#29231F]">
+                                                        <p className="text-xs text-foreground/45">Delivery Date</p>
+                                                        <p className="mt-1 text-sm font-semibold text-foreground">
                                                             {formatDate(order.deliveryDate)}
                                                         </p>
                                                     </div>
@@ -305,8 +305,8 @@ const CustomerOrders = () => {
                                                 <div className="flex items-start gap-3">
                                                     <MapPin size={19} className="mt-0.5 text-[#D94B35]" />
                                                     <div>
-                                                        <p className="text-xs text-[#29231F]/45">Delivery Address</p>
-                                                        <p className="mt-1 text-sm font-semibold text-[#29231F]">
+                                                        <p className="text-xs text-foreground/45">Delivery Address</p>
+                                                        <p className="mt-1 text-sm font-semibold text-foreground">
                                                             {order.deliveryAddress}
                                                         </p>
                                                     </div>
@@ -315,12 +315,12 @@ const CustomerOrders = () => {
                                                 <div className="flex items-start gap-3">
                                                     <Pizza size={19} className="mt-0.5 text-[#D94B35]" />
                                                     <div>
-                                                        <p className="text-xs text-[#29231F]/45">Quantity</p>
-                                                        <p className="mt-1 text-sm font-semibold text-[#29231F]">
+                                                        <p className="text-xs text-foreground/45">Quantity</p>
+                                                        <p className="mt-1 text-sm font-semibold text-foreground">
                                                             {order.quantity ?? 1} {((order.quantity ?? 1) === 1) ? "pizza" : "pizzas"}
                                                         </p>
 
-                                                        <p className="mt-3 text-xs text-[#29231F]/45">Total Price</p>
+                                                        <p className="mt-3 text-xs text-foreground/45">Total Price</p>
                                                         <p className="mt-1 text-lg font-bold text-[#D94B35]">
                                                             ${Number(order.price).toFixed(2)}
                                                         </p>
@@ -329,8 +329,8 @@ const CustomerOrders = () => {
 
                                             </div>
 
-                                            <div className="mt-7 rounded-2xl bg-[#F8F1E7] p-5">
-                                                <p className="mb-4 text-xs font-bold uppercase tracking-wider text-[#29231F]/50">
+                                            <div className="mt-7 rounded-2xl bg-background p-5">
+                                                <p className="mb-4 text-xs font-bold uppercase tracking-wider text-foreground/50">
                                                     Order Status Timeline
                                                 </p>
 
@@ -339,21 +339,21 @@ const CustomerOrders = () => {
                                                         <CheckCircle2 size={18} />
                                                     </div>
                                                     <div>
-                                                        <p className="text-sm font-bold text-[#29231F]">Order Placed</p>
-                                                        <p className="text-xs text-[#29231F]/50">Your order has been submitted.</p>
+                                                        <p className="text-sm font-bold text-foreground">Order Placed</p>
+                                                        <p className="text-xs text-foreground/50">Your order has been submitted.</p>
                                                     </div>
                                                 </div>
 
-                                                <div className="ml-4 h-5 w-0.5 bg-[#29231F]/15" />
+                                                <div className="ml-4 h-5 w-0.5 bg-border" />
 
                                                 <div className="flex items-center gap-3">
                                                     <div className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full ${order.status === "accepted"
                                                         ? "bg-green-600 text-white"
                                                         : order.status === "rejected"
-                                                            ? "bg-red-500 text-white"
+                                                            ? "bg-destructive text-destructive-foreground"
                                                             : order.status === "cancelled"
-                                                                ? "bg-gray-500 text-white"
-                                                                : "bg-amber-100 text-amber-600"
+                                                                ? "bg-muted text-muted-foreground"
+                                                                : "bg-amber-100 dark:bg-amber-900/30 text-amber-600 dark:text-amber-300"
                                                         }`}>
                                                         {order.status === "accepted" ? (
                                                             <CheckCircle2 size={18} />
@@ -364,16 +364,16 @@ const CustomerOrders = () => {
                                                         )}
                                                     </div>
                                                     <div>
-                                                        <p className="text-sm font-bold text-[#29231F]">{status.label}</p>
-                                                        <p className="text-xs text-[#29231F]/50">{status.description}</p>
+                                                        <p className="text-sm font-bold text-foreground">{status.label}</p>
+                                                        <p className="text-xs text-foreground/50">{status.description}</p>
                                                     </div>
                                                 </div>
                                             </div>
 
-                                            <div className="mt-6 flex flex-wrap justify-end gap-3 border-t border-[#29231F]/10 pt-5">
+                                            <div className="mt-6 flex flex-wrap justify-end gap-3 border-t border-border pt-5">
                                                 <Link
                                                     href={`/dashboard/customer/orders/${order._id}`}
-                                                    className="inline-flex items-center gap-2 rounded-xl border border-[#29231F]/15 px-5 py-3 text-sm font-semibold text-[#29231F] transition hover:border-[#D94B35] hover:text-[#D94B35]"
+                                                    className="inline-flex items-center gap-2 rounded-xl border border-border px-5 py-3 text-sm font-semibold text-foreground transition hover:border-[#D94B35] hover:text-[#D94B35]"
                                                 >
                                                     <Eye size={16} />
                                                     View Details
@@ -384,7 +384,7 @@ const CustomerOrders = () => {
                                                         type="button"
                                                         onClick={() => handleCancelOrder(order._id)}
                                                         disabled={cancellingOrderId !== null}
-                                                        className="inline-flex items-center gap-2 rounded-xl border border-red-200 px-5 py-3 text-sm font-semibold text-red-600 transition hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-50"
+                                                        className="inline-flex items-center gap-2 rounded-xl border border-destructive/30 px-5 py-3 text-sm font-semibold text-destructive transition hover:bg-destructive/10 disabled:cursor-not-allowed disabled:opacity-50"
                                                     >
                                                         {cancellingOrderId === order._id ? (
                                                             <>

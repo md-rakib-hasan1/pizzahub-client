@@ -91,13 +91,13 @@ const MenuDetails = ({ id }: MenuDetailsProps) => {
 
     if (loading) {
         return (
-            <div className="flex min-h-[70vh] items-center justify-center bg-[#F8F1E7]">
+            <div className="flex min-h-[70vh] items-center justify-center bg-background">
                 <div className="flex flex-col items-center gap-3">
                     <Loader2
                         size={36}
                         className="animate-spin text-[#D94B35]"
                     />
-                    <p className="text-sm font-medium text-[#29231F]/60">
+                    <p className="text-sm font-medium text-foreground/60">
                         Preparing your pizza details...
                     </p>
                 </div>
@@ -107,16 +107,16 @@ const MenuDetails = ({ id }: MenuDetailsProps) => {
 
     if (error || !item) {
         return (
-            <div className="flex min-h-[70vh] flex-col items-center justify-center bg-[#F8F1E7] px-5 text-center">
+            <div className="flex min-h-[70vh] flex-col items-center justify-center bg-background px-5 text-center">
                 <div className="mb-5 flex h-20 w-20 items-center justify-center rounded-full bg-[#D94B35]/10">
                     <Pizza size={36} className="text-[#D94B35]" />
                 </div>
 
-                <h1 className="font-[family-name:var(--font-fraunces)] text-3xl font-bold text-[#29231F]">
+                <h1 className="font-[family-name:var(--font-fraunces)] text-3xl font-bold text-foreground">
                     Pizza Not Found
                 </h1>
 
-                <p className="mt-3 max-w-md text-sm leading-7 text-[#29231F]/60">
+                <p className="mt-3 max-w-md text-sm leading-7 text-foreground/60">
                     {error || "This pizza may no longer be available."}
                 </p>
 
@@ -132,19 +132,19 @@ const MenuDetails = ({ id }: MenuDetailsProps) => {
     }
 
     return (
-        <main className="min-h-screen bg-[#F8F1E7] px-5 py-12 sm:px-8 lg:py-20">
+        <main className="min-h-screen bg-background px-5 py-12 sm:px-8 lg:py-20">
             <div className="mx-auto max-w-7xl">
                 <Link
                     href="/menu"
-                    className="mb-8 inline-flex items-center gap-2 text-sm font-semibold text-[#29231F]/65 transition hover:text-[#D94B35]"
+                    className="mb-8 inline-flex items-center gap-2 text-sm font-semibold text-foreground/65 transition hover:text-[#D94B35]"
                 >
                     <ArrowLeft size={18} />
                     Back to Menu
                 </Link>
 
-                <div className="grid overflow-hidden rounded-3xl border border-[#29231F]/10 bg-white shadow-sm lg:grid-cols-2">
+                <div className="grid overflow-hidden rounded-3xl border border-border bg-card shadow-sm lg:grid-cols-2">
                     {/* Pizza Image */}
-                    <div className="relative min-h-[320px] bg-[#29231F]/5 sm:min-h-[480px] lg:min-h-[600px]">
+                    <div className="relative min-h-[320px] bg-muted/50 sm:min-h-[480px] lg:min-h-[600px]">
                         <Image
                             src={item.image}
                             alt={item.title}
@@ -154,7 +154,7 @@ const MenuDetails = ({ id }: MenuDetailsProps) => {
                             className="object-cover"
                         />
 
-                        <div className="absolute left-6 top-6 rounded-full bg-white px-4 py-2 text-xs font-bold uppercase tracking-wider text-[#D94B35] shadow-sm">
+                        <div className="absolute left-6 top-6 rounded-full bg-card px-4 py-2 text-xs font-bold uppercase tracking-wider text-[#D94B35] shadow-sm">
                             {item.category}
                         </div>
                     </div>
@@ -165,17 +165,17 @@ const MenuDetails = ({ id }: MenuDetailsProps) => {
                             Discover the Flavor
                         </span>
 
-                        <h1 className="mt-4 font-[family-name:var(--font-fraunces)] text-4xl font-bold leading-tight text-[#29231F] sm:text-5xl">
+                        <h1 className="mt-4 font-[family-name:var(--font-fraunces)] text-4xl font-bold leading-tight text-foreground sm:text-5xl">
                             {item.title}
                         </h1>
 
-                        <p className="mt-6 text-base leading-8 text-[#29231F]/65">
+                        <p className="mt-6 text-base leading-8 text-foreground/65">
                             {item.description}
                         </p>
 
-                        <div className="mt-8 flex items-center justify-between border-y border-[#29231F]/10 py-6">
+                        <div className="mt-8 flex items-center justify-between border-y border-border py-6">
                             <div>
-                                <p className="text-xs font-semibold uppercase tracking-wider text-[#29231F]/45">
+                                <p className="text-xs font-semibold uppercase tracking-wider text-foreground/45">
                                     Price
                                 </p>
 
@@ -184,7 +184,7 @@ const MenuDetails = ({ id }: MenuDetailsProps) => {
                                 </p>
                             </div>
 
-                            <div className="flex items-center gap-2 text-sm font-medium text-[#29231F]/65">
+                            <div className="flex items-center gap-2 text-sm font-medium text-foreground/65">
                                 <MapPin size={18} className="text-[#D94B35]" />
                                 {item.location}
                             </div>
@@ -192,7 +192,7 @@ const MenuDetails = ({ id }: MenuDetailsProps) => {
 
                         {/* Ingredients */}
                         <div className="mt-8">
-                            <h2 className="text-lg font-bold text-[#29231F]">
+                            <h2 className="text-lg font-bold text-foreground">
                                 Ingredients
                             </h2>
 
@@ -200,7 +200,7 @@ const MenuDetails = ({ id }: MenuDetailsProps) => {
                                 {item.ingredients?.map((ingredient) => (
                                     <span
                                         key={ingredient}
-                                        className="rounded-full bg-[#F8F1E7] px-4 py-2 text-sm font-medium text-[#29231F]/75"
+                                        className="rounded-full bg-background px-4 py-2 text-sm font-medium text-foreground/75"
                                     >
                                         {ingredient}
                                     </span>
@@ -214,9 +214,9 @@ const MenuDetails = ({ id }: MenuDetailsProps) => {
                                 <>
                                     <CheckCircle2
                                         size={19}
-                                        className="text-[#71836A]"
+                                        className="text-[#71836A] dark:text-green-400"
                                     />
-                                    <span className="text-sm font-semibold text-[#71836A]">
+                                    <span className="text-sm font-semibold text-[#71836A] dark:text-green-400">
                                         Available for Order
                                     </span>
                                 </>
@@ -224,9 +224,9 @@ const MenuDetails = ({ id }: MenuDetailsProps) => {
                                 <>
                                     <XCircle
                                         size={19}
-                                        className="text-red-500"
+                                        className="text-destructive"
                                     />
-                                    <span className="text-sm font-semibold text-red-500">
+                                    <span className="text-sm font-semibold text-destructive">
                                         Currently Unavailable
                                     </span>
                                 </>
@@ -237,9 +237,9 @@ const MenuDetails = ({ id }: MenuDetailsProps) => {
 
                         <Link
                             href={`/order/${item._id}`}
-                            className={`mt-8 flex items-center justify-center gap-3 rounded-xl px-6 py-4 font-bold text-white transition ${item.isAvailable
-                                    ? "bg-[#D94B35] hover:bg-[#BD3D2B]"
-                                    : "pointer-events-none bg-gray-400"
+                            className={`mt-8 flex items-center justify-center gap-3 rounded-xl px-6 py-4 font-bold transition ${item.isAvailable
+                                    ? "bg-[#D94B35] text-white hover:bg-[#BD3D2B]"
+                                    : "pointer-events-none bg-muted text-muted-foreground"
                                 }`}
                             aria-disabled={!item.isAvailable}
                             tabIndex={item.isAvailable ? 0 : -1}

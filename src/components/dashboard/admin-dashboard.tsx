@@ -501,37 +501,37 @@ const AdminDashboard = () => {
             label: "Total Users",
             value: stats.totalUsers,
             icon: Users,
-            color: "bg-blue-50 text-blue-600",
+            color: "bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400",
         },
         {
             label: "Total Vendors",
             value: stats.totalVendors,
             icon: Store,
-            color: "bg-orange-50 text-orange-600",
+            color: "bg-orange-50 dark:bg-orange-900/30 text-orange-600 dark:text-orange-400",
         },
         {
             label: "Total Orders",
             value: stats.totalOrders,
             icon: Activity,
-            color: "bg-green-50 text-green-600",
+            color: "bg-green-50 dark:bg-green-900/30 text-green-600 dark:text-green-400",
         },
         {
             label: "Transactions",
             value: stats.totalTransactions,
             icon: CreditCard,
-            color: "bg-purple-50 text-purple-600",
+            color: "bg-purple-50 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400",
         },
         {
             label: "Pending Menus",
             value: stats.pendingMenuItems,
             icon: Clock,
-            color: "bg-amber-50 text-amber-600",
+            color: "bg-amber-50 dark:bg-amber-900/30 text-amber-600 dark:text-amber-300",
         },
         {
             label: "Blocked Users",
             value: stats.blockedUsers,
             icon: Ban,
-            color: "bg-red-50 text-red-600",
+            color: "bg-destructive/10 text-destructive",
         },
     ];
 
@@ -571,17 +571,17 @@ const AdminDashboard = () => {
     }
 
     return (
-        <main className="min-h-screen bg-[#F8F1E7]/50 px-4 py-10 sm:px-6 lg:px-8">
+        <main className="min-h-screen bg-background/50 px-4 py-10 sm:px-6 lg:px-8">
             <div className="mx-auto max-w-7xl">
                 <div className="mb-8 flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
                     <div>
                         <p className="mb-2 text-sm font-semibold uppercase tracking-[0.2em] text-[#D94B35]">
                             PizzaHub Administration
                         </p>
-                        <h1 className="text-3xl font-bold text-[#29231F] sm:text-4xl">
+                        <h1 className="text-3xl font-bold text-foreground sm:text-4xl">
                             Admin Dashboard
                         </h1>
-                        <p className="mt-2 text-sm text-[#29231F]/60">
+                        <p className="mt-2 text-sm text-foreground/60">
                             Manage users, review menus and monitor platform activity.
                         </p>
                     </div>
@@ -590,14 +590,14 @@ const AdminDashboard = () => {
                         variant="outline"
                         onClick={() => void fetchDashboard()}
                         disabled={loading}
-                        className="border-[#29231F]/15 bg-white"
+                        className="border-border bg-card"
                     >
                         <RefreshCw className="mr-2 h-4 w-4" />
                         Refresh Data
                     </Button>
                 </div>
 
-                <div className="mb-8 flex gap-2 overflow-x-auto rounded-2xl border border-[#29231F]/10 bg-white p-2">
+                <div className="mb-8 flex gap-2 overflow-x-auto rounded-2xl border border-border bg-card p-2">
                     {tabs.map((tab) => {
                         const Icon = tab.icon;
 
@@ -607,7 +607,7 @@ const AdminDashboard = () => {
                                 onClick={() => setActiveTab(tab.id)}
                                 className={`flex shrink-0 items-center gap-2 rounded-xl px-4 py-3 text-sm font-semibold transition ${activeTab === tab.id
                                     ? "bg-[#D94B35] text-white"
-                                    : "text-[#29231F]/65 hover:bg-[#F8F1E7]"
+                                    : "text-foreground/65 hover:bg-background"
                                     }`}
                             >
                                 <Icon className="h-4 w-4" />
@@ -623,7 +623,7 @@ const AdminDashboard = () => {
                 </div>
 
                 {error && (
-                    <div className="mb-6 flex flex-col gap-3 rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700 sm:flex-row sm:items-center sm:justify-between">
+                    <div className="mb-6 flex flex-col gap-3 rounded-xl border border-destructive/30 bg-destructive/10 p-4 text-sm text-destructive sm:flex-row sm:items-center sm:justify-between">
                         <p>{error}</p>
                         <Button size="sm" variant="outline" onClick={() => void fetchDashboard()}>
                             Try Again
@@ -640,14 +640,14 @@ const AdminDashboard = () => {
                                 return (
                                     <div
                                         key={stat.label}
-                                        className="rounded-2xl border border-[#29231F]/10 bg-white p-5 shadow-sm"
+                                        className="rounded-2xl border border-border bg-card p-5 shadow-sm"
                                     >
                                         <div className="flex items-center justify-between">
                                             <div>
-                                                <p className="text-sm text-[#29231F]/55">
+                                                <p className="text-sm text-foreground/55">
                                                     {stat.label}
                                                 </p>
-                                                <p className="mt-2 text-3xl font-bold text-[#29231F]">
+                                                <p className="mt-2 text-3xl font-bold text-foreground">
                                                     {stat.value}
                                                 </p>
                                             </div>
@@ -661,8 +661,8 @@ const AdminDashboard = () => {
                         </div>
 
                         <div className="grid gap-6 lg:grid-cols-2">
-                            <div className="rounded-2xl border border-[#29231F]/10 bg-white p-6">
-                                <h2 className="mb-5 text-lg font-bold text-[#29231F]">
+                            <div className="rounded-2xl border border-border bg-card p-6">
+                                <h2 className="mb-5 text-lg font-bold text-foreground">
                                     Platform Users
                                 </h2>
                                 <div className="space-y-5">
@@ -679,14 +679,14 @@ const AdminDashboard = () => {
                                         return (
                                             <div key={item.label}>
                                                 <div className="mb-2 flex justify-between text-sm">
-                                                    <span className="text-[#29231F]/65">
+                                                    <span className="text-foreground/65">
                                                         {item.label}
                                                     </span>
-                                                    <span className="font-semibold text-[#29231F]">
+                                                    <span className="font-semibold text-foreground">
                                                         {item.value}
                                                     </span>
                                                 </div>
-                                                <div className="h-2 overflow-hidden rounded-full bg-[#F8F1E7]">
+                                                <div className="h-2 overflow-hidden rounded-full bg-background">
                                                     <div
                                                         className="h-full rounded-full bg-[#D94B35]"
                                                         style={{ width: `${percentage}%` }}
@@ -698,44 +698,44 @@ const AdminDashboard = () => {
                                 </div>
                             </div>
 
-                            <div className="rounded-2xl border border-[#29231F]/10 bg-white p-6">
-                                <h2 className="mb-5 text-lg font-bold text-[#29231F]">
+                            <div className="rounded-2xl border border-border bg-card p-6">
+                                <h2 className="mb-5 text-lg font-bold text-foreground">
                                     Platform Activity
                                 </h2>
                                 <div className="grid grid-cols-2 gap-4">
-                                    <div className="rounded-xl bg-[#F8F1E7] p-4">
+                                    <div className="rounded-xl bg-background p-4">
                                         <Utensils className="mb-3 h-5 w-5 text-[#D94B35]" />
-                                        <p className="text-2xl font-bold text-[#29231F]">
+                                        <p className="text-2xl font-bold text-foreground">
                                             {stats.totalMenuItems}
                                         </p>
-                                        <p className="mt-1 text-xs text-[#29231F]/60">
+                                        <p className="mt-1 text-xs text-foreground/60">
                                             Total Menu Items
                                         </p>
                                     </div>
-                                    <div className="rounded-xl bg-[#F8F1E7] p-4">
-                                        <Clock className="mb-3 h-5 w-5 text-amber-600" />
-                                        <p className="text-2xl font-bold text-[#29231F]">
+                                    <div className="rounded-xl bg-background p-4">
+                                        <Clock className="mb-3 h-5 w-5 text-amber-600 dark:text-amber-300" />
+                                        <p className="text-2xl font-bold text-foreground">
                                             {stats.pendingMenuItems}
                                         </p>
-                                        <p className="mt-1 text-xs text-[#29231F]/60">
+                                        <p className="mt-1 text-xs text-foreground/60">
                                             Awaiting Review
                                         </p>
                                     </div>
-                                    <div className="rounded-xl bg-[#F8F1E7] p-4">
-                                        <Activity className="mb-3 h-5 w-5 text-green-600" />
-                                        <p className="text-2xl font-bold text-[#29231F]">
+                                    <div className="rounded-xl bg-background p-4">
+                                        <Activity className="mb-3 h-5 w-5 text-green-600 dark:text-green-400" />
+                                        <p className="text-2xl font-bold text-foreground">
                                             {stats.totalOrders}
                                         </p>
-                                        <p className="mt-1 text-xs text-[#29231F]/60">
+                                        <p className="mt-1 text-xs text-foreground/60">
                                             Total Orders
                                         </p>
                                     </div>
-                                    <div className="rounded-xl bg-[#F8F1E7] p-4">
-                                        <CreditCard className="mb-3 h-5 w-5 text-purple-600" />
-                                        <p className="text-2xl font-bold text-[#29231F]">
+                                    <div className="rounded-xl bg-background p-4">
+                                        <CreditCard className="mb-3 h-5 w-5 text-purple-600 dark:text-purple-400" />
+                                        <p className="text-2xl font-bold text-foreground">
                                             {stats.totalTransactions}
                                         </p>
-                                        <p className="mt-1 text-xs text-[#29231F]/60">
+                                        <p className="mt-1 text-xs text-foreground/60">
                                             Subscription Transactions
                                         </p>
                                     </div>
@@ -746,29 +746,29 @@ const AdminDashboard = () => {
                 )}
 
                 {activeTab === "users" && (
-                    <section className="overflow-hidden rounded-2xl border border-[#29231F]/10 bg-white">
-                        <div className="border-b border-[#29231F]/10 p-5">
-                            <h2 className="text-xl font-bold text-[#29231F]">
+                    <section className="overflow-hidden rounded-2xl border border-border bg-card">
+                        <div className="border-b border-border p-5">
+                            <h2 className="text-xl font-bold text-foreground">
                                 User Management
                             </h2>
-                            <p className="mt-1 text-sm text-[#29231F]/55">
+                            <p className="mt-1 text-sm text-foreground/55">
                                 Manage customer and vendor account access.
                             </p>
                         </div>
 
                         {usersLoading ? (
-                            <div className="flex items-center justify-center gap-2 p-12 text-sm text-[#29231F]/55">
+                            <div className="flex items-center justify-center gap-2 p-12 text-sm text-foreground/55">
                                 <Loader2 className="h-5 w-5 animate-spin" />
                                 Loading users...
                             </div>
                         ) : users.length === 0 ? (
-                            <div className="p-12 text-center text-sm text-[#29231F]/55">
+                            <div className="p-12 text-center text-sm text-foreground/55">
                                 No users found.
                             </div>
                         ) : (
                             <div className="overflow-x-auto">
                                 <table className="w-full min-w-[750px] text-left text-sm">
-                                    <thead className="bg-[#F8F1E7] text-[#29231F]/65">
+                                    <thead className="bg-background text-foreground/65">
                                         <tr>
                                             <th className="px-5 py-4 font-semibold">User</th>
                                             <th className="px-5 py-4 font-semibold">Role</th>
@@ -778,14 +778,14 @@ const AdminDashboard = () => {
                                             <th className="px-5 py-4 text-right font-semibold">Action</th>
                                         </tr>
                                     </thead>
-                                    <tbody className="divide-y divide-[#29231F]/10">
+                                    <tbody className="divide-y divide-border">
                                         {users.map((user) => (
                                             <tr key={user._id}>
                                                 <td className="px-5 py-4">
-                                                    <p className="font-semibold text-[#29231F]">
+                                                    <p className="font-semibold text-foreground">
                                                         {user.name || "Unnamed User"}
                                                     </p>
-                                                    <p className="mt-1 text-xs text-[#29231F]/50">
+                                                    <p className="mt-1 text-xs text-foreground/50">
                                                         {user.email}
                                                     </p>
                                                 </td>
@@ -801,8 +801,8 @@ const AdminDashboard = () => {
                                                 <td className="px-5 py-4">
                                                     <span
                                                         className={`rounded-full px-3 py-1 text-xs font-semibold ${user.isBlocked
-                                                            ? "bg-red-50 text-red-600"
-                                                            : "bg-green-50 text-green-700"
+                                                            ? "bg-destructive/10 text-destructive"
+                                                            : "bg-green-50 dark:bg-green-900/30 text-green-700 dark:text-green-300"
                                                             }`}
                                                     >
                                                         {user.isBlocked ? "Blocked" : "Active"}
@@ -844,26 +844,26 @@ const AdminDashboard = () => {
                 {activeTab === "menu" && (
                     <section>
                         <div className="mb-5">
-                            <h2 className="text-xl font-bold text-[#29231F]">
+                            <h2 className="text-xl font-bold text-foreground">
                                 Pending Menu Approvals
                             </h2>
-                            <p className="mt-1 text-sm text-[#29231F]/55">
+                            <p className="mt-1 text-sm text-foreground/55">
                                 Review vendor submissions before they appear in the public menu.
                             </p>
                         </div>
 
                         {menuLoading ? (
-                            <div className="flex items-center justify-center gap-2 rounded-2xl border border-[#29231F]/10 bg-white p-12 text-sm text-[#29231F]/55">
+                            <div className="flex items-center justify-center gap-2 rounded-2xl border border-border bg-card p-12 text-sm text-foreground/55">
                                 <Loader2 className="h-5 w-5 animate-spin" />
                                 Loading menu items...
                             </div>
                         ) : menuItems.length === 0 ? (
-                            <div className="rounded-2xl border border-[#29231F]/10 bg-white p-12 text-center">
-                                <CheckCircle2 className="mx-auto mb-3 h-10 w-10 text-green-600" />
-                                <h3 className="font-semibold text-[#29231F]">
+                            <div className="rounded-2xl border border-border bg-card p-12 text-center">
+                                <CheckCircle2 className="mx-auto mb-3 h-10 w-10 text-green-600 dark:text-green-400" />
+                                <h3 className="font-semibold text-foreground">
                                     All caught up!
                                 </h3>
-                                <p className="mt-1 text-sm text-[#29231F]/55">
+                                <p className="mt-1 text-sm text-foreground/55">
                                     There are no menu items waiting for approval.
                                 </p>
                             </div>
@@ -872,9 +872,9 @@ const AdminDashboard = () => {
                                 {menuItems.map((item) => (
                                     <article
                                         key={item._id}
-                                        className="overflow-hidden rounded-2xl border border-[#29231F]/10 bg-white shadow-sm"
+                                        className="overflow-hidden rounded-2xl border border-border bg-card shadow-sm"
                                     >
-                                        <div className="relative h-48 bg-[#F8F1E7]">
+                                        <div className="relative h-48 bg-background">
                                             {item.image && (
                                                 <Image
                                                     src={item.image}
@@ -887,25 +887,25 @@ const AdminDashboard = () => {
                                         </div>
                                         <div className="p-5">
                                             <div className="mb-2 flex items-start justify-between gap-3">
-                                                <h3 className="font-bold text-[#29231F]">
+                                                <h3 className="font-bold text-foreground">
                                                     {item.title}
                                                 </h3>
-                                                <span className="shrink-0 rounded-full bg-amber-50 px-2 py-1 text-xs font-semibold text-amber-700">
+                                                <span className="shrink-0 rounded-full bg-amber-50 dark:bg-amber-900/30 px-2 py-1 text-xs font-semibold text-amber-700 dark:text-amber-300">
                                                     Pending
                                                 </span>
                                             </div>
-                                            <p className="text-sm text-[#29231F]/55">
+                                            <p className="text-sm text-foreground/55">
                                                 {item.category} · {item.location}
                                             </p>
                                             <p className="mt-3 text-lg font-bold text-[#D94B35]">
                                                 ${Number(item.price).toFixed(2)}
                                             </p>
                                             {item.description && (
-                                                <p className="mt-2 line-clamp-2 text-sm text-[#29231F]/65">
+                                                <p className="mt-2 line-clamp-2 text-sm text-foreground/65">
                                                     {item.description}
                                                 </p>
                                             )}
-                                            <p className="mt-3 text-xs text-[#29231F]/45">
+                                            <p className="mt-3 text-xs text-foreground/45">
                                                 Submitted {formatDate(item.createdAt)}
                                             </p>
                                             <div className="mt-5 grid grid-cols-2 gap-3">
@@ -931,7 +931,7 @@ const AdminDashboard = () => {
                                                     onClick={() =>
                                                         void reviewMenuItem(item._id, "rejected")
                                                     }
-                                                    className="border-red-200 text-red-600 hover:bg-red-50"
+                                                    className="border-destructive/30 text-destructive hover:bg-destructive/10"
                                                 >
                                                     <X className="mr-1 h-4 w-4" />
                                                     Reject
@@ -946,23 +946,23 @@ const AdminDashboard = () => {
                         {/* Featured Menu Management */}
                         <div className="mt-12">
                             <div className="mb-5">
-                                <h2 className="text-xl font-bold text-[#29231F]">
+                                <h2 className="text-xl font-bold text-foreground">
                                     Featured Menu Management
                                 </h2>
-                                <p className="mt-1 text-sm text-[#29231F]/55">
+                                <p className="mt-1 text-sm text-foreground/55">
                                     Choose approved pizzas to highlight on the homepage.
                                 </p>
                             </div>
 
                             {menuLoading ? (
-                                <div className="flex items-center justify-center gap-2 rounded-2xl border border-[#29231F]/10 bg-white p-10 text-sm text-[#29231F]/55">
+                                <div className="flex items-center justify-center gap-2 rounded-2xl border border-border bg-card p-10 text-sm text-foreground/55">
                                     <Loader2 className="h-5 w-5 animate-spin" />
                                     Loading approved menu items...
                                 </div>
                             ) : approvedMenuItems.length === 0 ? (
-                                <div className="rounded-2xl border border-[#29231F]/10 bg-white p-10 text-center">
+                                <div className="rounded-2xl border border-border bg-card p-10 text-center">
                                     <Utensils className="mx-auto mb-3 h-10 w-10 text-[#D94B35]" />
-                                    <p className="font-semibold text-[#29231F]">
+                                    <p className="font-semibold text-foreground">
                                         No approved menu items available.
                                     </p>
                                 </div>
@@ -971,9 +971,9 @@ const AdminDashboard = () => {
                                     {approvedMenuItems.map((item) => (
                                         <article
                                             key={item._id}
-                                            className="overflow-hidden rounded-2xl border border-[#29231F]/10 bg-white shadow-sm"
+                                            className="overflow-hidden rounded-2xl border border-border bg-card shadow-sm"
                                         >
-                                            <div className="relative h-44 bg-[#F8F1E7]">
+                                            <div className="relative h-44 bg-background">
                                                 {item.image && (
                                                     <Image
                                                         src={item.image}
@@ -987,21 +987,21 @@ const AdminDashboard = () => {
 
                                             <div className="p-5">
                                                 <div className="flex items-start justify-between gap-3">
-                                                    <h3 className="font-bold text-[#29231F]">
+                                                    <h3 className="font-bold text-foreground">
                                                         {item.title}
                                                     </h3>
 
                                                     <span
                                                         className={`shrink-0 rounded-full px-2 py-1 text-xs font-semibold ${item.isFeatured
-                                                            ? "bg-green-50 text-green-700"
-                                                            : "bg-[#F8F1E7] text-[#29231F]/60"
+                                                            ? "bg-green-50 dark:bg-green-900/30 text-green-700 dark:text-green-300"
+                                                            : "bg-background text-foreground/60"
                                                             }`}
                                                     >
                                                         {item.isFeatured ? "Featured" : "Regular"}
                                                     </span>
                                                 </div>
 
-                                                <p className="mt-2 text-sm text-[#29231F]/55">
+                                                <p className="mt-2 text-sm text-foreground/55">
                                                     {item.category} · {item.location}
                                                 </p>
 
@@ -1011,7 +1011,7 @@ const AdminDashboard = () => {
 
                                                 <Button
                                                     className={`mt-5 w-full ${item.isFeatured
-                                                        ? "border border-[#D94B35] bg-white text-[#D94B35] hover:bg-red-50"
+                                                        ? "border border-[#D94B35] bg-card text-[#D94B35] hover:bg-destructive/10"
                                                         : "bg-[#D94B35] text-white hover:bg-[#B83B29]"
                                                         }`}
                                                     variant={item.isFeatured ? "outline" : "default"}
@@ -1041,29 +1041,29 @@ const AdminDashboard = () => {
                 )}
 
                 {activeTab === "transactions" && (
-                    <section className="overflow-hidden rounded-2xl border border-[#29231F]/10 bg-white">
-                        <div className="border-b border-[#29231F]/10 p-5">
-                            <h2 className="text-xl font-bold text-[#29231F]">
+                    <section className="overflow-hidden rounded-2xl border border-border bg-card">
+                        <div className="border-b border-border p-5">
+                            <h2 className="text-xl font-bold text-foreground">
                                 Subscription Transactions
                             </h2>
-                            <p className="mt-1 text-sm text-[#29231F]/55">
+                            <p className="mt-1 text-sm text-foreground/55">
                                 Read-only records of vendor premium subscriptions.
                             </p>
                         </div>
 
                         {transactionsLoading ? (
-                            <div className="flex items-center justify-center gap-2 p-12 text-sm text-[#29231F]/55">
+                            <div className="flex items-center justify-center gap-2 p-12 text-sm text-foreground/55">
                                 <Loader2 className="h-5 w-5 animate-spin" />
                                 Loading transactions...
                             </div>
                         ) : transactions.length === 0 ? (
-                            <div className="p-12 text-center text-sm text-[#29231F]/55">
+                            <div className="p-12 text-center text-sm text-foreground/55">
                                 No transactions found.
                             </div>
                         ) : (
                             <div className="overflow-x-auto">
                                 <table className="w-full min-w-[700px] text-left text-sm">
-                                    <thead className="bg-[#F8F1E7] text-[#29231F]/65">
+                                    <thead className="bg-background text-foreground/65">
                                         <tr>
                                             <th className="px-5 py-4 font-semibold">Vendor</th>
                                             <th className="px-5 py-4 font-semibold">Amount</th>
@@ -1072,7 +1072,7 @@ const AdminDashboard = () => {
                                             <th className="px-5 py-4 font-semibold">Date</th>
                                         </tr>
                                     </thead>
-                                    <tbody className="divide-y divide-[#29231F]/10">
+                                    <tbody className="divide-y divide-border">
                                         {transactions.map((transaction) => (
                                             <tr key={transaction._id}>
                                                 <td className="px-5 py-4">
@@ -1085,11 +1085,11 @@ const AdminDashboard = () => {
                                                         ? `${transaction.currency?.toUpperCase() || "USD"} ${transaction.amount}`
                                                         : "—"}
                                                 </td>
-                                                <td className="max-w-[180px] truncate px-5 py-4 text-xs text-[#29231F]/55">
+                                                <td className="max-w-[180px] truncate px-5 py-4 text-xs text-foreground/55">
                                                     {transaction.stripeSessionId || "—"}
                                                 </td>
                                                 <td className="px-5 py-4">
-                                                    <span className="rounded-full bg-green-50 px-3 py-1 text-xs font-semibold capitalize text-green-700">
+                                                    <span className="rounded-full bg-green-50 dark:bg-green-900/30 px-3 py-1 text-xs font-semibold capitalize text-green-700 dark:text-green-300">
                                                         {transaction.status || "Completed"}
                                                     </span>
                                                 </td>

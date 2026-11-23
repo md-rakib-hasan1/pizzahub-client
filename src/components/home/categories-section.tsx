@@ -55,7 +55,7 @@ const CategoriesSection = () => {
     return (
         <section
             id="categories"
-            className="bg-white px-4 py-16 sm:px-6 lg:px-8 lg:py-20"
+            className="bg-card px-4 py-16 sm:px-6 lg:px-8 lg:py-20"
         >
             <div className="mx-auto max-w-7xl">
 
@@ -66,11 +66,11 @@ const CategoriesSection = () => {
                             Explore Our Collection
                         </span>
 
-                        <h2 className="mt-3 font-[family-name:var(--font-fraunces)] text-3xl font-bold text-[#29231F] sm:text-4xl lg:text-5xl">
+                        <h2 className="mt-3 font-[family-name:var(--font-fraunces)] text-3xl font-bold text-foreground sm:text-4xl lg:text-5xl">
                             Find Your Perfect <span className="text-[#D94B35]">Slice</span>
                         </h2>
 
-                        <p className="mt-3 max-w-xl text-sm leading-7 text-[#29231F]/65 sm:text-base">
+                        <p className="mt-3 max-w-xl text-sm leading-7 text-foreground/65 sm:text-base">
                             From timeless classics to bold new flavors, discover
                             the pizza that makes every moment special.
                         </p>
@@ -100,7 +100,7 @@ const CategoriesSection = () => {
                         >
                             <Link
                                 href={`/menu?category=${encodeURIComponent(category.slug)}`}
-                                className="group relative block h-[260px] overflow-hidden rounded-2xl bg-[#29231F] sm:h-[280px]"
+                                className="group relative block h-[260px] overflow-hidden rounded-2xl bg-brand-surface sm:h-[280px]"
                             >
                                 <Image
                                     src={category.image}
@@ -125,7 +125,7 @@ const CategoriesSection = () => {
                                         </p>
                                     </div>
 
-                                    <div className="flex size-10 shrink-0 items-center justify-center rounded-full bg-white text-[#D94B35] transition-all duration-300 group-hover:bg-[#D94B35] group-hover:text-white">
+                                    <div className="flex size-10 shrink-0 items-center justify-center rounded-full bg-card text-[#D94B35] transition-all duration-300 group-hover:bg-[#D94B35] group-hover:text-white">
                                         <ArrowUpRight size={20} />
                                     </div>
                                 </div>

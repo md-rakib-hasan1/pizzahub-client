@@ -194,13 +194,13 @@ const OrderForm = ({ menuItemId }: OrderFormProps) => {
 
     if (loading || sessionLoading) {
         return (
-            <div className="flex min-h-[70vh] items-center justify-center bg-[#F8F1E7]">
+            <div className="flex min-h-[70vh] items-center justify-center bg-background">
                 <div className="flex flex-col items-center gap-3">
                     <Loader2
                         size={34}
                         className="animate-spin text-[#D94B35]"
                     />
-                    <p className="text-sm font-medium text-[#29231F]/60">
+                    <p className="text-sm font-medium text-foreground/60">
                         Preparing your order...
                     </p>
                 </div>
@@ -210,12 +210,12 @@ const OrderForm = ({ menuItemId }: OrderFormProps) => {
 
     if (error || !item) {
         return (
-            <div className="flex min-h-[70vh] flex-col items-center justify-center bg-[#F8F1E7] px-5 text-center">
-                <h1 className="font-[family-name:var(--font-fraunces)] text-3xl font-bold text-[#29231F]">
+            <div className="flex min-h-[70vh] flex-col items-center justify-center bg-background px-5 text-center">
+                <h1 className="font-[family-name:var(--font-fraunces)] text-3xl font-bold text-foreground">
                     Unable to Load Pizza
                 </h1>
 
-                <p className="mt-3 text-sm text-red-500">
+                <p className="mt-3 text-sm text-destructive">
                     {error || "Pizza not found."}
                 </p>
 
@@ -232,26 +232,26 @@ const OrderForm = ({ menuItemId }: OrderFormProps) => {
 
     if (orderId) {
         return (
-            <main className="flex min-h-[75vh] items-center justify-center bg-[#F8F1E7] px-5 py-16">
-                <div className="w-full max-w-xl rounded-3xl border border-[#29231F]/10 bg-white p-8 text-center shadow-sm sm:p-12">
+            <main className="flex min-h-[75vh] items-center justify-center bg-background px-5 py-16">
+                <div className="w-full max-w-xl rounded-3xl border border-border bg-card p-8 text-center shadow-sm sm:p-12">
                     <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-[#71836A]/10">
                         <CheckCircle2
                             size={42}
-                            className="text-[#71836A]"
+                            className="text-[#71836A] dark:text-green-400"
                         />
                     </div>
 
-                    <h1 className="mt-6 font-[family-name:var(--font-fraunces)] text-3xl font-bold text-[#29231F]">
+                    <h1 className="mt-6 font-[family-name:var(--font-fraunces)] text-3xl font-bold text-foreground">
                         Order Placed Successfully!
                     </h1>
 
-                    <p className="mt-3 text-sm leading-7 text-[#29231F]/60">
+                    <p className="mt-3 text-sm leading-7 text-foreground/60">
                         Your order for {item.title} has been submitted.
                         You can track its status from your customer dashboard.
                     </p>
 
                     {orderId && (
-                        <p className="mt-5 break-all rounded-xl bg-[#F8F1E7] p-4 text-xs text-[#29231F]/65">
+                        <p className="mt-5 break-all rounded-xl bg-background p-4 text-xs text-foreground/65">
                             Order ID: {orderId}
                         </p>
                     )}
@@ -270,12 +270,12 @@ const OrderForm = ({ menuItemId }: OrderFormProps) => {
 
     if (!session?.user) {
         return (
-            <main className="flex min-h-[70vh] flex-col items-center justify-center bg-[#F8F1E7] px-5 text-center">
-                <h1 className="font-[family-name:var(--font-fraunces)] text-3xl font-bold text-[#29231F]">
+            <main className="flex min-h-[70vh] flex-col items-center justify-center bg-background px-5 text-center">
+                <h1 className="font-[family-name:var(--font-fraunces)] text-3xl font-bold text-foreground">
                     Sign In to Continue
                 </h1>
 
-                <p className="mt-3 max-w-md text-sm leading-7 text-[#29231F]/60">
+                <p className="mt-3 max-w-md text-sm leading-7 text-foreground/60">
                     Please sign in to your PizzaHub account before placing an order.
                 </p>
 
@@ -291,13 +291,13 @@ const OrderForm = ({ menuItemId }: OrderFormProps) => {
 
     if (session.user.role !== "customer") {
         return (
-            <main className="flex min-h-[70vh] flex-col items-center justify-center bg-[#F8F1E7] px-5 text-center">
-                <div className="max-w-lg rounded-3xl border border-[#29231F]/10 bg-white p-8 shadow-sm">
-                    <h1 className="font-[family-name:var(--font-fraunces)] text-3xl font-bold text-[#29231F]">
+            <main className="flex min-h-[70vh] flex-col items-center justify-center bg-background px-5 text-center">
+                <div className="max-w-lg rounded-3xl border border-border bg-card p-8 shadow-sm">
+                    <h1 className="font-[family-name:var(--font-fraunces)] text-3xl font-bold text-foreground">
                         Customer Access Only
                     </h1>
 
-                    <p className="mt-4 text-sm leading-7 text-[#29231F]/60">
+                    <p className="mt-4 text-sm leading-7 text-foreground/60">
                         Only customer accounts can place pizza orders.
                         Please sign in with a customer account to continue.
                     </p>
@@ -314,11 +314,11 @@ const OrderForm = ({ menuItemId }: OrderFormProps) => {
     }
 
     return (
-        <main className="min-h-screen bg-[#F8F1E7] px-5 py-12 sm:px-8 lg:py-20">
+        <main className="min-h-screen bg-background px-5 py-12 sm:px-8 lg:py-20">
             <div className="mx-auto max-w-7xl">
                 <Link
                     href={`/menu/${menuItemId}`}
-                    className="mb-8 inline-flex items-center gap-2 text-sm font-semibold text-[#29231F]/65 transition hover:text-[#D94B35]"
+                    className="mb-8 inline-flex items-center gap-2 text-sm font-semibold text-foreground/65 transition hover:text-[#D94B35]"
                 >
                     <ArrowLeft size={18} />
                     Back to Pizza Details
@@ -329,11 +329,11 @@ const OrderForm = ({ menuItemId }: OrderFormProps) => {
                         Almost There
                     </span>
 
-                    <h1 className="mt-3 font-[family-name:var(--font-fraunces)] text-4xl font-bold text-[#29231F] sm:text-5xl">
+                    <h1 className="mt-3 font-[family-name:var(--font-fraunces)] text-4xl font-bold text-foreground sm:text-5xl">
                         Complete Your Order
                     </h1>
 
-                    <p className="mt-4 max-w-2xl text-sm leading-7 text-[#29231F]/60">
+                    <p className="mt-4 max-w-2xl text-sm leading-7 text-foreground/60">
                         Just a few details and your favorite pizza will be on its way.
                     </p>
                 </div>
@@ -342,15 +342,15 @@ const OrderForm = ({ menuItemId }: OrderFormProps) => {
                     {/* Order Form */}
                     <form
                         onSubmit={handleSubmit}
-                        className="rounded-3xl border border-[#29231F]/10 bg-white p-6 shadow-sm sm:p-9"
+                        className="rounded-3xl border border-border bg-card p-6 shadow-sm sm:p-9"
                     >
-                        <h2 className="font-[family-name:var(--font-fraunces)] text-2xl font-bold text-[#29231F]">
+                        <h2 className="font-[family-name:var(--font-fraunces)] text-2xl font-bold text-foreground">
                             Delivery Information
                         </h2>
 
                         <div className="mt-8 space-y-6">
                             <div>
-                                <label className="mb-3 block text-sm font-semibold text-[#29231F]">
+                                <label className="mb-3 block text-sm font-semibold text-foreground">
                                     Pizza Quantity
                                 </label>
 
@@ -367,7 +367,7 @@ const OrderForm = ({ menuItemId }: OrderFormProps) => {
                                         -
                                     </Button>
 
-                                    <span className="min-w-8 text-center text-lg font-bold text-[#29231F]">
+                                    <span className="min-w-8 text-center text-lg font-bold text-foreground">
                                         {quantity}
                                     </span>
 
@@ -383,7 +383,7 @@ const OrderForm = ({ menuItemId }: OrderFormProps) => {
                                         +
                                     </Button>
 
-                                    <span className="text-xs text-[#29231F]/50">
+                                    <span className="text-xs text-foreground/50">
                                         Maximum 20 pizzas
                                     </span>
                                 </div>
@@ -391,7 +391,7 @@ const OrderForm = ({ menuItemId }: OrderFormProps) => {
                             <div>
                                 <label
                                     htmlFor="deliveryDate"
-                                    className="mb-2 flex items-center gap-2 text-sm font-semibold text-[#29231F]"
+                                    className="mb-2 flex items-center gap-2 text-sm font-semibold text-foreground"
                                 >
                                     <CalendarDays
                                         size={17}
@@ -416,7 +416,7 @@ const OrderForm = ({ menuItemId }: OrderFormProps) => {
                             <div>
                                 <label
                                     htmlFor="deliveryAddress"
-                                    className="mb-2 flex items-center gap-2 text-sm font-semibold text-[#29231F]"
+                                    className="mb-2 flex items-center gap-2 text-sm font-semibold text-foreground"
                                 >
                                     <MapPin
                                         size={17}
@@ -438,7 +438,7 @@ const OrderForm = ({ menuItemId }: OrderFormProps) => {
                                     rows={4}
                                     className="resize-none"
                                 />
-                                <p className="mt-2 text-xs text-[#29231F]/50">
+                                <p className="mt-2 text-xs text-foreground/50">
                                     Please enter a complete delivery address (at least 10 characters).
                                 </p>
 
@@ -447,14 +447,14 @@ const OrderForm = ({ menuItemId }: OrderFormProps) => {
                             <div>
                                 <label
                                     htmlFor="message"
-                                    className="mb-2 flex items-center gap-2 text-sm font-semibold text-[#29231F]"
+                                    className="mb-2 flex items-center gap-2 text-sm font-semibold text-foreground"
                                 >
                                     <MessageSquare
                                         size={17}
                                         className="text-[#D94B35]"
                                     />
                                     Special Instructions
-                                    <span className="font-normal text-[#29231F]/40">
+                                    <span className="font-normal text-foreground/40">
                                         (Optional)
                                     </span>
                                 </label>
@@ -471,7 +471,7 @@ const OrderForm = ({ menuItemId }: OrderFormProps) => {
                                     className="resize-none"
                                 />
 
-                                <p className="mt-2 text-right text-xs text-[#29231F]/40">
+                                <p className="mt-2 text-right text-xs text-foreground/40">
                                     {message.length}/500
                                 </p>
                             </div>
@@ -499,19 +499,19 @@ const OrderForm = ({ menuItemId }: OrderFormProps) => {
                         </Button>
 
                         {!item.isAvailable && (
-                            <p className="mt-3 text-center text-sm text-red-500">
+                            <p className="mt-3 text-center text-sm text-destructive">
                                 This pizza is currently unavailable.
                             </p>
                         )}
                     </form>
 
                     {/* Order Summary */}
-                    <aside className="h-fit rounded-3xl border border-[#29231F]/10 bg-white p-6 shadow-sm sm:p-8">
-                        <h2 className="font-[family-name:var(--font-fraunces)] text-2xl font-bold text-[#29231F]">
+                    <aside className="h-fit rounded-3xl border border-border bg-card p-6 shadow-sm sm:p-8">
+                        <h2 className="font-[family-name:var(--font-fraunces)] text-2xl font-bold text-foreground">
                             Order Summary
                         </h2>
 
-                        <div className="relative mt-6 aspect-[16/10] overflow-hidden rounded-2xl bg-[#F8F1E7]">
+                        <div className="relative mt-6 aspect-[16/10] overflow-hidden rounded-2xl bg-background">
                             <Image
                                 src={item.image}
                                 alt={item.title}
@@ -526,38 +526,38 @@ const OrderForm = ({ menuItemId }: OrderFormProps) => {
                                 {item.category}
                             </span>
 
-                            <h3 className="mt-4 text-xl font-bold text-[#29231F]">
+                            <h3 className="mt-4 text-xl font-bold text-foreground">
                                 {item.title}
                             </h3>
 
-                            <p className="mt-2 text-sm text-[#29231F]/55">
+                            <p className="mt-2 text-sm text-foreground/55">
                                 {item.location}
                             </p>
                         </div>
 
-                        <div className="mt-7 space-y-4 border-t border-[#29231F]/10 pt-6">
+                        <div className="mt-7 space-y-4 border-t border-border pt-6">
                             <div className="flex items-center justify-between text-sm">
-                                <span className="text-[#29231F]/60">
+                                <span className="text-foreground/60">
                                     Pizza Price
                                 </span>
 
-                                <span className="font-semibold text-[#29231F]">
+                                <span className="font-semibold text-foreground">
                                     ${item.price.toFixed(2)} × {quantity}
                                 </span>
                             </div>
 
                             <div className="flex items-center justify-between text-sm">
-                                <span className="text-[#29231F]/60">
+                                <span className="text-foreground/60">
                                     Payment Method
                                 </span>
 
-                                <span className="font-semibold text-[#71836A]">
+                                <span className="font-semibold text-[#71836A] dark:text-green-400">
                                     Cash on Delivery
                                 </span>
                             </div>
 
-                            <div className="flex items-center justify-between border-t border-[#29231F]/10 pt-5">
-                                <span className="font-bold text-[#29231F]">
+                            <div className="flex items-center justify-between border-t border-border pt-5">
+                                <span className="font-bold text-foreground">
                                     Total
                                 </span>
 
@@ -567,7 +567,7 @@ const OrderForm = ({ menuItemId }: OrderFormProps) => {
                             </div>
                         </div>
 
-                        <p className="mt-6 text-xs leading-6 text-[#29231F]/45">
+                        <p className="mt-6 text-xs leading-6 text-foreground/45">
                             Your order will be sent to the restaurant for confirmation.
                             Payment is not collected online.
                         </p>

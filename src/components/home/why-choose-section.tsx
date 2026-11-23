@@ -44,7 +44,7 @@ const WhyChooseSection = () => {
     return (
         <section
             id="why-choose"
-            className="bg-[#F8F1E7] px-5 py-20 sm:px-8 lg:py-28">
+            className="bg-background px-5 py-20 sm:px-8 lg:py-28">
             <div className="mx-auto max-w-7xl">
                 <motion.div
                     initial={{ opacity: 0, y: 25 }}
@@ -57,12 +57,12 @@ const WhyChooseSection = () => {
                         The PizzaHub Difference
                     </span>
 
-                    <h2 className="font-[family-name:var(--font-fraunces)] text-3xl font-bold leading-tight text-[#29231F] sm:text-4xl lg:text-5xl">
+                    <h2 className="font-[family-name:var(--font-fraunces)] text-3xl font-bold leading-tight text-foreground sm:text-4xl lg:text-5xl">
                         More Than Pizza,
                         <span className="text-[#D94B35]"> It&apos;s an Experience.</span>
                     </h2>
 
-                    <p className="mt-5 text-base leading-7 text-[#29231F]/65">
+                    <p className="mt-5 text-base leading-7 text-foreground/65">
                         We bring local pizza lovers and restaurants together to make every
                         meal a little more special.
                     </p>
@@ -83,23 +83,23 @@ const WhyChooseSection = () => {
                                     delay: index * 0.12,
                                 }}
                                 whileHover={{ y: -7 }}
-                                className="group rounded-2xl border border-[#29231F]/10 bg-white p-7 shadow-sm transition-shadow duration-300 hover:shadow-xl"
+                                className="group rounded-2xl border border-border bg-card p-7 shadow-sm transition-shadow duration-300 hover:shadow-xl"
                             >
                                 <div className="mb-8 flex items-center justify-between">
                                     <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[#D94B35]/10 text-[#D94B35] transition-colors duration-300 group-hover:bg-[#D94B35] group-hover:text-white">
                                         <Icon size={27} strokeWidth={1.8} />
                                     </div>
 
-                                    <span className="font-[family-name:var(--font-fraunces)] text-3xl font-bold text-[#29231F]/10">
+                                    <span className="font-[family-name:var(--font-fraunces)] text-3xl font-bold text-foreground/10">
                                         {benefit.number}
                                     </span>
                                 </div>
 
-                                <h3 className="font-[family-name:var(--font-fraunces)] text-xl font-bold text-[#29231F]">
+                                <h3 className="font-[family-name:var(--font-fraunces)] text-xl font-bold text-foreground">
                                     {benefit.title}
                                 </h3>
 
-                                <p className="mt-3 text-sm leading-7 text-[#29231F]/65">
+                                <p className="mt-3 text-sm leading-7 text-foreground/65">
                                     {benefit.description}
                                 </p>
                             </motion.div>

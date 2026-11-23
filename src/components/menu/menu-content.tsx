@@ -173,26 +173,26 @@ const MenuContent = () => {
 
             {/* Loading State */}
             {loading ? (
-                <div className="flex min-h-64 items-center justify-center rounded-2xl border border-[#29231F]/10 bg-white">
+                <div className="flex min-h-64 items-center justify-center rounded-2xl border border-border bg-card">
                     <div className="flex flex-col items-center gap-3">
                         <Loader2
                             size={32}
                             className="animate-spin text-[#D94B35]"
                         />
 
-                        <p className="text-sm font-medium text-[#29231F]/60">
+                        <p className="text-sm font-medium text-foreground/60">
                             Preparing something delicious...
                         </p>
                     </div>
                 </div>
             ) : error ? (
                 /* Error State */
-                <div className="rounded-2xl border border-red-200 bg-white px-6 py-12 text-center">
-                    <h3 className="text-xl font-bold text-[#29231F]">
+                <div className="rounded-2xl border border-destructive/30 bg-card px-6 py-12 text-center">
+                    <h3 className="text-xl font-bold text-foreground">
                         Unable to Load Pizzas
                     </h3>
 
-                    <p className="mt-2 text-sm text-red-500">
+                    <p className="mt-2 text-sm text-destructive">
                         {error}
                     </p>
                 </div>
@@ -200,13 +200,13 @@ const MenuContent = () => {
                 <>
                     {/* Result Count */}
                     <div className="flex flex-col justify-between gap-2 sm:flex-row sm:items-center">
-                        <p className="text-sm text-[#29231F]/60">
+                        <p className="text-sm text-foreground/60">
                             Showing{" "}
-                            <span className="font-bold text-[#29231F]">
+                            <span className="font-bold text-foreground">
                                 {items.length}
                             </span>{" "}
                             of{" "}
-                            <span className="font-bold text-[#29231F]">
+                            <span className="font-bold text-foreground">
                                 {pagination.totalItems}
                             </span>{" "}
                             delicious pizzas
@@ -231,14 +231,14 @@ const MenuContent = () => {
 
                     {/* Pagination */}
                     {pagination.totalPages > 1 && (
-                        <div className="mt-12 flex flex-col items-center justify-between gap-5 border-t border-[#29231F]/10 pt-8 sm:flex-row">
-                            <p className="text-sm text-[#29231F]/60">
+                        <div className="mt-12 flex flex-col items-center justify-between gap-5 border-t border-border pt-8 sm:flex-row">
+                            <p className="text-sm text-foreground/60">
                                 Showing page{" "}
-                                <span className="font-bold text-[#29231F]">
+                                <span className="font-bold text-foreground">
                                     {pagination.currentPage}
                                 </span>{" "}
                                 of{" "}
-                                <span className="font-bold text-[#29231F]">
+                                <span className="font-bold text-foreground">
                                     {pagination.totalPages}
                                 </span>{" "}
                                 ({pagination.totalItems} pizzas)
@@ -253,12 +253,12 @@ const MenuContent = () => {
                                             previous - 1
                                         )
                                     }
-                                    className="rounded-xl border border-[#29231F]/15 bg-white px-5 py-3 text-sm font-semibold text-[#29231F] transition hover:border-[#D94B35] hover:text-[#D94B35] disabled:cursor-not-allowed disabled:opacity-40"
+                                    className="rounded-xl border border-border bg-card px-5 py-3 text-sm font-semibold text-foreground transition hover:border-[#D94B35] hover:text-[#D94B35] disabled:cursor-not-allowed disabled:opacity-40"
                                 >
                                     Previous
                                 </button>
 
-                                <span className="min-w-10 text-center text-sm font-bold text-[#29231F]">
+                                <span className="min-w-10 text-center text-sm font-bold text-foreground">
                                     {currentPage}
                                 </span>
 

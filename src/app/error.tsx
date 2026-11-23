@@ -17,9 +17,9 @@ const ErrorPage = ({ error, reset }: ErrorPageProps) => {
     }, [error]);
 
     return (
-        <main className="flex min-h-[75vh] items-center justify-center bg-[#F8F1E7] px-4 py-16">
+        <main className="flex min-h-[75vh] items-center justify-center bg-background px-4 py-16">
             <div className="mx-auto w-full max-w-xl text-center">
-                <div className="mx-auto mb-8 flex size-20 items-center justify-center rounded-3xl bg-red-500/10">
+                <div className="mx-auto mb-8 flex size-20 items-center justify-center rounded-3xl bg-destructive/10">
                     <AlertTriangle className="size-10 text-[#D94B35]" />
                 </div>
 
@@ -27,17 +27,17 @@ const ErrorPage = ({ error, reset }: ErrorPageProps) => {
                     Something Went Wrong
                 </p>
 
-                <h1 className="font-[family-name:var(--font-fraunces)] text-4xl font-bold text-[#29231F] sm:text-5xl">
+                <h1 className="font-[family-name:var(--font-fraunces)] text-4xl font-bold text-foreground sm:text-5xl">
                     Oops! Something went off the menu.
                 </h1>
 
-                <p className="mx-auto mt-5 max-w-md text-base leading-7 text-[#29231F]/65">
+                <p className="mx-auto mt-5 max-w-md text-base leading-7 text-foreground/65">
                     We encountered an unexpected problem. Please try again.
                     Your PizzaHub experience is just one click away.
                 </p>
 
                 {error.digest && (
-                    <p className="mt-3 text-xs text-[#29231F]/40">
+                    <p className="mt-3 text-xs text-foreground/40">
                         Error reference: {error.digest}
                     </p>
                 )}
@@ -54,7 +54,7 @@ const ErrorPage = ({ error, reset }: ErrorPageProps) => {
                     <Link href="/">
                         <Button
                             variant="outline"
-                            className="w-full gap-2 border-[#29231F]/20 text-[#29231F] hover:bg-[#29231F]/5 sm:w-auto"
+                            className="w-full gap-2 border-border text-foreground hover:bg-muted/50 sm:w-auto"
                         >
                             <Home className="size-4" />
                             Back to Home

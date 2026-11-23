@@ -8,14 +8,14 @@ import { Button } from "@/components/ui/button";
 
 const VendorCTASection = () => {
     return (
-        <section className="bg-[#F8F1E7] px-5 pb-20 sm:px-8 lg:pb-28">
+        <section className="bg-background px-5 pb-20 sm:px-8 lg:pb-28">
             <div className="mx-auto max-w-7xl">
                 <motion.div
                     initial={{ opacity: 0, y: 35 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.65 }}
-                    className="relative overflow-hidden rounded-[2rem] bg-[#29231F] px-7 py-14 sm:px-12 lg:px-16 lg:py-20"
+                    className="relative overflow-hidden rounded-[2rem] bg-brand-surface px-7 py-14 sm:px-12 lg:px-16 lg:py-20"
                 >
                     <div className="pointer-events-none absolute -right-20 -top-28 h-80 w-80 rounded-full bg-[#D94B35]/25 blur-3xl" />
                     <div className="pointer-events-none absolute -bottom-32 left-1/3 h-72 w-72 rounded-full bg-[#E88A45]/15 blur-3xl" />

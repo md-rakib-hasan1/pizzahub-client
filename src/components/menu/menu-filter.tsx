@@ -40,7 +40,7 @@ const MenuFilter = ({
     onSortChange,
 }: MenuFilterProps) => {
     return (
-        <div className="rounded-2xl border border-[#29231F]/10 bg-white p-5 shadow-sm sm:p-6">
+        <div className="rounded-2xl border border-border bg-card p-5 shadow-sm sm:p-6">
             {/* Filter Heading */}
             <div className="mb-5 flex items-center gap-2">
                 <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#D94B35]/10 text-[#D94B35]">
@@ -48,11 +48,11 @@ const MenuFilter = ({
                 </div>
 
                 <div>
-                    <h3 className="font-semibold text-[#29231F]">
+                    <h3 className="font-semibold text-foreground">
                         Find Your Pizza
                     </h3>
 
-                    <p className="text-xs text-[#29231F]/50">
+                    <p className="text-xs text-foreground/50">
                         Search and refine your choices
                     </p>
                 </div>
@@ -64,7 +64,7 @@ const MenuFilter = ({
                 <div className="relative">
                     <Search
                         size={18}
-                        className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#29231F]/40"
+                        className="absolute left-3.5 top-1/2 -translate-y-1/2 text-foreground/40"
                     />
 
                     <Input
@@ -73,7 +73,7 @@ const MenuFilter = ({
                             onSearchChange(event.target.value)
                         }
                         placeholder="Search pizzas..."
-                        className="!h-12 min-h-12 w-full box-border rounded-xl border-[#29231F]/10 bg-[#F8F1E7]/50 pl-10 text-[#29231F] placeholder:text-[#29231F]/40 focus-visible:ring-[#D94B35]"
+                        className="!h-12 min-h-12 w-full box-border rounded-xl border-border bg-background/50 pl-10 text-foreground placeholder:text-foreground/40 focus-visible:ring-[#D94B35]"
                     />
                 </div>
 
@@ -82,7 +82,7 @@ const MenuFilter = ({
                     value={category || "all"}
                     onValueChange={(value) => onCategoryChange(value ?? "all")}
                 >
-                    <SelectTrigger className="!h-12 min-h-12 w-full box-border rounded-xl border-[#29231F]/10 bg-[#F8F1E7]/50 text-[#29231F]">
+                    <SelectTrigger className="!h-12 min-h-12 w-full box-border rounded-xl border-border bg-background/50 text-foreground">
                         <div className="flex items-center gap-2">
                             <Tags
                                 size={17}
@@ -127,7 +127,7 @@ const MenuFilter = ({
                             onLocationChange(event.target.value)
                         }
                         placeholder="Enter location..."
-                        className="!h-12 min-h-12 w-full box-border rounded-xl border-[#29231F]/10 bg-[#F8F1E7]/50 pl-10 text-[#29231F] placeholder:text-[#29231F]/40 focus-visible:ring-[#D94B35]"
+                        className="!h-12 min-h-12 w-full box-border rounded-xl border-border bg-background/50 pl-10 text-foreground placeholder:text-foreground/40 focus-visible:ring-[#D94B35]"
                     />
                 </div>
 
@@ -136,7 +136,7 @@ const MenuFilter = ({
                     value={sort}
                     onValueChange={(value) => onSortChange(value ?? "newest")}
                 >
-                    <SelectTrigger className="!h-12 min-h-12 w-full box-border rounded-xl border-[#29231F]/10 bg-[#F8F1E7]/50 text-[#29231F]">
+                    <SelectTrigger className="!h-12 min-h-12 w-full box-border rounded-xl border-border bg-background/50 text-foreground">
                         <SelectValue placeholder="Sort by: Newest" />
                     </SelectTrigger>
 

@@ -35,10 +35,10 @@ interface VendorOrder {
 type FilterStatus = "all" | VendorOrder["status"];
 
 const statusStyles: Record<string, string> = {
-    pending: "bg-amber-100 text-amber-700",
-    accepted: "bg-green-100 text-green-700",
-    rejected: "bg-red-100 text-red-700",
-    cancelled: "bg-gray-100 text-gray-600",
+    pending: "bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300",
+    accepted: "bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300",
+    rejected: "bg-destructive/10 text-destructive",
+    cancelled: "bg-muted text-muted-foreground",
 };
 
 const VendorOrders = () => {
@@ -208,8 +208,8 @@ const VendorOrders = () => {
 
     if (error) {
         return (
-            <div className="rounded-2xl border border-red-200 bg-red-50 p-8 text-center">
-                <p className="font-medium text-red-700">{error}</p>
+            <div className="rounded-2xl border border-destructive/30 bg-destructive/10 p-8 text-center">
+                <p className="font-medium text-destructive">{error}</p>
                 <button
                     onClick={() => void fetchOrders()}
                     className="mt-4 rounded-xl bg-[#D94B35] px-5 py-2.5 text-sm font-semibold text-white"
@@ -227,17 +227,17 @@ const VendorOrders = () => {
                     <p className="text-sm font-medium text-[#D94B35]">
                         Vendor Workspace
                     </p>
-                    <h1 className="mt-1 font-[family-name:var(--font-fraunces)] text-3xl font-bold text-[#29231F] sm:text-4xl">
+                    <h1 className="mt-1 font-[family-name:var(--font-fraunces)] text-3xl font-bold text-foreground sm:text-4xl">
                         Manage Orders
                     </h1>
-                    <p className="mt-2 text-sm text-[#29231F]/60">
+                    <p className="mt-2 text-sm text-foreground/60">
                         Review customer orders and manage their status.
                     </p>
                 </div>
 
                 <button
                     onClick={() => void fetchOrders()}
-                    className="inline-flex items-center justify-center gap-2 rounded-xl border border-[#29231F]/10 bg-white px-4 py-3 text-sm font-semibold text-[#29231F] transition hover:bg-[#F8F1E7]"
+                    className="inline-flex items-center justify-center gap-2 rounded-xl border border-border bg-card px-4 py-3 text-sm font-semibold text-foreground transition hover:bg-background"
                 >
                     <RefreshCw size={16} />
                     Refresh Orders
@@ -251,7 +251,7 @@ const VendorOrders = () => {
                         onClick={() => setFilter(option.value)}
                         className={`rounded-2xl border p-4 text-left transition ${filter === option.value
                             ? "border-[#D94B35] bg-[#D94B35] text-white shadow-md"
-                            : "border-[#29231F]/10 bg-white text-[#29231F] hover:border-[#D94B35]/50"
+                            : "border-border bg-card text-foreground hover:border-[#D94B35]/50"
                             }`}
                     >
                         <p className="text-sm opacity-80">{option.label}</p>
@@ -264,26 +264,26 @@ const VendorOrders = () => {
 
             <div className="space-y-5">
                 <div className="flex items-center justify-between">
-                    <h2 className="text-xl font-bold text-[#29231F]">
+                    <h2 className="text-xl font-bold text-foreground">
                         {filter === "all"
                             ? "All Customer Orders"
                             : `${filter.charAt(0).toUpperCase()}${filter.slice(1)} Orders`}
                     </h2>
-                    <span className="text-sm text-[#29231F]/50">
+                    <span className="text-sm text-foreground/50">
                         {filteredOrders.length} orders
                     </span>
                 </div>
 
                 {filteredOrders.length === 0 ? (
-                    <div className="rounded-2xl border border-[#29231F]/10 bg-white px-5 py-16 text-center">
+                    <div className="rounded-2xl border border-border bg-card px-5 py-16 text-center">
                         <ShoppingBag
                             size={42}
-                            className="mx-auto text-[#29231F]/30"
+                            className="mx-auto text-foreground/30"
                         />
-                        <h3 className="mt-4 text-lg font-bold text-[#29231F]">
+                        <h3 className="mt-4 text-lg font-bold text-foreground">
                             No orders found
                         </h3>
-                        <p className="mt-2 text-sm text-[#29231F]/50">
+                        <p className="mt-2 text-sm text-foreground/50">
                             {filter === "all"
                                 ? "Customer orders will appear here when someone places an order."
                                 : `There are no ${filter} orders right now.`}
@@ -294,34 +294,34 @@ const VendorOrders = () => {
                         {filteredOrders.map((order) => (
                             <div
                                 key={order._id}
-                                className="rounded-2xl border border-[#29231F]/10 bg-white p-5 shadow-sm sm:p-6"
+                                className="rounded-2xl border border-border bg-card p-5 shadow-sm sm:p-6"
                             >
                                 <div className="flex flex-wrap items-start justify-between gap-3">
                                     <div>
-                                        <p className="text-xs font-medium uppercase tracking-wider text-[#29231F]/40">
+                                        <p className="text-xs font-medium uppercase tracking-wider text-foreground/40">
                                             Order ID
                                         </p>
-                                        <p className="mt-1 break-all text-sm font-semibold text-[#29231F]">
+                                        <p className="mt-1 break-all text-sm font-semibold text-foreground">
                                             #{order._id}
                                         </p>
                                     </div>
 
                                     <span
                                         className={`rounded-full px-3 py-1.5 text-xs font-bold capitalize ${statusStyles[order.status] ||
-                                            "bg-gray-100 text-gray-600"
+                                            "bg-muted text-muted-foreground"
                                             }`}
                                     >
                                         {order.status}
                                     </span>
                                 </div>
 
-                                <div className="mt-5 border-b border-[#29231F]/10 pb-5">
+                                <div className="mt-5 border-b border-border pb-5">
                                     <div className="flex items-center justify-between gap-3">
                                         <div>
-                                            <h3 className="text-xl font-bold text-[#29231F]">
+                                            <h3 className="text-xl font-bold text-foreground">
                                                 {order.menuItemTitle}
                                             </h3>
-                                            <p className="mt-1 text-sm text-[#29231F]/50">
+                                            <p className="mt-1 text-sm text-foreground/50">
                                                 Customer order
                                             </p>
                                         </div>
@@ -333,7 +333,7 @@ const VendorOrders = () => {
                                 </div>
 
                                 <div className="mt-5 space-y-3 text-sm">
-                                    <div className="flex items-start gap-3 text-[#29231F]/70">
+                                    <div className="flex items-start gap-3 text-foreground/70">
                                         <Mail
                                             size={17}
                                             className="mt-0.5 shrink-0 text-[#D94B35]"
@@ -343,7 +343,7 @@ const VendorOrders = () => {
                                         </span>
                                     </div>
 
-                                    <div className="flex items-start gap-3 text-[#29231F]/70">
+                                    <div className="flex items-start gap-3 text-foreground/70">
                                         <CalendarDays
                                             size={17}
                                             className="mt-0.5 shrink-0 text-[#D94B35]"
@@ -353,7 +353,7 @@ const VendorOrders = () => {
                                         </span>
                                     </div>
 
-                                    <div className="flex items-start gap-3 text-[#29231F]/70">
+                                    <div className="flex items-start gap-3 text-foreground/70">
                                         <MapPin
                                             size={17}
                                             className="mt-0.5 shrink-0 text-[#D94B35]"
@@ -362,7 +362,7 @@ const VendorOrders = () => {
                                     </div>
 
                                     {order.message && (
-                                        <div className="flex items-start gap-3 text-[#29231F]/70">
+                                        <div className="flex items-start gap-3 text-foreground/70">
                                             <MessageSquare
                                                 size={17}
                                                 className="mt-0.5 shrink-0 text-[#D94B35]"
@@ -371,7 +371,7 @@ const VendorOrders = () => {
                                         </div>
                                     )}
 
-                                    <div className="flex items-start gap-3 text-xs text-[#29231F]/40">
+                                    <div className="flex items-start gap-3 text-xs text-foreground/40">
                                         <Clock size={15} className="mt-0.5 shrink-0" />
                                         <span>
                                             Placed on {formatDate(order.createdAt)}
@@ -380,7 +380,7 @@ const VendorOrders = () => {
                                 </div>
 
                                 {order.status === "pending" && (
-                                    <div className="mt-6 grid grid-cols-2 gap-3 border-t border-[#29231F]/10 pt-5">
+                                    <div className="mt-6 grid grid-cols-2 gap-3 border-t border-border pt-5">
                                         <button
                                             disabled={processingId === order._id}
                                             onClick={() =>
@@ -405,7 +405,7 @@ const VendorOrders = () => {
                                                     "reject"
                                                 )
                                             }
-                                            className="inline-flex items-center justify-center gap-2 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm font-semibold text-red-600 transition hover:bg-red-100 disabled:cursor-not-allowed disabled:opacity-50"
+                                            className="inline-flex items-center justify-center gap-2 rounded-xl border border-destructive/30 bg-destructive/10 px-4 py-3 text-sm font-semibold text-destructive transition hover:bg-destructive/20 disabled:cursor-not-allowed disabled:opacity-50"
                                         >
                                             <XCircle size={17} />
                                             Reject

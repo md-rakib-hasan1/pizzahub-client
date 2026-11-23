@@ -23,9 +23,9 @@ const MenuCard = ({
     image,
 }: MenuCardProps) => {
     return (
-        <div className="group overflow-hidden rounded-2xl border border-[#29231F]/10 bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
+        <div className="group overflow-hidden rounded-2xl border border-border bg-card shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
             {/* Pizza Image */}
-            <div className="relative h-56 overflow-hidden bg-[#F8F1E7]">
+            <div className="relative h-56 overflow-hidden bg-background">
                 <Image
                     src={image}
                     alt={title}
@@ -42,7 +42,7 @@ const MenuCard = ({
             {/* Pizza Information */}
             <div className="p-5">
                 <div className="mb-2 flex items-start justify-between gap-3">
-                    <h3 className="line-clamp-1 text-xl font-bold text-[#29231F]">
+                    <h3 className="line-clamp-1 text-xl font-bold text-foreground">
                         {title}
                     </h3>
 
@@ -51,12 +51,12 @@ const MenuCard = ({
                     </p>
                 </div>
 
-                <p className="mb-4 line-clamp-2 min-h-10 text-sm leading-5 text-[#29231F]/60">
+                <p className="mb-4 line-clamp-2 min-h-10 text-sm leading-5 text-foreground/60">
                     {description}
                 </p>
 
                 {/* Location */}
-                <div className="mb-5 flex items-center gap-2 text-sm text-[#29231F]/55">
+                <div className="mb-5 flex items-center gap-2 text-sm text-foreground/55">
                     <MapPin size={16} className="shrink-0 text-[#D94B35]" />
                     <span className="line-clamp-1">{location}</span>
                 </div>
@@ -64,7 +64,7 @@ const MenuCard = ({
                 {/* Details Button */}
                 <Link
                     href={`/menu/${id}`}
-                    className="flex h-11 w-full items-center justify-center gap-2 rounded-xl bg-[#29231F] text-sm font-semibold text-white transition-colors duration-300 hover:bg-[#D94B35]"
+                    className="flex h-11 w-full items-center justify-center gap-2 rounded-xl bg-brand-surface text-sm font-semibold text-white transition-colors duration-300 hover:bg-[#D94B35]"
                 >
                     View Details
                     <ArrowUpRight size={17} />

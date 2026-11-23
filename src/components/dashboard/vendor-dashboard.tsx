@@ -192,50 +192,50 @@ const VendorDashboard = () => {
             title: "Total Menu Items",
             value: stats.totalMenuItems,
             icon: UtensilsCrossed,
-            color: "text-orange-600",
+            color: "text-orange-600 dark:text-orange-400",
             bg: "bg-orange-100",
         },
         {
             title: "Approved Items",
             value: stats.approvedMenuItems,
             icon: CheckCircle2,
-            color: "text-green-600",
-            bg: "bg-green-100",
+            color: "text-green-600 dark:text-green-400",
+            bg: "bg-green-100 dark:bg-green-900/30",
         },
         {
             title: "Pending Items",
             value: stats.pendingMenuItems,
             icon: Clock,
-            color: "text-amber-600",
-            bg: "bg-amber-100",
+            color: "text-amber-600 dark:text-amber-300",
+            bg: "bg-amber-100 dark:bg-amber-900/30",
         },
         {
             title: "Total Orders",
             value: stats.totalOrders,
             icon: ShoppingBag,
-            color: "text-blue-600",
+            color: "text-blue-600 dark:text-blue-400",
             bg: "bg-blue-100",
         },
         {
             title: "Pending Orders",
             value: stats.pendingOrders,
             icon: Clock,
-            color: "text-amber-600",
-            bg: "bg-amber-100",
+            color: "text-amber-600 dark:text-amber-300",
+            bg: "bg-amber-100 dark:bg-amber-900/30",
         },
         {
             title: "Accepted Orders",
             value: stats.acceptedOrders,
             icon: CheckCircle2,
-            color: "text-green-600",
-            bg: "bg-green-100",
+            color: "text-green-600 dark:text-green-400",
+            bg: "bg-green-100 dark:bg-green-900/30",
         },
         {
             title: "Rejected Orders",
             value: stats.rejectedOrders,
             icon: XCircle,
-            color: "text-red-600",
-            bg: "bg-red-100",
+            color: "text-destructive",
+            bg: "bg-destructive/10",
         },
     ];
 
@@ -256,8 +256,8 @@ const VendorDashboard = () => {
 
     if (error) {
         return (
-            <div className="rounded-2xl border border-red-200 bg-red-50 p-8 text-center">
-                <p className="font-medium text-red-700">{error}</p>
+            <div className="rounded-2xl border border-destructive/30 bg-destructive/10 p-8 text-center">
+                <p className="font-medium text-destructive">{error}</p>
                 <button
                     onClick={() => void fetchDashboard()}
                     className="mt-4 rounded-xl bg-[#D94B35] px-5 py-2.5 text-sm font-semibold text-white"
@@ -275,10 +275,10 @@ const VendorDashboard = () => {
                     <p className="text-sm font-medium text-[#D94B35]">
                         Vendor Workspace
                     </p>
-                    <h1 className="mt-1 font-[family-name:var(--font-fraunces)] text-3xl font-bold text-[#29231F] sm:text-4xl">
+                    <h1 className="mt-1 font-[family-name:var(--font-fraunces)] text-3xl font-bold text-foreground sm:text-4xl">
                         Dashboard Overview
                     </h1>
-                    <p className="mt-2 text-sm text-[#29231F]/60">
+                    <p className="mt-2 text-sm text-foreground/60">
                         Welcome back, {session?.user?.name || "Vendor"}.
                         Here is your restaurant performance.
                     </p>
@@ -287,7 +287,7 @@ const VendorDashboard = () => {
                 <div className="flex flex-wrap gap-3">
                     <Link
                         href="/dashboard/vendor/menu"
-                        className="inline-flex items-center gap-2 rounded-xl border border-[#29231F]/10 bg-white px-4 py-3 text-sm font-semibold text-[#29231F] transition hover:border-[#D94B35] hover:text-[#D94B35]"
+                        className="inline-flex items-center gap-2 rounded-xl border border-border bg-card px-4 py-3 text-sm font-semibold text-foreground transition hover:border-[#D94B35] hover:text-[#D94B35]"
                     >
                         <UtensilsCrossed size={17} />
                         Manage Menu
@@ -310,14 +310,14 @@ const VendorDashboard = () => {
                     return (
                         <div
                             key={stat.title}
-                            className="rounded-2xl border border-[#29231F]/10 bg-white p-5 shadow-sm"
+                            className="rounded-2xl border border-border bg-card p-5 shadow-sm"
                         >
                             <div className="flex items-center justify-between">
                                 <div>
-                                    <p className="text-sm text-[#29231F]/60">
+                                    <p className="text-sm text-foreground/60">
                                         {stat.title}
                                     </p>
-                                    <p className="mt-3 text-3xl font-bold text-[#29231F]">
+                                    <p className="mt-3 text-3xl font-bold text-foreground">
                                         {stat.value}
                                     </p>
                                 </div>
@@ -332,13 +332,13 @@ const VendorDashboard = () => {
             </div>
 
             <div className="grid gap-6 xl:grid-cols-2">
-                <div className="rounded-2xl border border-[#29231F]/10 bg-white p-5 sm:p-6">
+                <div className="rounded-2xl border border-border bg-card p-5 sm:p-6">
                     <div className="mb-6 flex items-center justify-between">
                         <div>
-                            <h2 className="text-lg font-bold text-[#29231F]">
+                            <h2 className="text-lg font-bold text-foreground">
                                 Monthly Orders
                             </h2>
-                            <p className="mt-1 text-sm text-[#29231F]/50">
+                            <p className="mt-1 text-sm text-foreground/50">
                                 Your order activity over time
                             </p>
                         </div>
@@ -349,12 +349,33 @@ const VendorDashboard = () => {
                         <ResponsiveContainer width="100%" height="100%">
                             <BarChart data={monthlyOrders}>
                                 <CartesianGrid
+                                    stroke="var(--border)"
                                     strokeDasharray="3 3"
                                     vertical={false}
                                 />
-                                <XAxis dataKey="month" />
-                                <YAxis allowDecimals={false} />
-                                <Tooltip />
+                                <XAxis
+                                    dataKey="month"
+                                    stroke="var(--border)"
+                                    tick={{ fill: "var(--muted-foreground)" }}
+                                />
+                                <YAxis
+                                    allowDecimals={false}
+                                    stroke="var(--border)"
+                                    tick={{ fill: "var(--muted-foreground)" }}
+                                />
+                                <Tooltip
+                                    contentStyle={{
+                                        backgroundColor: "var(--popover)",
+                                        border: "1px solid var(--border)",
+                                        borderRadius: "var(--radius)",
+                                    }}
+                                    labelStyle={{
+                                        color: "var(--popover-foreground)",
+                                    }}
+                                    itemStyle={{
+                                        color: "var(--popover-foreground)",
+                                    }}
+                                />
                                 <Bar
                                     dataKey="totalOrders"
                                     name="Orders"
@@ -366,30 +387,49 @@ const VendorDashboard = () => {
                     </div>
                 </div>
 
-                <div className="rounded-2xl border border-[#29231F]/10 bg-white p-5 sm:p-6">
+                <div className="rounded-2xl border border-border bg-card p-5 sm:p-6">
                     <div className="mb-6 flex items-center justify-between">
                         <div>
-                            <h2 className="text-lg font-bold text-[#29231F]">
+                            <h2 className="text-lg font-bold text-foreground">
                                 Monthly Revenue
                             </h2>
-                            <p className="mt-1 text-sm text-[#29231F]/50">
+                            <p className="mt-1 text-sm text-foreground/50">
                                 Accepted order value (USD)
                             </p>
                         </div>
-                        <TrendingUp className="text-green-600" />
+                        <TrendingUp className="text-green-600 dark:text-green-400" />
                     </div>
 
                     <div className="h-[280px]">
                         <ResponsiveContainer width="100%" height="100%">
                             <BarChart data={monthlyRevenue}>
                                 <CartesianGrid
+                                    stroke="var(--border)"
                                     strokeDasharray="3 3"
                                     vertical={false}
                                 />
-                                <XAxis dataKey="month" />
-                                <YAxis />
+                                <XAxis
+                                    dataKey="month"
+                                    stroke="var(--border)"
+                                    tick={{ fill: "var(--muted-foreground)" }}
+                                />
+                                <YAxis
+                                    stroke="var(--border)"
+                                    tick={{ fill: "var(--muted-foreground)" }}
+                                />
                                 <Tooltip
                                     formatter={(value) => `$${value}`}
+                                    contentStyle={{
+                                        backgroundColor: "var(--popover)",
+                                        border: "1px solid var(--border)",
+                                        borderRadius: "var(--radius)",
+                                    }}
+                                    labelStyle={{
+                                        color: "var(--popover-foreground)",
+                                    }}
+                                    itemStyle={{
+                                        color: "var(--popover-foreground)",
+                                    }}
                                 />
                                 <Bar
                                     dataKey="revenue"
@@ -403,13 +443,13 @@ const VendorDashboard = () => {
                 </div>
             </div>
 
-            <div className="overflow-hidden rounded-2xl border border-[#29231F]/10 bg-white">
-                <div className="flex flex-col justify-between gap-3 border-b border-[#29231F]/10 p-5 sm:flex-row sm:items-center sm:p-6">
+            <div className="overflow-hidden rounded-2xl border border-border bg-card">
+                <div className="flex flex-col justify-between gap-3 border-b border-border p-5 sm:flex-row sm:items-center sm:p-6">
                     <div>
-                        <h2 className="text-lg font-bold text-[#29231F]">
+                        <h2 className="text-lg font-bold text-foreground">
                             Recent Orders
                         </h2>
-                        <p className="mt-1 text-sm text-[#29231F]/50">
+                        <p className="mt-1 text-sm text-foreground/50">
                             Latest orders received by your restaurant
                         </p>
                     </div>
@@ -426,19 +466,19 @@ const VendorDashboard = () => {
                     <div className="p-12 text-center">
                         <ShoppingBag
                             size={36}
-                            className="mx-auto text-[#29231F]/30"
+                            className="mx-auto text-foreground/30"
                         />
-                        <p className="mt-3 font-semibold text-[#29231F]">
+                        <p className="mt-3 font-semibold text-foreground">
                             No orders yet
                         </p>
-                        <p className="mt-1 text-sm text-[#29231F]/50">
+                        <p className="mt-1 text-sm text-foreground/50">
                             New customer orders will appear here.
                         </p>
                     </div>
                 ) : (
                     <div className="overflow-x-auto">
                         <table className="w-full min-w-[650px] text-left text-sm">
-                            <thead className="bg-[#F8F1E7] text-[#29231F]/70">
+                            <thead className="bg-background text-foreground/70">
                                 <tr>
                                     <th className="px-6 py-4 font-semibold">Pizza</th>
                                     <th className="px-6 py-4 font-semibold">Customer</th>
@@ -448,24 +488,24 @@ const VendorDashboard = () => {
                                 </tr>
                             </thead>
 
-                            <tbody className="divide-y divide-[#29231F]/10">
+                            <tbody className="divide-y divide-border">
                                 {recentOrders.map((order) => (
                                     <tr key={order._id}>
-                                        <td className="px-6 py-4 font-semibold text-[#29231F]">
+                                        <td className="px-6 py-4 font-semibold text-foreground">
                                             {order.menuItemTitle}
                                         </td>
-                                        <td className="px-6 py-4 text-[#29231F]/60">
+                                        <td className="px-6 py-4 text-foreground/60">
                                             {order.customerEmail}
                                         </td>
-                                        <td className="px-6 py-4 font-semibold text-[#29231F]">
+                                        <td className="px-6 py-4 font-semibold text-foreground">
                                             ${order.price}
                                         </td>
                                         <td className="px-6 py-4">
-                                            <span className="rounded-full bg-[#F8F1E7] px-3 py-1 text-xs font-semibold capitalize text-[#29231F]">
+                                            <span className="rounded-full bg-background px-3 py-1 text-xs font-semibold capitalize text-foreground">
                                                 {order.status}
                                             </span>
                                         </td>
-                                        <td className="px-6 py-4 text-[#29231F]/60">
+                                        <td className="px-6 py-4 text-foreground/60">
                                             {formatDate(order.createdAt)}
                                         </td>
                                     </tr>
@@ -479,7 +519,7 @@ const VendorDashboard = () => {
             <div className="flex justify-end">
                 <button
                     onClick={() => void fetchDashboard()}
-                    className="inline-flex items-center gap-2 rounded-xl border border-[#29231F]/10 px-4 py-2.5 text-sm font-semibold text-[#29231F] transition hover:bg-[#F8F1E7]"
+                    className="inline-flex items-center gap-2 rounded-xl border border-border px-4 py-2.5 text-sm font-semibold text-foreground transition hover:bg-background"
                 >
                     <RefreshCw size={16} />
                     Refresh Dashboard

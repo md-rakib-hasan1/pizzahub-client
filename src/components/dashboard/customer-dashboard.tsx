@@ -53,22 +53,22 @@ const statusConfig = {
     pending: {
         label: "Pending",
         icon: Clock,
-        color: "bg-amber-50 text-amber-700",
+        color: "bg-amber-50 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300",
     },
     accepted: {
         label: "Accepted",
         icon: CheckCircle2,
-        color: "bg-green-50 text-green-700",
+        color: "bg-green-50 dark:bg-green-900/30 text-green-700 dark:text-green-300",
     },
     rejected: {
         label: "Rejected",
         icon: XCircle,
-        color: "bg-red-50 text-red-700",
+        color: "bg-destructive/10 text-destructive",
     },
     cancelled: {
         label: "Cancelled",
         icon: XCircle,
-        color: "bg-gray-100 text-gray-600",
+        color: "bg-muted text-muted-foreground",
     },
 };
 
@@ -176,10 +176,10 @@ const CustomerDashboard = () => {
         return (
             <div className="mx-auto max-w-2xl px-4 py-24 text-center">
                 <ShoppingBag className="mx-auto mb-4 h-12 w-12 text-[#D94B35]" />
-                <h2 className="text-2xl font-bold text-[#29231F]">
+                <h2 className="text-2xl font-bold text-foreground">
                     Sign In Required
                 </h2>
-                <p className="mt-2 text-sm text-[#29231F]/60">
+                <p className="mt-2 text-sm text-foreground/60">
                     Sign in to view your orders and customer dashboard.
                 </p>
                 <Link
@@ -196,10 +196,10 @@ const CustomerDashboard = () => {
         return (
             <div className="mx-auto max-w-2xl px-4 py-24 text-center">
                 <ShoppingBag className="mx-auto mb-4 h-12 w-12 text-[#D94B35]" />
-                <h2 className="text-2xl font-bold text-[#29231F]">
+                <h2 className="text-2xl font-bold text-foreground">
                     Customer Access Only
                 </h2>
-                <p className="mt-2 text-sm text-[#29231F]/60">
+                <p className="mt-2 text-sm text-foreground/60">
                     This dashboard is available for customer accounts only.
                 </p>
             </div>
@@ -211,31 +211,31 @@ const CustomerDashboard = () => {
             label: "Total Orders",
             value: stats.totalOrders,
             icon: ShoppingBag,
-            color: "bg-blue-50 text-blue-600",
+            color: "bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400",
         },
         {
             label: "Pending",
             value: stats.pendingOrders,
             icon: Clock,
-            color: "bg-amber-50 text-amber-600",
+            color: "bg-amber-50 dark:bg-amber-900/30 text-amber-600 dark:text-amber-300",
         },
         {
             label: "Accepted",
             value: stats.acceptedOrders,
             icon: CheckCircle2,
-            color: "bg-green-50 text-green-600",
+            color: "bg-green-50 dark:bg-green-900/30 text-green-600 dark:text-green-400",
         },
         {
             label: "Rejected",
             value: stats.rejectedOrders,
             icon: XCircle,
-            color: "bg-red-50 text-red-600",
+            color: "bg-destructive/10 text-destructive",
         },
         {
             label: "Cancelled",
             value: stats.cancelledOrders,
             icon: Activity,
-            color: "bg-gray-100 text-gray-600",
+            color: "bg-muted text-muted-foreground",
         },
     ];
 
@@ -247,17 +247,17 @@ const CustomerDashboard = () => {
     ];
 
     return (
-        <main className="min-h-screen bg-[#F8F1E7]/50 px-4 py-10 sm:px-6 lg:px-8">
+        <main className="min-h-screen bg-background/50 px-4 py-10 sm:px-6 lg:px-8">
             <div className="mx-auto max-w-7xl">
                 <div className="mb-8 flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
                     <div>
                         <p className="mb-2 text-sm font-semibold uppercase tracking-[0.2em] text-[#D94B35]">
                             Your PizzaHub Account
                         </p>
-                        <h1 className="text-3xl font-bold text-[#29231F] sm:text-4xl">
+                        <h1 className="text-3xl font-bold text-foreground sm:text-4xl">
                             Welcome, {session.user.name || "Customer"}!
                         </h1>
-                        <p className="mt-2 text-sm text-[#29231F]/60">
+                        <p className="mt-2 text-sm text-foreground/60">
                             Keep track of your orders and discover your next favorite pizza.
                         </p>
                     </div>
@@ -266,7 +266,7 @@ const CustomerDashboard = () => {
                         variant="outline"
                         onClick={() => void fetchDashboard()}
                         disabled={loading}
-                        className="border-[#29231F]/15 bg-white"
+                        className="border-border bg-card"
                     >
                         <RefreshCw className="mr-2 h-4 w-4" />
                         Refresh
@@ -274,7 +274,7 @@ const CustomerDashboard = () => {
                 </div>
 
                 {error && (
-                    <div className="mb-6 flex flex-col gap-3 rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700 sm:flex-row sm:items-center sm:justify-between">
+                    <div className="mb-6 flex flex-col gap-3 rounded-xl border border-destructive/30 bg-destructive/10 p-4 text-sm text-destructive sm:flex-row sm:items-center sm:justify-between">
                         <p>{error}</p>
                         <Button
                             size="sm"
@@ -293,14 +293,14 @@ const CustomerDashboard = () => {
                         return (
                             <div
                                 key={stat.label}
-                                className="rounded-2xl border border-[#29231F]/10 bg-white p-5 shadow-sm"
+                                className="rounded-2xl border border-border bg-card p-5 shadow-sm"
                             >
                                 <div className="flex items-center justify-between">
                                     <div>
-                                        <p className="text-sm text-[#29231F]/55">
+                                        <p className="text-sm text-foreground/55">
                                             {stat.label}
                                         </p>
-                                        <p className="mt-2 text-3xl font-bold text-[#29231F]">
+                                        <p className="mt-2 text-3xl font-bold text-foreground">
                                             {stat.value}
                                         </p>
                                     </div>
@@ -314,11 +314,11 @@ const CustomerDashboard = () => {
                 </div>
 
                 <div className="mb-8 grid gap-6 lg:grid-cols-3">
-                    <div className="rounded-2xl border border-[#29231F]/10 bg-white p-6 lg:col-span-2">
-                        <h2 className="text-lg font-bold text-[#29231F]">
+                    <div className="rounded-2xl border border-border bg-card p-6 lg:col-span-2">
+                        <h2 className="text-lg font-bold text-foreground">
                             Order Status Overview
                         </h2>
-                        <p className="mt-1 text-sm text-[#29231F]/55">
+                        <p className="mt-1 text-sm text-foreground/55">
                             A quick look at your order activity.
                         </p>
 
@@ -332,14 +332,14 @@ const CustomerDashboard = () => {
                                 return (
                                     <div key={item.label}>
                                         <div className="mb-2 flex justify-between text-sm">
-                                            <span className="text-[#29231F]/65">
+                                            <span className="text-foreground/65">
                                                 {item.label}
                                             </span>
-                                            <span className="font-semibold text-[#29231F]">
+                                            <span className="font-semibold text-foreground">
                                                 {item.value}
                                             </span>
                                         </div>
-                                        <div className="h-2 overflow-hidden rounded-full bg-[#F8F1E7]">
+                                        <div className="h-2 overflow-hidden rounded-full bg-background">
                                             <div
                                                 className="h-full rounded-full bg-[#D94B35] transition-all"
                                                 style={{ width: `${percentage}%` }}
@@ -351,7 +351,7 @@ const CustomerDashboard = () => {
                         </div>
                     </div>
 
-                    <div className="flex flex-col justify-between rounded-2xl bg-[#29231F] p-6 text-white">
+                    <div className="flex flex-col justify-between rounded-2xl bg-brand-surface p-6 text-white">
                         <div>
                             <ShoppingCart className="mb-5 h-8 w-8 text-[#E88A45]" />
                             <h2 className="text-xl font-bold">
@@ -373,13 +373,13 @@ const CustomerDashboard = () => {
                     </div>
                 </div>
 
-                <section className="overflow-hidden rounded-2xl border border-[#29231F]/10 bg-white">
-                    <div className="flex flex-col justify-between gap-3 border-b border-[#29231F]/10 p-5 sm:flex-row sm:items-center">
+                <section className="overflow-hidden rounded-2xl border border-border bg-card">
+                    <div className="flex flex-col justify-between gap-3 border-b border-border p-5 sm:flex-row sm:items-center">
                         <div>
-                            <h2 className="text-xl font-bold text-[#29231F]">
+                            <h2 className="text-xl font-bold text-foreground">
                                 Recent Orders
                             </h2>
-                            <p className="mt-1 text-sm text-[#29231F]/55">
+                            <p className="mt-1 text-sm text-foreground/55">
                                 Your latest pizza orders and their current status.
                             </p>
                         </div>
@@ -395,11 +395,11 @@ const CustomerDashboard = () => {
 
                     {recentOrders.length === 0 ? (
                         <div className="px-5 py-14 text-center">
-                            <Package className="mx-auto mb-4 h-12 w-12 text-[#29231F]/20" />
-                            <h3 className="font-semibold text-[#29231F]">
+                            <Package className="mx-auto mb-4 h-12 w-12 text-foreground/20" />
+                            <h3 className="font-semibold text-foreground">
                                 No orders yet
                             </h3>
-                            <p className="mt-2 text-sm text-[#29231F]/55">
+                            <p className="mt-2 text-sm text-foreground/55">
                                 Your recent orders will appear here after you place an order.
                             </p>
                             <Link
@@ -410,7 +410,7 @@ const CustomerDashboard = () => {
                             </Link>
                         </div>
                     ) : (
-                        <div className="divide-y divide-[#29231F]/10">
+                        <div className="divide-y divide-border">
                             {recentOrders.map((order) => {
                                 const status =
                                     statusConfig[order.status] || statusConfig.pending;
@@ -419,14 +419,14 @@ const CustomerDashboard = () => {
                                 return (
                                     <div
                                         key={order._id}
-                                        className="flex flex-col justify-between gap-4 p-5 transition hover:bg-[#F8F1E7]/40 sm:flex-row sm:items-center"
+                                        className="flex flex-col justify-between gap-4 p-5 transition hover:bg-background/40 sm:flex-row sm:items-center"
                                     >
                                         <div className="min-w-0">
-                                            <h3 className="font-semibold text-[#29231F]">
+                                            <h3 className="font-semibold text-foreground">
                                                 {order.menuItemTitle}
                                             </h3>
 
-                                            <div className="mt-2 flex flex-wrap gap-x-4 gap-y-2 text-xs text-[#29231F]/55">
+                                            <div className="mt-2 flex flex-wrap gap-x-4 gap-y-2 text-xs text-foreground/55">
                                                 <span className="inline-flex items-center gap-1">
                                                     <CalendarDays className="h-3.5 w-3.5" />
                                                     Delivery: {formatDate(order.deliveryDate)}
@@ -440,7 +440,7 @@ const CustomerDashboard = () => {
 
                                         <div className="flex shrink-0 items-center justify-between gap-4 sm:justify-end">
                                             <div className="text-right">
-                                                <p className="font-bold text-[#29231F]">
+                                                <p className="font-bold text-foreground">
                                                     ${Number(order.price).toFixed(2)}
                                                 </p>
                                                 <span
@@ -453,7 +453,7 @@ const CustomerDashboard = () => {
 
                                             <Link
                                                 href={`/dashboard/customer/orders/${order._id}`}
-                                                className="rounded-lg border border-[#29231F]/15 p-2 text-[#29231F]/60 transition hover:border-[#D94B35] hover:text-[#D94B35]"
+                                                className="rounded-lg border border-border p-2 text-foreground/60 transition hover:border-[#D94B35] hover:text-[#D94B35]"
                                                 aria-label="View order details"
                                             >
                                                 <ArrowRight className="h-4 w-4" />
