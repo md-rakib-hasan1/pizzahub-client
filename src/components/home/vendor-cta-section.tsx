@@ -4,7 +4,6 @@
 import Link from "next/link";
 import { motion } from "motion/react";
 import { ArrowUpRight, Store, CheckCircle2 } from "lucide-react";
-import { Button } from "@/components/ui/button";
 
 const VendorCTASection = () => {
     return (

@@ -72,12 +72,10 @@ const VendorDashboard = () => {
     const [monthlyOrders, setMonthlyOrders] = useState<ChartItem[]>([]);
     const [monthlyRevenue, setMonthlyRevenue] = useState<ChartItem[]>([]);
     const [loading, setLoading] = useState(true);
-    const [detailsLoading, setDetailsLoading] = useState(true);
     const [error, setError] = useState("");
 
     const fetchDashboard = useCallback(async () => {
         setLoading(true);
-        setDetailsLoading(true);
         setError("");
 
         try {
@@ -158,8 +156,6 @@ const VendorDashboard = () => {
                         ? err.message
                         : "Failed to load dashboard details."
                 );
-            } finally {
-                setDetailsLoading(false);
             }
         } catch (err) {
             const message =
@@ -169,7 +165,6 @@ const VendorDashboard = () => {
 
             setError(message);
             toast.error(message);
-            setDetailsLoading(false);
         } finally {
             setLoading(false);
         }
